@@ -1,0 +1,54 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL") // runtime: Supabase pooler (transaction mode) in production
+  directUrl = env("DIRECT_URL") // migrations & db push: direct / session connection
+}
+
+model User {
+  id             String   @id @default(cuid())
+  email          String   @unique
+  name           String
+  password       String?
+  authProvider   String   @default("email") // "email" | "google"
+  uniqueUserCode String   @unique // ORD-USER-XXXXXX
+  activationCode String?  @unique // ORD-XXXX-XXXX-XXXX, issued when user pays INSIDE the app
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  trial          Trial?
+  downloads      Download[]
+  sessions       Session[]
+}
+
+model Trial {
+  id         String   @id @default(cuid())
+  userId     String   @unique
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  startedAt  DateTime @default(now())
+  expiresAt  DateTime
+  status     String   @default("active") // "active" | "expired"
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
+model Download {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  appVersion  String   @default("1.0.0")
+  platform    String // "windows" | "macos"
+  downloadedAt DateTime @default(now())
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  token     String   @unique
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}

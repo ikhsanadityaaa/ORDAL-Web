@@ -1,0 +1,380 @@
+"use client";
+
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useLanguage } from "@/lib/i18n/context";
+import { useAuthStore } from "@/lib/auth-store";
+import { Button } from "@/components/ui/button";
+import {
+  BrandMarquee,
+  SpinBadge,
+  stickerButtonPrimary,
+  stickerButtonSecondary,
+} from "@/components/ordal/creative";
+import { WindowsLogo, AppleLogo } from "@/components/ordal/brand-icons";
+import {
+  CheckCircle2,
+  Sparkles,
+  Search,
+  Target,
+  Zap,
+  Bell,
+  Settings,
+  Home,
+  Briefcase,
+  History,
+  FolderOpen,
+  ChevronRight,
+} from "lucide-react";
+
+const spring = { type: "spring", stiffness: 90, damping: 18 } as const;
+
+export function HeroSection() {
+  const { t, language } = useLanguage();
+  const { isAuthenticated, openAuthModal, openDownloadModal } = useAuthStore();
+
+  const handleDownload = () => {
+    if (isAuthenticated) {
+      openDownloadModal();
+    } else {
+      openAuthModal("register");
+    }
+  };
+
+  const { scrollY } = useScroll();
+  const mockupY = useTransform(scrollY, [0, 600], [0, 50]);
+
+  // Highlight "ORDAL" inside the second headline line
+  const highlight = t("hero.headlineHighlight");
+  const parts = highlight.split("ORDAL");
+  const headlineSecond =
+    parts.length > 1 ? (
+      <>
+        {parts[0]}
+        <mark className="hl text-[#F2661A]">ORDAL</mark>
+        {parts[1]}
+      </>
+    ) : (
+      highlight
+    );
+
+  return (
+    <section className="relative pt-24 sm:pt-28 pb-0 overflow-hidden dot-pattern">
+      {/* Soft color washes */}
+      <div className="absolute top-10 -left-24 w-80 h-80 bg-[#F2661A]/10 rounded-full blur-3xl" />
+      <div className="absolute top-40 -right-24 w-96 h-96 bg-[#173E76]/10 rounded-full blur-3xl" />
+
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 z-10">
+        {/* Two-column layout: pitch on the left, ORDAL app right beside it */}
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-8 xl:gap-12 items-center">
+          {/* ---------- Text column ---------- */}
+          <div className="relative lg:col-span-5">
+            <motion.div
+              initial={{ opacity: 0, y: 16, rotate: 0 }}
+              animate={{ opacity: 1, y: 0, rotate: -2 }}
+              transition={{ delay: 0.15, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+              className="inline-flex items-center gap-2.5 chip-sticker mb-4"
+            >
+              <Sparkles className="w-3.5 h-3.5 text-[#F2661A]" />
+              <span className="label-chip !text-[10px]">{t("hero.badge")}</span>
+            </motion.div>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.25, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+              className="h-display text-[clamp(2.05rem,4.2vw,3.25rem)] leading-[1.04] text-[#33363F]"
+            >
+              {t("hero.headline")}
+              <span className="block mt-1">{headlineSecond}</span>
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.38, duration: 0.6 }}
+              className="mt-4 max-w-xl text-base sm:text-lg text-[#33363F]/60 leading-relaxed"
+            >
+              {t("hero.description")}
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5, duration: 0.6 }}
+              className="mt-5 flex flex-col sm:flex-row lg:flex-col gap-3 sm:gap-4"
+            >
+              <Button
+                onClick={handleDownload}
+                size="lg"
+                className={`h-12 px-6 text-[15px] !rounded-2xl ${stickerButtonPrimary}`}
+              >
+                <WindowsLogo className="w-[18px] h-[18px] mr-2.5 shrink-0" />
+                {t("hero.downloadWindows")}
+              </Button>
+              <Button
+                onClick={handleDownload}
+                size="lg"
+                className={`h-12 px-6 text-[15px] !rounded-2xl ${stickerButtonSecondary}`}
+              >
+                <AppleLogo className="w-[18px] h-[18px] mr-2.5 shrink-0" />
+                {t("hero.downloadMac")}
+              </Button>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.65, duration: 0.6 }}
+              className="mt-4 flex flex-wrap items-center gap-x-3 gap-y-2 text-xs sm:text-sm font-semibold"
+            >
+              <span className="inline-flex items-center gap-1.5 text-[#33363F]/65">
+                <CheckCircle2 className="w-4 h-4 text-[#173E76]" />
+                {t("hero.trialInfo")}
+              </span>
+              <span className="text-[#F2661A]">✦</span>
+              <span className="inline-flex items-center gap-1.5 text-[#33363F]">
+                <CheckCircle2 className="w-4 h-4 text-[#F2661A]" />
+                <span className="font-extrabold">{t("hero.pricingInfo")}</span>
+              </span>
+              <span className="text-[#F2661A]">✦</span>
+              <span className="hidden sm:inline text-xs text-[#33363F]/60 font-medium">
+                {t("hero.versionInfo")}
+              </span>
+            </motion.div>
+          </div>
+
+          {/* ---------- App mockup column — visible right beside the pitch ---------- */}
+          <motion.div
+            initial={{ opacity: 0, y: 60, scale: 0.95, rotate: 1.5 }}
+            animate={{ opacity: 1, y: 0, scale: 1, rotate: 0 }}
+            transition={{ delay: 0.45, ...spring }}
+            style={{ y: mockupY }}
+            className="relative lg:col-span-7"
+          >
+            {/* Rotated color block behind the window */}
+            <div className="absolute -inset-2.5 rounded-[1.75rem] bg-[#F2661A] rotate-[1.2deg]" aria-hidden />
+            <div className="absolute -inset-2.5 rounded-[1.75rem] bg-[#173E76] -rotate-[1deg] translate-x-4 translate-y-4" aria-hidden />
+
+            {/* Floating sticker cards — compositor-driven CSS bobbing
+                (card-bob keyframes) instead of per-frame JS physics */}
+            <div
+              className="absolute -left-8 top-20 hidden xl:block z-20 w-52 sticker-flat animate-card-bob-a p-4"
+            >
+              <div className="flex items-center gap-2 mb-1.5">
+                <FolderOpen className="w-4 h-4 text-[#F2661A]" />
+                <span className="text-xs font-extrabold text-[#33363F]">CV Uploaded</span>
+              </div>
+              <p className="text-xs text-[#33363F]/60 font-medium">Procurement.pdf</p>
+              <div className="mt-2.5 h-2 bg-[#F4F2EC] border border-[#33363F]/15 rounded-full overflow-hidden">
+                <div className="h-full w-full bg-[#173E76] rounded-full" />
+              </div>
+            </div>
+
+            <div
+              className="absolute -right-8 top-36 hidden xl:block z-20 w-52 sticker-flat animate-card-bob-b p-4"
+            >
+              <div className="flex items-center gap-2 mb-1.5">
+                <Target className="w-4 h-4 text-[#173E76]" />
+                <span className="text-xs font-extrabold text-[#33363F]">New Match Found</span>
+              </div>
+              <p className="text-xs text-[#33363F]/60 font-medium">Procurement Specialist</p>
+              <p className="text-xs text-[#33363F]/60 font-medium">
+                PT Maju Bersama • Jakarta
+              </p>
+              <div className="mt-2.5 flex items-center gap-1.5">
+                <span className="text-[10px] px-2 py-0.5 bg-[#173E76] text-white rounded-full font-bold border border-[#33363F]/20">
+                  92% match
+                </span>
+                <span className="text-[10px] font-bold text-[#F2661A]">✦</span>
+              </div>
+            </div>
+
+            {/* Window */}
+            <div className="relative rounded-2xl overflow-hidden border-2 border-[#33363F] shadow-[12px_12px_0_rgba(51,54,63,0.9)] bg-white">
+              {/* Window chrome */}
+              <div className="flex items-center gap-2 px-4 py-2.5 bg-[#ECEBE4] border-b border-[#33363F]/10">
+                <div className="flex gap-2">
+                  <div className="w-3 h-3 rounded-full bg-[#FF5F57] border border-black/20" />
+                  <div className="w-3 h-3 rounded-full bg-[#FEBC2E] border border-black/20" />
+                  <div className="w-3 h-3 rounded-full bg-[#28C840] border border-black/20" />
+                </div>
+                <div className="flex-1 text-center text-xs text-[#33363F]/60 font-semibold tracking-wide">
+                  ORDAL · Dashboard
+                </div>
+                <div className="w-12" />
+              </div>
+
+              {/* App content — light mode, like the real ORDAL app */}
+              <div className="flex h-[380px] sm:h-[420px] lg:h-[400px] xl:h-[440px]">
+                {/* Sidebar */}
+                <div className="hidden sm:flex flex-col w-44 shrink-0 bg-[#F6F5F0] border-r border-[#33363F]/8 p-3">
+                  <div className="flex items-center gap-2 px-2 py-2 mb-4">
+                    <div className="w-6 h-6 rounded-md bg-[#F2661A] flex items-center justify-center">
+                      <span className="text-white text-[10px] font-extrabold">O</span>
+                    </div>
+                    <span className="text-[#33363F] font-extrabold text-sm tracking-tight">
+                      ORDAL
+                    </span>
+                  </div>
+
+                  {[
+                    { icon: Home, label: "Dashboard", active: true },
+                    { icon: Search, label: language === "id" ? "Cari Kerja" : "Job Search" },
+                    { icon: History, label: language === "id" ? "Riwayat Lamaran" : "Application History" },
+                    { icon: FolderOpen, label: "CV Manager" },
+                    { icon: Target, label: language === "id" ? "Target Saya" : "My Targets" },
+                    { icon: Settings, label: language === "id" ? "Pengaturan" : "Settings" },
+                  ].map((item, i) => (
+                    <div
+                      key={i}
+                      className={`flex items-center gap-2.5 px-3 py-2 rounded-lg text-xs mb-1 ${
+                        item.active
+                          ? "bg-[#F2661A]/10 text-[#D65511] font-bold"
+                          : "text-[#33363F]/60 font-semibold"
+                      }`}
+                    >
+                      <item.icon className="w-4 h-4 shrink-0" />
+                      <span className="flex-1 min-w-0 truncate">{item.label}</span>
+                    </div>
+                  ))}
+
+                  <div className="mt-auto p-2.5 rounded-xl bg-[#F2661A]/8 border border-[#F2661A]/25">
+                    <div className="flex items-center gap-1.5 mb-1">
+                      <Zap className="w-3 h-3 text-[#D65511]" />
+                      <span className="text-[10px] font-extrabold text-[#D65511]">
+                        {language === "id" ? "Trial Aktif" : "Trial Active"}
+                      </span>
+                    </div>
+                    <p className="text-[10px] text-[#33363F]/60 font-medium">
+                      {language === "id" ? "Sisa 18j 24m" : "18h 24m left"}
+                    </p>
+                  </div>
+                </div>
+
+                {/* Main content */}
+                <div className="flex-1 p-4 sm:p-5 overflow-hidden bg-white">
+                  <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 mb-4">
+                    {[
+                      { label: t("hero.statTargets"), value: "8", icon: Target, color: "#F2661A" },
+                      { label: t("hero.statJobs"), value: "24", icon: Search, color: "#173E76" },
+                      { label: t("hero.statApplied"), value: "312", icon: Briefcase, color: "#F2661A" },
+                      { label: t("hero.statResponse"), value: "18", icon: Bell, color: "#33363F" },
+                    ].map((stat, i) => (
+                      <div
+                        key={i}
+                        className="rounded-xl bg-[#F7F6F1] border border-[#33363F]/8 p-2.5"
+                      >
+                        <div className="flex items-center gap-2 mb-1.5">
+                          <stat.icon className="w-3.5 h-3.5 shrink-0" style={{ color: stat.color }} />
+                          <span className="text-[10px] text-[#33363F]/60 font-semibold truncate">
+                            {stat.label}
+                          </span>
+                        </div>
+                        <p className="num-display text-xl font-extrabold text-[#33363F]">
+                          {stat.value}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="rounded-xl bg-[#F7F6F1] border border-[#33363F]/8 p-3.5 mb-3.5">
+                    <div className="flex items-center justify-between mb-2.5">
+                      <div className="min-w-0">
+                        <p className="text-xs font-extrabold text-[#33363F] tracking-wide truncate">
+                          PROCUREMENT & PURCHASING
+                        </p>
+                        <p className="text-[10px] text-[#33363F]/60 mt-0.5 font-medium">
+                          {language === "id" ? "Berjalan dengan" : "Running with"}{" "}
+                          Procurement.pdf
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#28C840]/12 border border-[#28C840]/30 shrink-0">
+                        <div className="w-1.5 h-1.5 rounded-full bg-[#28C840] animate-status-pulse" />
+                        <span className="text-[10px] font-bold text-[#1E9E3E]">
+                          {language === "id" ? "Berjalan" : "Running"}
+                        </span>
+                      </div>
+                    </div>
+
+                    <div className="flex flex-wrap gap-2">
+                      {[
+                        language === "id" ? "Semua Platform" : "All Platforms",
+                        "Jakarta",
+                        "Tangerang",
+                        "Full Time",
+                      ].map((tag) => (
+                        <span
+                          key={tag}
+                          className="text-[10px] px-2 py-1 rounded-md bg-white text-[#33363F]/60 font-semibold border border-[#33363F]/10"
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <p className="text-[10px] font-extrabold text-[#33363F]/60 uppercase tracking-widest">
+                      {language === "id" ? "Lowongan Terbaru" : "Latest Openings"}
+                    </p>
+                    {[
+                      { title: "Procurement Specialist", company: "PT Maju Bersama", location: "Jakarta", match: 92 },
+                      { title: "Senior Buyer", company: "Global Supply Co", location: "Tangerang", match: 88 },
+                      { title: "Purchasing Manager", company: "Indo Logistik", location: "Bekasi", match: 85 },
+                    ].map((job, i) => (
+                      <motion.div
+                        key={i}
+                        initial={{ opacity: 0, x: -24 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        transition={{ delay: 0.9 + i * 0.15 }}
+                        className="flex items-center justify-between p-2.5 rounded-xl bg-[#F7F6F1] border border-[#33363F]/8 hover:bg-[#F0EEE6] hover:border-[#33363F]/15 transition-colors"
+                      >
+                        <div className="flex items-center gap-3 min-w-0">
+                          <div className="w-8 h-8 shrink-0 rounded-lg bg-[#F2661A]/15 border border-[#F2661A]/25 flex items-center justify-center">
+                            <Briefcase className="w-4 h-4 text-[#F2661A]" />
+                          </div>
+                          <div className="min-w-0">
+                            <p className="text-xs font-semibold text-[#33363F] truncate">{job.title}</p>
+                            <p className="text-[10px] text-[#33363F]/60 font-medium">
+                              {job.company} • {job.location}
+                            </p>
+                          </div>
+                        </div>
+                        <div className="flex items-center gap-2 shrink-0">
+                          <span className="text-[10px] px-2 py-0.5 bg-[#F2661A]/10 text-[#D65511] rounded-full font-extrabold border border-[#F2661A]/25">
+                            {job.match}%
+                          </span>
+                          <ChevronRight className="w-3.5 h-3.5 text-[#33363F]/30" />
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Spinning badge — pinned on the window's top-right corner */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.6 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ delay: 0.9, duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+              className="hidden lg:flex absolute -top-14 right-0 z-30 text-[#33363F]"
+            >
+              <a href="#problem" aria-hidden className="block">
+                <SpinBadge
+                  text={t("hero.spinningText")}
+                  className="w-28 h-28 md:w-28 md:h-28"
+                />
+              </a>
+            </motion.div>
+          </motion.div>
+        </div>
+      </div>
+
+      {/* Marquee band — closes the hero with energy */}
+      <div className="relative mt-14 sm:mt-16 lg:mt-24">
+        <BrandMarquee variant="orange" />
+      </div>
+    </section>
+  );
+}

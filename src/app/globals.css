@@ -1,0 +1,518 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-inter), -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+
+  /* ORDAL Brand Colors */
+  --color-cream: #F4F2EC;
+  --color-cream-dark: #EAE7DC;
+  --color-charcoal: #33363F;
+  --color-charcoal-light: #3F424B;
+  --color-orange: #F2661A;
+  --color-orange-light: #FF8A4C;
+  --color-orange-dark: #D65511;
+  --color-navy: #173E76;
+  --color-navy-light: #24519A;
+  --color-navy-dark: #0F2B55;
+}
+
+:root {
+  --radius: 0.625rem;
+  --background: #F4F2EC;
+  --foreground: #33363F;
+  --card: #FFFFFF;
+  --card-foreground: #33363F;
+  --popover: #FFFFFF;
+  --popover-foreground: #33363F;
+  --primary: #F2661A;
+  --primary-foreground: #FFFFFF;
+  --secondary: #EAE7DC;
+  --secondary-foreground: #33363F;
+  --muted: #E5E2D8;
+  --muted-foreground: #6B6E76;
+  --accent: #EAE7DC;
+  --accent-foreground: #33363F;
+  --destructive: #E5484D;
+  --border: #DDD9CC;
+  --input: #DDD9CC;
+  --ring: #F2661A;
+  --chart-1: #F2661A;
+  --chart-2: #173E76;
+  --chart-3: #33363F;
+  --chart-4: #FF8A4C;
+  --chart-5: #24519A;
+  --sidebar: #33363F;
+  --sidebar-foreground: #F4F2EC;
+  --sidebar-primary: #F2661A;
+  --sidebar-primary-foreground: #FFFFFF;
+  --sidebar-accent: #3F424B;
+  --sidebar-accent-foreground: #F4F2EC;
+  --sidebar-border: #454853;
+  --sidebar-ring: #F2661A;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "ss01", "cv01", "cv11", "calt";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  ::selection {
+    background: #F2661A;
+    color: #FFFFFF;
+  }
+}
+
+/* Custom scrollbar for ORDAL */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #F4F2EC;
+}
+::-webkit-scrollbar-thumb {
+  background: #33363F;
+  border-radius: 999px;
+  border: 2px solid #F4F2EC;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #F2661A;
+}
+
+/* Slim scrollbar for compact panels (chat widget, etc.) */
+.custom-scrollbar {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(51, 54, 63, 0.35) transparent;
+}
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(51, 54, 63, 0.35);
+  border: none;
+  border-radius: 999px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #F2661A;
+}
+
+/* ============================================================
+   TYPE SYSTEM — Apple-flavoured (Inter, tight, huge, calm)
+   ============================================================ */
+.h-display {
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+}
+.h-tight {
+  font-weight: 700;
+  line-height: 1.08;
+  letter-spacing: -0.025em;
+}
+.label-chip {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+}
+.num-display {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: -0.04em;
+}
+
+/* Outlined ghost text (big background numbers / words) */
+.text-outline {
+  -webkit-text-stroke: 1.5px rgba(51, 54, 63, 0.14);
+  color: transparent;
+}
+.text-outline-cream {
+  -webkit-text-stroke: 1.5px rgba(244, 242, 236, 0.16);
+  color: transparent;
+}
+.text-outline-orange {
+  -webkit-text-stroke: 1.5px rgba(242, 102, 26, 0.35);
+  color: transparent;
+}
+
+/* ============================================================
+   CREATIVE AGENCY KIT — stickers, marks, marquee, deco
+   ============================================================ */
+
+/* Highlighter marker for key words inside headlines */
+mark.hl {
+  background-image: linear-gradient(
+    100deg,
+    rgba(242, 102, 26, 0) 1%,
+    rgba(242, 102, 26, 0.3) 4.5%,
+    rgba(255, 138, 76, 0.32) 95%,
+    rgba(255, 138, 76, 0) 99%
+  );
+  color: inherit;
+  padding: 0 0.12em;
+  border-radius: 0.15em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+mark.hl-dark {
+  background-image: linear-gradient(
+    100deg,
+    rgba(242, 102, 26, 0) 1%,
+    rgba(242, 102, 26, 0.55) 4.5%,
+    rgba(255, 138, 76, 0.5) 95%,
+    rgba(255, 138, 76, 0) 99%
+  );
+  color: inherit;
+  padding: 0 0.12em;
+  border-radius: 0.15em;
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}
+
+/* Neo-sticker card: thick border + hard offset shadow, lifts on hover */
+.sticker {
+  border: 2px solid #33363F;
+  border-radius: 1.25rem;
+  box-shadow: 5px 5px 0 #33363F;
+  background: #FFFFFF;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
+}
+.sticker:hover {
+  transform: translate(-3px, -3px) rotate(-0.5deg);
+  box-shadow: 9px 9px 0 #33363F;
+}
+.sticker-flat {
+  border: 2px solid #33363F;
+  border-radius: 1.25rem;
+  box-shadow: 5px 5px 0 #33363F;
+  background: #FFFFFF;
+}
+/* On dark backgrounds: orange hard shadow */
+.sticker-dark {
+  border: 2px solid #F4F2EC;
+  border-radius: 1.25rem;
+  box-shadow: 5px 5px 0 rgba(242, 102, 26, 0.9);
+  background: #3B3E47;
+  transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
+}
+.sticker-dark:hover {
+  transform: translate(-3px, -3px) rotate(-0.5deg);
+  box-shadow: 9px 9px 0 rgba(242, 102, 26, 0.9);
+}
+
+/* Small rotated chip — like a handwritten sticker note */
+.chip-sticker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 2px solid #33363F;
+  border-radius: 999px;
+  background: #FFFFFF;
+  color: #33363F;
+  padding: 0.3rem 0.9rem;
+  box-shadow: 3px 3px 0 #33363F;
+  font-weight: 700;
+}
+.chip-sticker-dark {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 2px solid #F4F2EC;
+  border-radius: 999px;
+  background: #33363F;
+  color: #F4F2EC;
+  padding: 0.3rem 0.9rem;
+  box-shadow: 3px 3px 0 rgba(242, 102, 26, 0.9);
+  font-weight: 700;
+}
+
+/* Marquee band */
+@keyframes marquee {
+  0% { transform: translateX(0%); }
+  100% { transform: translateX(-50%); }
+}
+@keyframes marquee-reverse {
+  0% { transform: translateX(-50%); }
+  100% { transform: translateX(0%); }
+}
+.marquee {
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 6%,
+    black 94%,
+    transparent
+  );
+  mask-image: linear-gradient(
+    to right,
+    transparent,
+    black 6%,
+    black 94%,
+    transparent
+  );
+}
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee 28s linear infinite;
+}
+.marquee-track-reverse {
+  display: flex;
+  width: max-content;
+  animation: marquee-reverse 28s linear infinite;
+}
+.marquee:hover .marquee-track,
+.marquee:hover .marquee-track-reverse {
+  animation-play-state: paused;
+}
+
+/* Slow rotating badge */
+@keyframes spin-360 {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+.animate-spin-slow {
+  animation: spin-360 16s linear infinite;
+}
+.animate-spin-slower {
+  animation: spin-360 26s linear infinite;
+}
+
+/* Gentle wiggle for decorative symbols — deliberately subtle (eye ergonomics) */
+@keyframes wiggle {
+  0%, 100% { transform: rotate(-4deg) scale(1); }
+  50% { transform: rotate(5deg) scale(1); }
+}
+.animate-wiggle {
+  animation: wiggle 5s ease-in-out infinite;
+}
+
+/* Anchored sections land below the fixed navbar (eye ergonomics: no hidden headers) */
+section[id] {
+  scroll-margin-top: 88px;
+}
+
+/* Old utilities kept (used across sections) */
+.text-gradient-orange {
+  background: linear-gradient(135deg, #F2661A 0%, #FF8A4C 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.grain::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.05'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+}
+
+.grid-pattern {
+  background-image:
+    linear-gradient(to right, rgba(51, 54, 63, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(51, 54, 63, 0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.grid-pattern-dark {
+  background-image:
+    linear-gradient(to right, rgba(244, 242, 236, 0.04) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(244, 242, 236, 0.04) 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+.dot-pattern {
+  background-image: radial-gradient(circle, rgba(51, 54, 63, 0.08) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(242, 102, 26, 0.4); }
+  50% { box-shadow: 0 0 0 12px rgba(242, 102, 26, 0); }
+}
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+.animate-float {
+  animation: float 5s ease-in-out infinite;
+}
+.animate-float-slow {
+  animation: float 8s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+.animate-blink {
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+.animate-shimmer {
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+  background-size: 200% 100%;
+  animation: shimmer 2s linear infinite;
+}
+
+@keyframes status-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+.animate-status-pulse {
+  animation: status-pulse 1.5s ease-in-out infinite;
+}
+
+/* ---- Performance: compositor-driven loops ------------------------------
+   These replace former framer-motion JS loops (per-frame main-thread
+   physics). CSS keyframes on transform run on the compositor thread,
+   so they cost ~zero main-thread time — the entrance stays smooth. */
+@keyframes card-bob-a {
+  0%, 100% { transform: translateY(-6px) rotate(-4deg); }
+  50% { transform: translateY(6px) rotate(-3deg); }
+}
+@keyframes card-bob-b {
+  0%, 100% { transform: translateY(6px) rotate(3deg); }
+  50% { transform: translateY(-6px) rotate(2deg); }
+}
+@keyframes card-bob-note {
+  0%, 100% { transform: translateY(-7px); }
+  50% { transform: translateY(7px); }
+}
+.animate-card-bob-a { animation: card-bob-a 5s ease-in-out infinite; }
+.animate-card-bob-b { animation: card-bob-b 6s ease-in-out infinite; }
+.animate-card-bob-note { animation: card-bob-note 5.5s ease-in-out infinite; }
+
+/* Fast spinning loop badge (problem section) — was a JS rotate loop */
+.animate-spin-fast { animation: spin-360 3.5s linear infinite; }
+
+/* Layer promotion for continuously-moving transform-only elements:
+   guarantees the browser composites them instead of repainting. */
+.marquee-track,
+.marquee-track-reverse,
+.animate-float,
+.animate-float-slow,
+.animate-wiggle,
+.animate-spin-slow,
+.animate-spin-slower,
+.animate-spin-fast,
+.animate-card-bob-a,
+.animate-card-bob-b,
+.animate-card-bob-note {
+  will-change: transform;
+}
+
+/* Accessibility: users who ask the OS for less motion get a calm page */
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track,
+  .marquee-track-reverse,
+  .animate-float,
+  .animate-float-slow,
+  .animate-wiggle,
+  .animate-spin-slow,
+  .animate-spin-slower,
+  .animate-spin-fast,
+  .animate-card-bob-a,
+  .animate-card-bob-b,
+  .animate-card-bob-note,
+  .animate-status-pulse,
+  .animate-blink {
+    animation: none !important;
+  }
+}
+
+/* Underline sweep for nav/footer links */
+.link-sweep {
+  position: relative;
+}
+.link-sweep::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -3px;
+  height: 2px;
+  width: 100%;
+  background: #F2661A;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.link-sweep:hover::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track,
+  .marquee-track-reverse,
+  .animate-spin-slow,
+  .animate-spin-slower,
+  .animate-wiggle,
+  .animate-float,
+  .animate-float-slow {
+    animation: none !important;
+  }
+}
+
