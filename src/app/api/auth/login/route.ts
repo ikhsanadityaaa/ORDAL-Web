@@ -2,21 +2,28 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import {
   verifyPassword,
+  hashPassword,
   createSession,
   getUserAccessStatus,
-  startTrial,
 } from "@/lib/auth";
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { email, password } = body;
+    const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
+    const password = typeof body.password === "string" ? body.password : "";
 
     // Validate input
     if (!email || !password) {
       return NextResponse.json(
         { error: "Email and password are required" },
         { status: 400 }
+      );
+    }
+    if (password.length > 100) {
+      return NextResponse.json(
+        { error: "Invalid email or password" },
+        { status: 401 }
       );
     }
 
@@ -33,20 +40,19 @@ export async function POST(req: NextRequest) {
     }
 
     // Verify password
-    if (!verifyPassword(password, user.password)) {
+    const passwordCheck = await verifyPassword(password, user.password);
+    if (!passwordCheck.valid) {
       return NextResponse.json(
         { error: "Invalid email or password" },
         { status: 401 }
       );
     }
 
-    // Check if user has trial, if not create one (for legacy users)
-    let trial = await db.trial.findUnique({
-      where: { userId: user.id },
-    });
-
-    if (!trial) {
-      trial = await startTrial(user.id);
+    if (passwordCheck.needsUpgrade) {
+      await db.user.update({
+        where: { id: user.id },
+        data: { password: await hashPassword(password) },
+      });
     }
 
     // Create session

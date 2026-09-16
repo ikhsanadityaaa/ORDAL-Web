@@ -57,8 +57,8 @@ export function AuthModal() {
               ? "Berhasil masuk!"
               : "Signed in successfully!"
             : language === "id"
-            ? "Akun dibuat! Trial 1 hari dimulai."
-            : "Account created! 1-day trial started."
+            ? "Akun dibuat! Trial 3 hari dimulai saat pertama kali klik Cari Kerja."
+            : "Account created! Your 3-day trial starts when you first use Find Jobs."
         );
         // Reset form
         setEmail("");

@@ -40,20 +40,20 @@ Untuk detail variabel lingkungan lihat `.env.example`.
 
    | URL | Port | Dipakai oleh |
    |---|---|---|
-   | **Transaction pooler** | `6543` | `DATABASE_URL` — runtime aplikasi (serverless-safe) |
-   | **Session/direct** | `5432` | `DIRECT_URL` — `prisma migrate deploy` / `db push` |
+   | **Transaction pooler** | `6543` | `POSTGRES_PRISMA_URL` — runtime aplikasi (serverless-safe) |
+   | **Session/direct** | `5432` | `POSTGRES_URL_NON_POOLING` — `prisma migrate deploy` / `db push` |
 
    Format lengkap:
 
    ```
-   # DATABASE_URL (pooler 6543 — wajib dengan parameter Prisma serverless):
+   # POSTGRES_PRISMA_URL (pooler 6543 — wajib dengan parameter Prisma serverless):
    postgresql://postgres.<project-ref>:<PASSWORD>@aws-0-<region>.pooler.supabase.com:6543/postgres?pgbouncer=true&connection_limit=1
 
-   # DIRECT_URL (direct 5432 — khusus migrasi):
+   # POSTGRES_URL_NON_POOLING (direct 5432 — khusus migrasi):
    postgresql://postgres.<project-ref>:<PASSWORD>@aws-0-<region>.pooler.supabase.com:5432/postgres
    ```
 
-> ⚠️ **Jangan** memakai connection string port `5432` untuk `DATABASE_URL` di
+> ⚠️ **Jangan** memakai connection string port `5432` untuk `POSTGRES_PRISMA_URL` di
 > Vercel — koneksi direct bisa terputus saat serverless function cold-start.
 > Pooler `6543` + `pgbouncer=true&connection_limit=1` adalah konfigurasi yang
 > benar untuk Prisma di serverless.
@@ -66,8 +66,8 @@ Buka **Project → Settings → Environment Variables**, tambahkan:
 
 | Key | Value | Environment |
 |---|---|---|
-| `DATABASE_URL` | pooler `6543` + `?pgbouncer=true&connection_limit=1` | Production, Preview |
-| `DIRECT_URL` | direct `5432` | Production, Preview *(hanya dipakai saat menjalankan migrate dari CI; harmless di runtime)* |
+| `POSTGRES_PRISMA_URL` | dibuat otomatis oleh integrasi Supabase | Production, Preview |
+| `POSTGRES_URL_NON_POOLING` | dibuat otomatis oleh integrasi Supabase | Production, Preview |
 | `GROQ_API_KEY` | key dari console.groq.com | Production, Preview — **WAJIB** |
 | `GROQ_MODEL` | *(opsional, default `openai/gpt-oss-120b`)* — harus model yang bisa diakses tier Groq Anda, lihat [daftar model](https://console.groq.com/docs/models) | Production |
 | `NEXT_PUBLIC_SITE_URL` | URL publik deployment Anda, mis. `https://ordal-web.vercel.app` | Production, Preview |
@@ -93,8 +93,8 @@ traffic** — dari local machine (atau job CI terpisah):
 
 ```bash
 # dari root project, ganti dengan URL milikmu:
-DATABASE_URL='postgresql://postgres.<ref>:<pass>@aws-0-<region>.pooler.supabase.com:6543/postgres?pgbouncer=true&connection_limit=1' \
-DIRECT_URL='postgresql://postgres.<ref>:<pass>@aws-0-<region>.pooler.supabase.com:5432/postgres' \
+POSTGRES_PRISMA_URL='postgresql://postgres.<ref>:<pass>@aws-0-<region>.pooler.supabase.com:6543/postgres?pgbouncer=true&connection_limit=1' \
+POSTGRES_URL_NON_POOLING='postgresql://postgres.<ref>:<pass>@aws-0-<region>.pooler.supabase.com:5432/postgres' \
   bun run db:deploy        # = prisma migrate deploy
 ```
 
@@ -132,9 +132,9 @@ Catatan build:
 Jalankan di domain production:
 
 - [ ] Halaman `/` termuat penuh (hero, pricing, FAQ, footer sticky)
-- [ ] **Register** akun baru via modal → muncul kode `ORD-USER-XXXXXX` + trial 24 jam
+- [ ] **Register** akun baru via modal → muncul kode `ORD-USER-XXXXXX`, trial belum dimulai
 - [ ] **Logout → Login** dengan email/password yang sama
-- [ ] **Cek Supabase Dashboard → Table Editor**: row muncul di `User`, `Trial`, `Session`
+- [ ] **Cek Supabase Dashboard → Table Editor**: row muncul di `User` dan `Session`; `Trial` muncul setelah klik Cari Kerja pertama
 - [ ] **Download** (Windows/macOS) tercatat di tabel `Download`
 - [ ] **Kode aktivasi**: bayar/generate → verify via `/api/activation/verify`
 - [ ] **Chatbot**: balasan sukses (Groq aktif); tanya topik di luar ORDAL → ditolak sopan
@@ -178,7 +178,7 @@ production).
 Jika ternyata ada akun lama yang perlu dipulihkan:
 
 ```bash
-DATABASE_URL='<pooler-6543>' DIRECT_URL='<direct-5432>' \
+POSTGRES_PRISMA_URL='<pooler-6543>' POSTGRES_URL_NON_POOLING='<direct-5432>' \
   bun run db:migrate-legacy     # scripts/migrate-sqlite-to-postgres.ts
 ```
 

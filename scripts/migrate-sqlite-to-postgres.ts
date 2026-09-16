@@ -9,7 +9,7 @@
  * legacy records, e.g. a real user was created before the migration.
  *
  * Usage (against the target PostgreSQL — e.g. Supabase direct URL):
- *   DATABASE_URL='postgresql://…' DIRECT_URL='postgresql://…' \
+ *   POSTGRES_PRISMA_URL='postgresql://…' POSTGRES_URL_NON_POOLING='postgresql://…' \
  *     bun run db:migrate-legacy
  * (Without inline env vars, Bun auto-loads .env from the project root.)
  *
@@ -53,32 +53,33 @@ function envFromFile(key: string): string | undefined {
 const isPostgresUrl = (u: string | undefined) =>
   !!u && /^(postgres|postgresql):\/\//.test(u);
 
-// Bun auto-loads .env, but a stale DATABASE_URL inherited from a
+// Bun auto-loads .env, but a stale POSTGRES_PRISMA_URL inherited from a
 // parent shell (e.g. the old SQLite `file:…` URL) takes priority.
 // When the inherited value is not a PostgreSQL URL, fall back to the
 // .env value before the Prisma client is constructed.
-if (!isPostgresUrl(process.env.DATABASE_URL)) {
-  const fromFile = envFromFile("DATABASE_URL");
+if (!isPostgresUrl(process.env.POSTGRES_PRISMA_URL)) {
+  const fromFile = envFromFile("POSTGRES_PRISMA_URL");
   if (isPostgresUrl(fromFile)) {
     console.log(
-      `[migrate-legacy] inherited DATABASE_URL is not postgresql (${(
-        process.env.DATABASE_URL ?? "unset"
+      `[migrate-legacy] inherited POSTGRES_PRISMA_URL is not postgresql (${(
+        process.env.POSTGRES_PRISMA_URL ?? "unset"
       ).split(":")[0]}://…) — using the PostgreSQL URL from .env instead`
     );
-    process.env.DATABASE_URL = fromFile;
-    if (!isPostgresUrl(process.env.DIRECT_URL)) {
-      process.env.DIRECT_URL = envFromFile("DIRECT_URL") ?? fromFile;
+    process.env.POSTGRES_PRISMA_URL = fromFile;
+    if (!isPostgresUrl(process.env.POSTGRES_URL_NON_POOLING)) {
+      process.env.POSTGRES_URL_NON_POOLING =
+        envFromFile("POSTGRES_URL_NON_POOLING") ?? fromFile;
     }
   }
 }
 
-const dbUrl = process.env.DATABASE_URL ?? "";
+const dbUrl = process.env.POSTGRES_PRISMA_URL ?? "";
 if (!isPostgresUrl(dbUrl)) {
   const got = dbUrl ? `${dbUrl.split(":")[0]}://…` : "(unset)";
   console.error(
-    `[migrate-legacy] DATABASE_URL must be a PostgreSQL URL, got: ${got}.\n` +
+    `[migrate-legacy] POSTGRES_PRISMA_URL must be a PostgreSQL URL, got: ${got}.\n` +
       `The Prisma provider is postgresql. Example:\n` +
-      `  DATABASE_URL='postgresql://…' DIRECT_URL='postgresql://…' bun run db:migrate-legacy`
+      `  POSTGRES_PRISMA_URL='postgresql://…' POSTGRES_URL_NON_POOLING='postgresql://…' bun run db:migrate-legacy`
   );
   process.exit(1);
 }

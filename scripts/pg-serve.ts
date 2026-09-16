@@ -4,7 +4,7 @@
  * Runs a REAL PostgreSQL 18 instance without root (binaries live in
  * node_modules). Used for local dev after the SQLite → PostgreSQL
  * migration. In production the app connects to Supabase PostgreSQL
- * via DATABASE_URL instead — this script never runs on Vercel.
+ * via POSTGRES_PRISMA_URL instead — this script never runs on Vercel.
  *
  * Usage (background): bun run scripts/pg-serve.ts
  * Stop: kill the process (SIGTERM cleans up politely)

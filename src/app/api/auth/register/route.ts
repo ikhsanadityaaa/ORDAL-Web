@@ -4,14 +4,15 @@ import {
   generateUserCode,
   hashPassword,
   createSession,
-  startTrial,
   getUserAccessStatus,
 } from "@/lib/auth";
 
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json();
-    const { email, password, name } = body;
+    const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
+    const password = typeof body.password === "string" ? body.password : "";
+    const name = typeof body.name === "string" ? body.name.trim() : "";
 
     // Validate input
     if (!email || !password) {
@@ -34,6 +35,12 @@ export async function POST(req: NextRequest) {
     if (password.length < 6) {
       return NextResponse.json(
         { error: "Password must be at least 6 characters" },
+        { status: 400 }
+      );
+    }
+    if (password.length > 100) {
+      return NextResponse.json(
+        { error: "Password must be at most 100 characters" },
         { status: 400 }
       );
     }
@@ -67,14 +74,11 @@ export async function POST(req: NextRequest) {
       data: {
         email,
         name: name || email.split("@")[0],
-        password: hashPassword(password),
+        password: await hashPassword(password),
         authProvider: "email",
         uniqueUserCode,
       },
     });
-
-    // Start 1-day trial
-    const trial = await startTrial(user.id);
 
     // Create session
     const session = await createSession(user.id);
