@@ -140,7 +140,7 @@ export function Navigation() {
                   openAuthModal("register");
                 }
               }}
-              className="hidden sm:inline-flex items-center gap-1.5 bg-[#F2661A] hover:bg-[#D65511] text-white border-2 border-[#33363F] font-bold px-4 py-2 rounded-xl text-sm shadow-[3px_3px_0_#33363F] hover:shadow-[5px_5px_0_#33363F] hover:translate-x-[-1px] hover:translate-y-[-1px] transition-all"
+              className="hidden sm:inline-flex items-center gap-1.5 bg-[#C94708] hover:bg-[#B83E06] text-white border-2 border-[#33363F] font-bold px-4 py-2 rounded-xl text-sm shadow-[3px_3px_0_#33363F] hover:shadow-[5px_5px_0_#33363F] hover:translate-x-[-1px] hover:translate-y-[-1px] transition-all"
             >
               {t("nav.getStarted")}
               <ArrowUpRight className="w-3.5 h-3.5" />
@@ -207,7 +207,7 @@ export function Navigation() {
                         openAuthModal("register");
                       }
                     }}
-                    className="w-full bg-[#F2661A] hover:bg-[#D65511] text-white border-2 border-[#33363F] font-bold py-2.5 rounded-xl shadow-[3px_3px_0_#33363F] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all"
+                    className="w-full bg-[#C94708] hover:bg-[#B83E06] text-white border-2 border-[#33363F] font-bold py-2.5 rounded-xl shadow-[3px_3px_0_#33363F] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all"
                   >
                     {t("nav.getStarted")}
                   </Button>

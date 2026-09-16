@@ -83,7 +83,7 @@ export function SourceDownloadButton() {
         aria-label="Download project source zip"
         className={`
           relative flex items-center gap-2 h-14 px-4 rounded-2xl
-          bg-[#F2661A] text-white border-2 border-[#33363F]
+          bg-[#C94708] text-white border-2 border-[#33363F]
           shadow-[4px_4px_0_#33363F]
           font-extrabold text-sm tracking-tight
           transition-all duration-200 cursor-pointer

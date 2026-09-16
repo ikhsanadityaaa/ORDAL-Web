@@ -291,7 +291,7 @@ export function Deco({
    STICKER BUTTON CLASSES — exported so sections stay in sync
    ============================================================ */
 export const stickerButtonPrimary =
-  "bg-[#F2661A] text-white border-2 border-[#33363F] rounded-2xl shadow-[5px_5px_0_#33363F] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0_#33363F] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[3px_3px_0_#33363F] transition-all duration-200 font-bold";
+  "bg-[#C94708] text-white border-2 border-[#33363F] rounded-2xl shadow-[5px_5px_0_#33363F] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0_#33363F] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[3px_3px_0_#33363F] transition-all duration-200 font-bold";
 
 export const stickerButtonSecondary =
   "bg-white text-[#33363F] border-2 border-[#33363F] rounded-2xl shadow-[5px_5px_0_#33363F] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0_#33363F] active:translate-x-[1px] active:translate-y-[1px] active:shadow-[3px_3px_0_#33363F] transition-all duration-200 font-bold";

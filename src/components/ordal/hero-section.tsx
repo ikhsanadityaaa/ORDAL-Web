@@ -179,11 +179,11 @@ export function HeroSection() {
               </div>
               <p className="text-xs text-[#33363F]/60 font-medium">Procurement Specialist</p>
               <p className="text-xs text-[#33363F]/60 font-medium">
-                PT Maju Bersama • Jakarta
+                {language === "id" ? "Contoh Perusahaan • Jakarta" : "Example Company • Jakarta"}
               </p>
               <div className="mt-2.5 flex items-center gap-1.5">
                 <span className="text-[10px] px-2 py-0.5 bg-[#173E76] text-white rounded-full font-bold border border-[#33363F]/20">
-                  92% match
+                  {language === "id" ? "Cocok" : "Match"}
                 </span>
                 <span className="text-[10px] font-bold text-[#F2661A]">✦</span>
               </div>
@@ -191,6 +191,9 @@ export function HeroSection() {
 
             {/* Window */}
             <div className="relative rounded-2xl overflow-hidden border-2 border-[#33363F] shadow-[12px_12px_0_rgba(51,54,63,0.9)] bg-white">
+              <div className="absolute right-3 top-12 z-20 bg-[#33363F] px-2.5 py-1 text-[10px] font-bold text-white">
+                {language === "id" ? "CONTOH TAMPILAN" : "INTERFACE EXAMPLE"}
+              </div>
               {/* Window chrome */}
               <div className="flex items-center gap-2 px-4 py-2.5 bg-[#ECEBE4] border-b border-[#33363F]/10">
                 <div className="flex gap-2">
@@ -242,11 +245,11 @@ export function HeroSection() {
                     <div className="flex items-center gap-1.5 mb-1">
                       <Zap className="w-3 h-3 text-[#D65511]" />
                       <span className="text-[10px] font-extrabold text-[#D65511]">
-                        {language === "id" ? "Trial Aktif" : "Trial Active"}
+                        {language === "id" ? "Trial 3 Hari" : "3-Day Trial"}
                       </span>
                     </div>
                     <p className="text-[10px] text-[#33363F]/60 font-medium">
-                      {language === "id" ? "Sisa 18j 24m" : "18h 24m left"}
+                      {language === "id" ? "Mulai saat Cari Kerja" : "Starts on first job search"}
                     </p>
                   </div>
                 </div>
@@ -255,10 +258,10 @@ export function HeroSection() {
                 <div className="flex-1 p-4 sm:p-5 overflow-hidden bg-white">
                   <div className="grid grid-cols-2 md:grid-cols-4 gap-2.5 mb-4">
                     {[
-                      { label: t("hero.statTargets"), value: "8", icon: Target, color: "#F2661A" },
-                      { label: t("hero.statJobs"), value: "24", icon: Search, color: "#173E76" },
-                      { label: t("hero.statApplied"), value: "312", icon: Briefcase, color: "#F2661A" },
-                      { label: t("hero.statResponse"), value: "18", icon: Bell, color: "#33363F" },
+                      { label: t("hero.statTargets"), value: language === "id" ? "Siap" : "Ready", icon: Target, color: "#F2661A" },
+                      { label: t("hero.statJobs"), value: language === "id" ? "Dipantau" : "Tracked", icon: Search, color: "#173E76" },
+                      { label: t("hero.statApplied"), value: language === "id" ? "Tercatat" : "Logged", icon: Briefcase, color: "#F2661A" },
+                      { label: t("hero.statResponse"), value: language === "id" ? "Masuk" : "Inbox", icon: Bell, color: "#33363F" },
                     ].map((stat, i) => (
                       <div
                         key={i}

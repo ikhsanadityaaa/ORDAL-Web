@@ -203,7 +203,7 @@ function sanitizeHistory(input: unknown): ChatMessage[] {
   if (!Array.isArray(input)) return [];
   return input
     .filter(
-      (m): m is { role: string; content: unknown } =>
+      (m): m is { role: "user" | "assistant"; content: string } =>
         typeof m === "object" &&
         m !== null &&
         "role" in m &&
@@ -213,7 +213,7 @@ function sanitizeHistory(input: unknown): ChatMessage[] {
         m.content.trim().length > 0
     )
     .map((m) => ({
-      role: m.role as "user" | "assistant",
+      role: m.role,
       content: m.content.slice(0, MAX_MESSAGE_CHARS),
     }))
     .slice(-MAX_HISTORY);

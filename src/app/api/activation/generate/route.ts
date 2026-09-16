@@ -24,6 +24,29 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    let eligible = false;
+    try {
+      const rows = await db.$queryRaw<Array<{ eligible: boolean }>>`
+        SELECT EXISTS (
+          SELECT 1 FROM app_payments
+          WHERE user_id = ${user.id} AND status = 'verified'
+        ) OR EXISTS (
+          SELECT 1 FROM app_licenses
+          WHERE user_id = ${user.id} AND method = 'admin'
+        ) AS eligible
+      `;
+      eligible = Boolean(rows[0]?.eligible);
+    } catch {
+      eligible = false;
+    }
+
+    if (!eligible) {
+      return NextResponse.json(
+        { success: false, error: "payment_not_verified" },
+        { status: 403 }
+      );
+    }
+
     // Already has an activation code? Return it — one code per user, forever.
     if (user.activationCode) {
       return NextResponse.json({

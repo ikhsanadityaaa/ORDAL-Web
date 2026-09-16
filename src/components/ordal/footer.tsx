@@ -104,7 +104,7 @@ export function Footer() {
             <Button
               onClick={handleDownload}
               size="lg"
-              className="h-14 px-7 text-base !rounded-2xl bg-[#F2661A] hover:bg-[#D65511] text-white border-2 border-[#F4F2EC] shadow-[5px_5px_0_rgba(244,242,236,0.9)] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0_rgba(244,242,236,0.9)] transition-all font-bold"
+              className="h-14 px-7 text-base !rounded-2xl bg-[#C94708] hover:bg-[#B83E06] text-white border-2 border-[#F4F2EC] shadow-[5px_5px_0_rgba(244,242,236,0.9)] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0_rgba(244,242,236,0.9)] transition-all font-bold"
             >
               <AppleLogo className="w-5 h-5 mr-2.5 shrink-0" />
               {language === "id" ? "Download untuk macOS" : "Download for macOS"}

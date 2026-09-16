@@ -1,5 +1,5 @@
 import { db } from "@/lib/db";
-import { randomBytes, randomInt } from "crypto";
+import { createHash, randomBytes, randomInt } from "crypto";
 export { hashPassword, verifyPassword } from "@/lib/password";
 
 const TRIAL_DURATION_MS = 3 * 24 * 60 * 60 * 1000;
@@ -33,6 +33,10 @@ export function generateSessionToken(): string {
   return randomBytes(32).toString("hex");
 }
 
+export function hashSessionToken(token: string): string {
+  return createHash("sha256").update(token).digest("hex");
+}
+
 // Create a session for user
 export async function createSession(userId: string) {
   const token = generateSessionToken();
@@ -41,7 +45,7 @@ export async function createSession(userId: string) {
   await db.session.create({
     data: {
       userId,
-      token,
+      token: hashSessionToken(token),
       expiresAt,
     },
   });
@@ -53,8 +57,8 @@ export async function createSession(userId: string) {
 export async function getUserFromSession(token: string) {
   if (!token) return null;
 
-  const session = await db.session.findUnique({
-    where: { token },
+  const session = await db.session.findFirst({
+    where: { token: { in: [hashSessionToken(token), token] } },
     include: {
       user: {
         include: {

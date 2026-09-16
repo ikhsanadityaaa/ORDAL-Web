@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { Prisma } from "@prisma/client";
 import { db } from "@/lib/db";
 import {
   generateUserCode,
@@ -6,6 +7,13 @@ import {
   createSession,
   getUserAccessStatus,
 } from "@/lib/auth";
+import {
+  assertEmailAllowed,
+  canonicalizeEmail,
+  guardRegistration,
+  recordAbuseEvent,
+  requestSignals,
+} from "@/lib/abuse";
 
 export async function POST(req: NextRequest) {
   try {
@@ -13,6 +21,7 @@ export async function POST(req: NextRequest) {
     const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
     const password = typeof body.password === "string" ? body.password : "";
     const name = typeof body.name === "string" ? body.name.trim() : "";
+    const deviceId = typeof body.deviceId === "string" ? body.deviceId.slice(0, 128) : "";
 
     // Validate input
     if (!email || !password) {
@@ -31,6 +40,30 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    try {
+      assertEmailAllowed(email);
+    } catch {
+      return NextResponse.json(
+        { error: "Temporary email addresses are not allowed" },
+        { status: 400 }
+      );
+    }
+
+    const canonicalEmail = canonicalizeEmail(email);
+    const signals = requestSignals(req, deviceId);
+    try {
+      await guardRegistration(signals.ipHash, signals.deviceHash);
+    } catch {
+      return NextResponse.json(
+        { error: "Too many registration attempts. Please try again later." },
+        { status: 429 }
+      );
+    }
+    await Promise.all([
+      recordAbuseEvent("register_attempt", signals.ipHash, undefined, "ip"),
+      recordAbuseEvent("register_attempt", signals.deviceHash, undefined, "device"),
+    ]);
+
     // Validate password length
     if (password.length < 6) {
       return NextResponse.json(
@@ -46,8 +79,8 @@ export async function POST(req: NextRequest) {
     }
 
     // Check if user already exists
-    const existingUser = await db.user.findUnique({
-      where: { email },
+    const existingUser = await db.user.findFirst({
+      where: { OR: [{ email }, { emailCanonical: canonicalEmail }] },
     });
 
     if (existingUser) {
@@ -73,6 +106,7 @@ export async function POST(req: NextRequest) {
     const user = await db.user.create({
       data: {
         email,
+        emailCanonical: canonicalEmail,
         name: name || email.split("@")[0],
         password: await hashPassword(password),
         authProvider: "email",
@@ -82,6 +116,7 @@ export async function POST(req: NextRequest) {
 
     // Create session
     const session = await createSession(user.id);
+    await recordAbuseEvent("register_created", signals.deviceHash, user.id);
 
     // Get access status
     const access = await getUserAccessStatus(user.id);
@@ -112,6 +147,12 @@ export async function POST(req: NextRequest) {
 
     return response;
   } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {
+      return NextResponse.json(
+        { error: "Email already registered. Please sign in." },
+        { status: 409 }
+      );
+    }
     console.error("Register error:", error);
     return NextResponse.json(
       { error: "Internal server error" },

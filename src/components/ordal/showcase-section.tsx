@@ -336,7 +336,7 @@ function CVManagerScreen({ language }: { language: string }) {
           <p className="text-sm font-bold text-[#33363F]">
             {language === "id" ? "CV Manager" : "CV Manager"}
           </p>
-          <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#F2661A] text-white text-[10px] font-semibold">
+          <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#C94708] text-white text-[10px] font-semibold">
             <FileText className="w-3 h-3" />
             {language === "id" ? "Upload CV" : "Upload CV"}
           </button>
@@ -388,7 +388,7 @@ function TargetBuilderScreen({ language }: { language: string }) {
       <div className="space-y-4">
         <div className="flex items-center justify-between">
           <p className="text-sm font-bold text-[#33363F]">Target Builder</p>
-          <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#F2661A] text-white text-[10px] font-semibold">
+          <button className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#C94708] text-white text-[10px] font-semibold">
             <Target className="w-3 h-3" />
             {language === "id" ? "Target Baru" : "New Target"}
           </button>
@@ -612,7 +612,7 @@ function HistoryScreen({ language }: { language: string }) {
                 key={filter}
                 className={`px-2.5 py-1 rounded-lg text-[10px] font-medium ${
                   i === 0
-                    ? "bg-[#F2661A] text-white"
+                    ? "bg-[#C94708] text-white"
                     : "bg-[#F7F6F1] text-[#33363F]/60 border border-[#33363F]/8"
                 }`}
               >

@@ -11,6 +11,7 @@ datasource db {
 model User {
   id             String   @id @default(cuid())
   email          String   @unique
+  emailCanonical String?  @unique
   name           String
   password       String?
   authProvider   String   @default("email") // "email" | "google"
@@ -22,6 +23,31 @@ model User {
   trial          Trial?
   downloads      Download[]
   sessions       Session[]
+  abuseEvents    AbuseEvent[]
+  trialGrant     TrialGrant?
+}
+
+model AbuseEvent {
+  id          BigInt   @id @default(autoincrement())
+  eventType   String   @map("event_type")
+  subjectHash String   @map("subject_hash")
+  userId      String?  @map("user_id")
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  detail      String   @default("")
+  createdAt   DateTime @default(now()) @map("created_at")
+
+  @@index([eventType, subjectHash, createdAt])
+  @@map("app_abuse_events")
+}
+
+model TrialGrant {
+  userId             String   @id @map("user_id")
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  canonicalEmailHash String   @unique @map("canonical_email_hash")
+  deviceHash         String   @unique @map("device_hash")
+  grantedAt          DateTime @default(now()) @map("granted_at")
+
+  @@map("app_trial_grants")
 }
 
 model Trial {

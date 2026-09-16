@@ -238,7 +238,7 @@ export function AccountModal() {
                 closeAccountModal();
                 openDownloadModal();
               }}
-              className="w-full h-12 bg-[#F2661A] hover:bg-[#D65511] text-white font-semibold rounded-xl"
+              className="w-full h-12 bg-[#C94708] hover:bg-[#B83E06] text-white font-semibold rounded-xl"
             >
               <Download className="w-4 h-4 mr-2" />
               {language === "id" ? "Download Gratis" : "Download Free"}

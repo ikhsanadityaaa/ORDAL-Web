@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
+import { hashSessionToken } from "@/lib/auth";
 
 export async function POST(req: NextRequest) {
   try {
@@ -9,7 +10,7 @@ export async function POST(req: NextRequest) {
     if (sessionToken) {
       // Delete session from database
       await db.session.deleteMany({
-        where: { token: sessionToken },
+        where: { token: { in: [hashSessionToken(sessionToken), sessionToken] } },
       });
     }
 

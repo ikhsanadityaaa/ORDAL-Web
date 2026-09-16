@@ -275,7 +275,7 @@ export function AnswersSection() {
                         animate={{ scale: 1, rotate: -3 }}
                         whileHover={{ scale: 1.06, rotate: -1 }}
                         transition={{ type: "spring", stiffness: 380, damping: 15 }}
-                        className="inline-flex items-center shrink-0 bg-[#F2661A] text-white border-2 border-[#33363F] shadow-[3px_3px_0_#33363F] rounded-lg px-2.5 py-1 label-chip"
+                        className="inline-flex items-center shrink-0 bg-[#C94708] text-white border-2 border-[#33363F] shadow-[3px_3px_0_#33363F] rounded-lg px-2.5 py-1 label-chip"
                       >
                         {t("answers.autoFillLabel")}
                       </motion.span>

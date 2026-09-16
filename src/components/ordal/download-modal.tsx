@@ -36,7 +36,21 @@ export function DownloadModal() {
   );
   const [isDownloading, setIsDownloading] = useState(false);
 
+  const downloadUrls = {
+    windows: process.env.NEXT_PUBLIC_ORDAL_WINDOWS_URL || "",
+    macos: process.env.NEXT_PUBLIC_ORDAL_MACOS_URL || "",
+  };
+
   const handleDownload = async (platform: "windows" | "macos") => {
+    const downloadUrl = downloadUrls[platform];
+    if (!downloadUrl) {
+      toast.error(
+        language === "id"
+          ? "Installer belum tersedia untuk platform ini."
+          : "Installer is not available for this platform yet."
+      );
+      return;
+    }
     // Track download if user is logged in
     if (user) {
       try {
@@ -52,7 +66,6 @@ export function DownloadModal() {
 
     setIsDownloading(true);
 
-    // Simulate download
     toast.success(
       language === "id"
         ? `Download ORDAL untuk ${
@@ -61,10 +74,9 @@ export function DownloadModal() {
         : `ORDAL for ${platform === "windows" ? "Windows" : "macOS"} download started!`
     );
 
-    setTimeout(() => {
-      setIsDownloading(false);
-      closeDownloadModal();
-    }, 1500);
+    window.location.assign(downloadUrl);
+    setIsDownloading(false);
+    closeDownloadModal();
   };
 
   const trialActive = !!user && trial?.status === "active";
@@ -104,7 +116,7 @@ export function DownloadModal() {
             {/* Windows */}
             <button
               onClick={() => handleDownload("windows")}
-              disabled={isDownloading}
+              disabled={isDownloading || !downloadUrls.windows}
               className={`w-full p-5 rounded-2xl border-2 transition-all group text-left ${
                 detectedOS === "windows"
                   ? "bg-[#F2661A]/5 border-[#F2661A] shadow-lg shadow-[#F2661A]/10"
@@ -140,7 +152,7 @@ export function DownloadModal() {
             {/* macOS */}
             <button
               onClick={() => handleDownload("macos")}
-              disabled={isDownloading}
+              disabled={isDownloading || !downloadUrls.macos}
               className={`w-full p-5 rounded-2xl border-2 transition-all group text-left ${
                 detectedOS === "macos"
                   ? "bg-[#F2661A]/5 border-[#F2661A] shadow-lg shadow-[#F2661A]/10"
@@ -192,7 +204,7 @@ export function DownloadModal() {
                   openAuthModal("register");
                 }}
                 size="sm"
-                className="w-full h-11 bg-[#F2661A] hover:bg-[#D65511] text-white font-extrabold rounded-xl border-2 border-[#33363F] shadow-[3px_3px_0_#33363F] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[5px_5px_0_#33363F] active:translate-x-[1px] active:translate-y-[1px] transition-all"
+                className="w-full h-11 bg-[#C94708] hover:bg-[#B83E06] text-white font-extrabold rounded-xl border-2 border-[#33363F] shadow-[3px_3px_0_#33363F] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[5px_5px_0_#33363F] active:translate-x-[1px] active:translate-y-[1px] transition-all"
               >
                 {language === "id" ? "Buat Akun Gratis" : "Create Free Account"}
               </Button>

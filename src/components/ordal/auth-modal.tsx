@@ -9,7 +9,16 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { Mail, Chrome, Loader2, Eye, EyeOff, Zap } from "lucide-react";
+import { Mail, Loader2, Eye, EyeOff, Zap } from "lucide-react";
+
+function getBrowserDeviceId() {
+  const key = "ordal-device-id";
+  const existing = window.localStorage.getItem(key);
+  if (existing) return existing;
+  const created = window.crypto.randomUUID();
+  window.localStorage.setItem(key, created);
+  return created;
+}
 
 export function AuthModal() {
   const { t, language } = useLanguage();
@@ -38,7 +47,12 @@ export function AuthModal() {
       const endpoint = isLogin ? "/api/auth/login" : "/api/auth/register";
       const body = isLogin
         ? { email, password }
-        : { email, password, name: name || email.split("@")[0] };
+        : {
+            email,
+            password,
+            name: name || email.split("@")[0],
+            deviceId: getBrowserDeviceId(),
+          };
 
       const response = await fetch(endpoint, {
         method: "POST",
@@ -74,15 +88,6 @@ export function AuthModal() {
     }
   };
 
-  const handleGoogleLogin = () => {
-    // Simulate Google OAuth - in production, this would redirect
-    toast.info(
-      language === "id"
-        ? "Google Login akan tersedia di versi final."
-        : "Google Login will be available in the final version."
-    );
-  };
-
   return (
     <Dialog open={isAuthModalOpen} onOpenChange={closeAuthModal}>
       <DialogContent
@@ -113,26 +118,6 @@ export function AuthModal() {
 
         {/* Form content */}
         <div className="p-6">
-          {/* Google button */}
-          <Button
-            type="button"
-            variant="outline"
-            onClick={handleGoogleLogin}
-            className="w-full h-12 border-2 border-[#33363F] bg-white rounded-xl shadow-[3px_3px_0_#33363F] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[5px_5px_0_#33363F] active:translate-x-[1px] active:translate-y-[1px] transition-all font-bold mb-4"
-          >
-            <Chrome className="w-5 h-5 mr-2 text-[#33363F]" />
-            {t("auth.google")}
-          </Button>
-
-          {/* Divider */}
-          <div className="flex items-center gap-3 mb-4">
-            <div className="flex-1 h-px bg-[#33363F]/10" />
-            <span className="text-xs text-[#33363F]/60 font-medium">
-              {t("auth.or")}
-            </span>
-            <div className="flex-1 h-px bg-[#33363F]/10" />
-          </div>
-
           {/* Email form */}
           <form onSubmit={handleSubmit} className="space-y-4">
             <AnimatePresence mode="wait">
@@ -207,7 +192,7 @@ export function AuthModal() {
             <Button
               type="submit"
               disabled={isLoading}
-              className="w-full h-12 bg-[#F2661A] hover:bg-[#D65511] text-white font-extrabold rounded-xl border-2 border-[#33363F] shadow-[3px_3px_0_#33363F] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[5px_5px_0_#33363F] active:translate-x-[1px] active:translate-y-[1px] transition-all"
+              className="w-full h-12 bg-[#C94708] hover:bg-[#B83E06] text-white font-extrabold rounded-xl border-2 border-[#33363F] shadow-[3px_3px_0_#33363F] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[5px_5px_0_#33363F] active:translate-x-[1px] active:translate-y-[1px] transition-all"
             >
               {isLoading ? (
                 <>

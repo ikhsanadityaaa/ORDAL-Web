@@ -120,7 +120,7 @@ export function ChatWidget() {
           aria-expanded={open}
           className={`
             relative flex items-center justify-center w-14 h-14 rounded-2xl
-            bg-[#F2661A] text-white border-2 border-[#33363F]
+            bg-[#C94708] text-white border-2 border-[#33363F]
             shadow-[4px_4px_0_#33363F]
             transition-all duration-200
             hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[6px_6px_0_#33363F]
@@ -243,7 +243,7 @@ export function ChatWidget() {
               {messages.map((m, i) =>
                 m.role === "user" ? (
                   <div key={i} className="flex justify-end">
-                    <div className="max-w-[85%] rounded-xl rounded-tr-md bg-[#F2661A] text-white border-2 border-[#33363F] px-3.5 py-2.5 text-sm leading-relaxed font-medium">
+                    <div className="max-w-[85%] rounded-xl rounded-tr-md bg-[#C94708] text-white border-2 border-[#33363F] px-3.5 py-2.5 text-sm leading-relaxed font-medium">
                       {m.content}
                     </div>
                   </div>
@@ -320,7 +320,7 @@ export function ChatWidget() {
                 size="icon"
                 disabled={loading || !input.trim()}
                 aria-label={t("chat.send")}
-                className="w-11 h-11 shrink-0 rounded-xl bg-[#F2661A] hover:bg-[#D65511] text-white border-2 border-[#33363F] shadow-[2.5px_2.5px_0_#33363F] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0_#33363F] active:translate-x-0 active:translate-y-0 active:shadow-none transition-all disabled:hover:translate-x-0 disabled:hover:translate-y-0 disabled:hover:shadow-[2.5px_2.5px_0_#33363F] disabled:opacity-50"
+                className="w-11 h-11 shrink-0 rounded-xl bg-[#C94708] hover:bg-[#B83E06] text-white border-2 border-[#33363F] shadow-[2.5px_2.5px_0_#33363F] hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[4px_4px_0_#33363F] active:translate-x-0 active:translate-y-0 active:shadow-none transition-all disabled:hover:translate-x-0 disabled:hover:translate-y-0 disabled:hover:shadow-[2.5px_2.5px_0_#33363F] disabled:opacity-50"
               >
                 <Send className="w-4 h-4" />
               </Button>

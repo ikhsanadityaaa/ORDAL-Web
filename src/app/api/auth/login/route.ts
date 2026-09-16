@@ -6,6 +6,13 @@ import {
   createSession,
   getUserAccessStatus,
 } from "@/lib/auth";
+import {
+  canonicalizeEmail,
+  emailSignal,
+  guardLogin,
+  recordAbuseEvent,
+  requestSignals,
+} from "@/lib/abuse";
 
 export async function POST(req: NextRequest) {
   try {
@@ -20,6 +27,16 @@ export async function POST(req: NextRequest) {
         { status: 400 }
       );
     }
+    const signals = requestSignals(req, "");
+    const loginEmailHash = emailSignal(email);
+    try {
+      await guardLogin(signals.ipHash, loginEmailHash);
+    } catch {
+      return NextResponse.json(
+        { error: "Too many login attempts. Please try again in 15 minutes." },
+        { status: 429 }
+      );
+    }
     if (password.length > 100) {
       return NextResponse.json(
         { error: "Invalid email or password" },
@@ -28,11 +45,15 @@ export async function POST(req: NextRequest) {
     }
 
     // Find user
-    const user = await db.user.findUnique({
-      where: { email },
+    const user = await db.user.findFirst({
+      where: { OR: [{ email }, { emailCanonical: canonicalizeEmail(email) }] },
     });
 
     if (!user || !user.password) {
+      await Promise.all([
+        recordAbuseEvent("login_failed", signals.ipHash, undefined, "ip"),
+        recordAbuseEvent("login_failed", loginEmailHash, undefined, "email"),
+      ]);
       return NextResponse.json(
         { error: "Invalid email or password" },
         { status: 401 }
@@ -42,6 +63,10 @@ export async function POST(req: NextRequest) {
     // Verify password
     const passwordCheck = await verifyPassword(password, user.password);
     if (!passwordCheck.valid) {
+      await Promise.all([
+        recordAbuseEvent("login_failed", signals.ipHash, user.id, "ip"),
+        recordAbuseEvent("login_failed", loginEmailHash, user.id, "email"),
+      ]);
       return NextResponse.json(
         { error: "Invalid email or password" },
         { status: 401 }
@@ -57,6 +82,7 @@ export async function POST(req: NextRequest) {
 
     // Create session
     const session = await createSession(user.id);
+    await recordAbuseEvent("login_success", loginEmailHash, user.id);
 
     // Get access status
     const access = await getUserAccessStatus(user.id);
