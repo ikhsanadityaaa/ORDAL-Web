@@ -199,7 +199,7 @@ export function DownloadModal() {
             </div>
           )}
 
-          {user && !trialActive && (
+          {user && trial?.status === "expired" && (
             <div className="p-3 rounded-xl bg-[#173E76]/5 border border-[#173E76]/20">
               <div className="flex items-start gap-2.5">
                 <KeyRound className="w-4 h-4 text-[#173E76] shrink-0 mt-0.5" />

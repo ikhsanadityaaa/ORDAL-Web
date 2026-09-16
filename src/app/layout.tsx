@@ -21,7 +21,7 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://ordal.app";
 const seoTitle =
   "ORDAL: Aplikasi Cari Kerja Otomatis dengan AI | AI Job Search Agent";
 const seoDescription =
-  "Aplikasi AI buat pencari kerja: nyari lowongan, cek kecocokan, dan apply lamaran otomatis sesuai CV & target kamu. Trial gratis 1 hari, bayar sekali. Windows & macOS.";
+  "Aplikasi AI buat pencari kerja: nyari lowongan, cek kecocokan, dan apply lamaran otomatis sesuai CV & target kamu. Trial gratis 3 hari, bayar sekali. Windows & macOS.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),

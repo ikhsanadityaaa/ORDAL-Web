@@ -1,12 +1,15 @@
 import { db } from "@/lib/db";
-import { createHash, randomBytes } from "crypto";
+import { randomBytes, randomInt } from "crypto";
+export { hashPassword, verifyPassword } from "@/lib/password";
+
+const TRIAL_DURATION_MS = 3 * 24 * 60 * 60 * 1000;
 
 // Generate unique user code (ORD-USER-XXXXXX)
 export function generateUserCode(): string {
   const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
   let code = "";
   for (let i = 0; i < 6; i++) {
-    code += chars.charAt(Math.floor(Math.random() * chars.length));
+    code += chars.charAt(randomInt(chars.length));
   }
   return `ORD-USER-${code}`;
 }
@@ -18,7 +21,7 @@ export function generateActivationCode(): string {
   const segment = () => {
     let s = "";
     for (let i = 0; i < 4; i++) {
-      s += chars.charAt(Math.floor(Math.random() * chars.length));
+      s += chars.charAt(randomInt(chars.length));
     }
     return s;
   };
@@ -28,16 +31,6 @@ export function generateActivationCode(): string {
 // Generate session token
 export function generateSessionToken(): string {
   return randomBytes(32).toString("hex");
-}
-
-// Hash password (simple SHA-256 for demo, use bcrypt in production)
-export function hashPassword(password: string): string {
-  return createHash("sha256").update(password).digest("hex");
-}
-
-// Verify password
-export function verifyPassword(password: string, hash: string): boolean {
-  return hashPassword(password) === hash;
 }
 
 // Create a session for user
@@ -81,9 +74,9 @@ export async function getUserFromSession(token: string) {
   return session.user;
 }
 
-// Start trial for new user
+// Trial starts from the desktop app when Find Jobs is used for the first time.
 export async function startTrial(userId: string) {
-  const expiresAt = new Date(Date.now() + 24 * 60 * 60 * 1000); // 24 hours
+  const expiresAt = new Date(Date.now() + TRIAL_DURATION_MS);
 
   const trial = await db.trial.create({
     data: {
@@ -98,11 +91,23 @@ export async function startTrial(userId: string) {
 
 // Check trial status
 export async function checkTrialStatus(userId: string) {
-  const trial = await db.trial.findUnique({
+  let trial = await db.trial.findUnique({
     where: { userId },
   });
 
   if (!trial) return null;
+
+  // Extend shorter legacy trials without restarting their original clock.
+  const threeDayExpiry = new Date(trial.startedAt.getTime() + TRIAL_DURATION_MS);
+  if (trial.expiresAt < threeDayExpiry) {
+    trial = await db.trial.update({
+      where: { id: trial.id },
+      data: {
+        expiresAt: threeDayExpiry,
+        status: threeDayExpiry > new Date() ? "active" : "expired",
+      },
+    });
+  }
 
   // Check if expired
   if (trial.status === "active" && trial.expiresAt < new Date()) {

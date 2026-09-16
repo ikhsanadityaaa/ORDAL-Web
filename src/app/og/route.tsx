@@ -120,7 +120,7 @@ export async function GET() {
               fontWeight: 800,
             }}
           >
-            Rp149.000 | SEKALI BAYAR
+            Rp159.000 | SEKALI BAYAR
           </div>
           <div
             style={{

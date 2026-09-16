@@ -20,7 +20,7 @@ export const translations = {
         "AI JOB SEARCH AGENT",
         "MULTI CV",
         "JAWABAN TERSIMPAN",
-        "TRIAL 1 HARI",
+        "TRIAL 3 HARI",
       ],
     },
 
@@ -33,14 +33,14 @@ export const translations = {
         "Tentuin target, pilih CV, atur preferensi kamu. Sisanya biar ORDAL yang kerja: nyari lowongan yang cocok, nyaring yang nggak, dan ngirim lamaran buat kamu.",
       downloadWindows: "Download untuk Windows",
       downloadMac: "Download untuk macOS",
-      trialInfo: "Gratis trial 1 hari",
+      trialInfo: "Gratis trial 3 hari",
       pricingInfo: "Sekali bayar, gratis selamanya!",
       versionInfo: "v1.0.0 • Windows & macOS",
       statTargets: "Target Aktif",
       statJobs: "Lowongan Ditemukan",
       statApplied: "Lamaran Diproses",
       statResponse: "Response",
-      badgeSticker: "COBA GRATIS 1 HARI",
+      badgeSticker: "COBA GRATIS 3 HARI",
       spinningText: "SEKALI BAYAR • GRATIS SELAMANYA • ",
       scrollHint: "Scroll, yuk",
     },
@@ -217,18 +217,18 @@ export const translations = {
     // Pricing Section
     pricing: {
       badge: "Harga",
-      trialTitle: "Gratis coba 1 hari",
+      trialTitle: "Gratis coba 3 hari",
       trialDesc:
-        "Test semua fitur sepuasnya selama 1 hari. Nggak perlu kartu kredit, nggak ada syarat aneh-aneh.",
+        "Test semua fitur selama 3 hari sejak pertama kali klik Cari Kerja. Nggak perlu kartu kredit.",
       title: "SEKALI BAYAR,",
       titleHighlight: "GRATIS SELAMANYA.",
       subtitle:
         "Nggak ada subscription. Nggak ada biaya bulanan. Nggak ada tagihan yang nyasar ke kartu kamu.",
-      priceID: "Rp149.000",
+      priceID: "Rp159.000",
       priceIDNote: "Untuk Indonesia",
       priceIntl: "US$10",
       priceIntlNote: "Internasional",
-      ctaTrial: "Gratis trial 1 hari",
+      ctaTrial: "Gratis trial 3 hari",
       ctaDownload: "Download Gratis",
       activationTitle: "Bayar & aktivasi langsung di dalam app",
       activationDesc:
@@ -301,7 +301,7 @@ export const translations = {
         },
         {
           q: "Ada free trial?",
-          a: "Ada. Tiap akun baru otomatis dapet trial gratis 1 hari, semua fitur bisa dicoba. Nggak perlu kartu kredit.",
+          a: "Ada. Trial gratis 3 hari dimulai saat kamu pertama kali klik Cari Kerja di aplikasi. Nggak perlu kartu kredit.",
         },
         {
           q: "ORDAL itu subscription?",
@@ -356,7 +356,7 @@ export const translations = {
       loginSubtitle: "Lanjutin perjalanan job hunting kamu.",
       registerTitle: "Buat akun ORDAL",
       registerSubtitle:
-        "Langsung dapet trial gratis 1 hari. Nggak perlu kartu kredit.",
+        "Trial gratis 3 hari dimulai saat pertama kali klik Cari Kerja. Nggak perlu kartu kredit.",
       google: "Lanjut dengan Google",
       email: "Lanjut dengan Email",
       or: "atau",
@@ -367,7 +367,7 @@ export const translations = {
       register: "Daftar",
       haveAccount: "Udah punya akun?",
       noAccount: "Belum punya akun?",
-      trialNote: "Akun baru otomatis dapet trial gratis 1 hari.",
+      trialNote: "Trial gratis 3 hari dimulai saat pertama kali klik Cari Kerja di aplikasi.",
     },
 
     // Common
@@ -393,7 +393,7 @@ export const translations = {
       downloadNow: "Download Sekarang",
       needAccount: "Butuh akun buat mulai trial & nyimpen activation code kamu.",
       trialEndedNote:
-        "Trial 1 hari kamu sudah berakhir. Buat akses selamanya, bayar langsung di dalam app: kamu bakal dapet activation code pribadi yang otomatis kesimpen di akun kamu.",
+        "Trial 3 hari kamu sudah berakhir. Buat akses selamanya, bayar langsung di dalam app: kamu bakal dapet activation code pribadi yang otomatis kesimpen di akun kamu.",
     },
 
     // Live chat bot
@@ -452,14 +452,14 @@ export const translations = {
         "Set your targets, pick your resume, tune your preferences. Then let ORDAL take over: finding relevant openings, filtering out the noise, and sending applications for you.",
       downloadWindows: "Download for Windows",
       downloadMac: "Download for macOS",
-      trialInfo: "1-day free trial",
+      trialInfo: "3-day free trial",
       pricingInfo: "Pay once, use forever!",
       versionInfo: "v1.0.0 • Windows & macOS",
       statTargets: "Active Targets",
       statJobs: "Jobs Found",
       statApplied: "Applications Processed",
       statResponse: "Responses",
-      badgeSticker: "TRY FREE FOR 1 DAY",
+      badgeSticker: "TRY FREE FOR 3 DAYS",
       spinningText: "PAY ONCE • USE FOREVER • ",
       scrollHint: "Scroll, come on",
     },
@@ -637,18 +637,18 @@ export const translations = {
     // Pricing Section
     pricing: {
       badge: "Pricing",
-      trialTitle: "1-day free trial",
+      trialTitle: "3-day free trial",
       trialDesc:
-        "Test every feature to your heart's content for 1 day. No credit card, no weird fine print.",
+        "Test every feature for 3 days starting when you first use Find Jobs. No credit card required.",
       title: "PAY ONCE.",
       titleHighlight: "USE FOREVER.",
       subtitle:
         "No subscription. No monthly fees. No surprise charges on your card.",
-      priceID: "Rp149,000",
+      priceID: "Rp159,000",
       priceIDNote: "For Indonesia",
       priceIntl: "US$10",
       priceIntlNote: "International",
-      ctaTrial: "1-day free trial",
+      ctaTrial: "3-day free trial",
       ctaDownload: "Download Free",
       activationTitle: "Pay & activate right inside the app",
       activationDesc:
@@ -721,7 +721,7 @@ export const translations = {
         },
         {
           q: "Is there a free trial?",
-          a: "Yes. Every new account automatically gets a 1-day free trial with all features unlocked. No credit card needed.",
+          a: "Yes. Your free 3-day trial starts when you first use Find Jobs in the app. No credit card needed.",
         },
         {
           q: "Is ORDAL subscription-based?",
@@ -776,7 +776,7 @@ export const translations = {
       loginSubtitle: "Pick up where your job hunt left off.",
       registerTitle: "Create your ORDAL account",
       registerSubtitle:
-        "Your 1-day free trial starts immediately. No credit card needed.",
+        "Your free 3-day trial starts when you first use Find Jobs. No credit card needed.",
       google: "Continue with Google",
       email: "Continue with Email",
       or: "or",
@@ -787,7 +787,7 @@ export const translations = {
       register: "Sign Up",
       haveAccount: "Already have an account?",
       noAccount: "No account yet?",
-      trialNote: "New accounts automatically get a 1-day free trial.",
+      trialNote: "Your free 3-day trial starts when you first use Find Jobs in the app.",
     },
 
     // Common
@@ -813,7 +813,7 @@ export const translations = {
       downloadNow: "Download Now",
       needAccount: "You'll need an account to start your trial & store your activation code.",
       trialEndedNote:
-        "Your 1-day trial has ended. For lifetime access, pay right inside the app: you'll get a personal activation code saved automatically to your account.",
+        "Your 3-day trial has ended. For lifetime access, pay right inside the app: you'll get a personal activation code saved automatically to your account.",
     },
 
     // Live chat bot

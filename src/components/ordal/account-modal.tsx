@@ -198,7 +198,7 @@ export function AccountModal() {
                               Math.min(
                                 100,
                                 ((new Date(trial.expiresAt).getTime() - Date.now()) /
-                                  (24 * 60 * 60 * 1000)) *
+                                  (3 * 24 * 60 * 60 * 1000)) *
                                   100
                               )
                             )}%`,
@@ -209,8 +209,8 @@ export function AccountModal() {
                   ) : (
                     <p className="text-sm text-[#33363F]/60">
                       {language === "id"
-                        ? "Trial 1 hari kamu sudah berakhir."
-                        : "Your 1-day trial has ended."}
+                        ? "Trial 3 hari kamu sudah berakhir."
+                        : "Your 3-day trial has ended."}
                     </p>
                   )}
                 </div>
