@@ -3,7 +3,7 @@
 Last updated: 2026-09-17
 Branch: `codex/secure-architecture-v2`
 Base commit: `fae0135`
-Implementation commit: `97ab8e7`; housekeeping commit: `cd1523f`
+Implementation commits: `97ab8e7`, `873d4ab`, `2f84765`; schema fix: `de980cb`
 Remote branch: `origin/codex/secure-architecture-v2`
 
 ## Goal
@@ -44,6 +44,7 @@ Applied migrations:
 - `backfill_existing_verified_users`
 - `trial_email_claim_unique`
 - `retention_cleanup_indexes`
+- `add_user_email_canonical`
 
 Current protection:
 
@@ -64,6 +65,7 @@ Security advisor now reports only `rls_enabled_no_policy` informational notices.
 - Preview callback URLs now use Vercel's stable branch URL automatically; Production continues to use `APP_URL`.
 - Web login now supports Google OAuth with PKCE, state-cookie validation, verified Google email linking, and the existing secure web session cookie.
 - Live Supabase migration `add_user_email_canonical` applied after Preview exposed schema drift; the column, canonical backfill, and unique index are verified.
+- Google web login completed successfully end-to-end on the protected Vercel Preview branch.
 - `npx prisma generate`: pass.
 - `npx tsc --noEmit`: pass.
 - `npm run build`: pass, including compilation, type checking, and all 40 generated routes/pages.
@@ -76,14 +78,14 @@ Security advisor now reports only `rls_enabled_no_policy` informational notices.
 
 ## Required Before Production
 
-1. Set generated 32+ byte values in Vercel: `DEVICE_HASH_PEPPER`, `EMAIL_CODE_SECRET`, `ADMIN_API_TOKEN`, `ABUSE_HASH_SECRET`.
-2. Set `APP_URL=https://ordal-web.vercel.app` now; change to `https://applywithordal.com` after domain migration.
-3. Google OAuth Web client and test user configured. Add the Preview branch callback URI in Google Cloud before end-to-end Preview login testing.
-4. Configure Resend and set `RESEND_API_KEY`, `EMAIL_FROM`.
-5. Configure Midtrans and PayPal sandbox credentials, test, then switch production flags and credentials.
-6. Set Midtrans notification URL to `/api/app/payments/webhook/midtrans` on production domain.
-7. Add complimentary emails through `COMPLIMENTARY_EMAILS` or owner endpoint.
-8. Deploy feature branch to Vercel preview and run end-to-end tests before merging.
+1. Security secrets, database URLs, and site URLs are configured in Vercel Production and Preview.
+2. Google OAuth Web client, callbacks, test user, web login, and database account creation are verified on Preview.
+3. Configure Resend and set `RESEND_API_KEY`, `EMAIL_FROM`.
+4. Configure Midtrans and PayPal sandbox credentials, test, then switch production flags and credentials.
+5. Set Midtrans notification URL to `/api/app/payments/webhook/midtrans` on production domain.
+6. Add complimentary emails through `COMPLIMENTARY_EMAILS` or owner endpoint.
+7. Buy and connect `applywithordal.com`, then update Vercel URLs and Google callbacks.
+8. Finish Preview end-to-end tests before merging the latest branch commits.
 
 ## Remaining Engineering Work
 
