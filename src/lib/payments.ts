@@ -39,64 +39,99 @@ async function paypalToken() {
 
 export async function createPayment(userId: string, method: string) {
   if (!['qris_bca', 'paypal'].includes(method)) throw new AppApiError(400, "INVALID_PAYMENT_METHOD", "Metode pembayaran tidak valid");
-  const existing = await db.payment.findFirst({
-    where: { userId, method, status: "pending", expiresAt: { gt: new Date() } },
-    orderBy: { createdAt: "desc" },
-  });
-  if (existing) return existing;
-  const recentCount = await db.payment.count({
-    where: { userId, createdAt: { gt: new Date(Date.now() - 60 * 60 * 1000) } },
-  });
-  if (recentCount >= 5) throw new AppApiError(429, "PAYMENT_RATE_LIMIT", "Terlalu banyak invoice. Coba lagi nanti");
-  const id = paymentId();
-  const expiresAt = new Date(Date.now() + INVOICE_MS);
-
-  if (method === "qris_bca") {
-    const serverKey = required("MIDTRANS_SERVER_KEY");
-    const response = await fetch(`${midtransBase()}/v2/charge`, {
-      method: "POST",
-      headers: {
-        Authorization: `Basic ${Buffer.from(`${serverKey}:`).toString("base64")}`,
-        "content-type": "application/json",
-      },
-      body: JSON.stringify({
-        payment_type: "qris",
-        transaction_details: { order_id: id, gross_amount: PRICE_IDR },
-        qris: { acquirer: "gopay" },
-      }),
+  const reserved = await db.$transaction(async (tx) => {
+    await tx.$executeRaw`SELECT pg_advisory_xact_lock(hashtext(${`${userId}:${method}`}))`;
+    await tx.payment.updateMany({
+      where: { userId, method, status: { in: ["creating", "pending"] }, expiresAt: { lte: new Date() } },
+      data: { status: "expired" },
     });
-    const data = await response.json() as { status_code?: string; status_message?: string; actions?: Array<{ name: string; url: string }>; qr_string?: string; transaction_id?: string };
-    if (!response.ok || data.status_code !== "201") throw new AppApiError(502, "MIDTRANS_ERROR", data.status_message || "QRIS gagal dibuat");
-    const qrUrl = data.actions?.find((action) => action.name === "generate-qr-code")?.url || null;
-    return db.payment.create({
+    const existing = await tx.payment.findFirst({
+      where: { userId, method, status: { in: ["creating", "pending"] }, expiresAt: { gt: new Date() } },
+      orderBy: { createdAt: "desc" },
+    });
+    if (existing) return { payment: existing, created: false };
+    const recentCount = await tx.payment.count({
+      where: { userId, createdAt: { gt: new Date(Date.now() - 60 * 60 * 1000) } },
+    });
+    if (recentCount >= 5) throw new AppApiError(429, "PAYMENT_RATE_LIMIT", "Terlalu banyak invoice. Coba lagi nanti");
+    const id = paymentId();
+    const expiresAt = new Date(Date.now() + INVOICE_MS);
+    const payment = await tx.payment.create({
       data: {
-        id, userId, method, amount: PRICE_IDR, baseAmount: PRICE_IDR, currency: "IDR",
-        reference: id, gateway: "midtrans", gatewayRef: data.transaction_id || id,
-        qrString: data.qr_string || null, qrUrl, expiresAt,
+        id, userId, method, amount: method === "qris_bca" ? PRICE_IDR : 0,
+        baseAmount: PRICE_IDR, amountUsd: method === "paypal" ? PRICE_USD : null,
+        currency: method === "paypal" ? "USD" : "IDR", status: "creating",
+        reference: id, gateway: method === "paypal" ? "paypal" : "midtrans", expiresAt,
       },
     });
+    return { payment, created: true };
+  }, { isolationLevel: Prisma.TransactionIsolationLevel.ReadCommitted });
+
+  if (!reserved.created) {
+    if (reserved.payment.status === "pending") return reserved.payment;
+    for (let attempt = 0; attempt < 40; attempt++) {
+      await new Promise((resolve) => setTimeout(resolve, 250));
+      const current = await db.payment.findUnique({ where: { id: reserved.payment.id } });
+      if (current?.status === "pending") return current;
+      if (!current || current.status !== "creating") break;
+    }
+    throw new AppApiError(409, "PAYMENT_IN_PROGRESS", "Invoice sedang dibuat. Coba lagi beberapa detik");
   }
 
-  const token = await paypalToken();
-  const response = await fetch(`${paypalBase()}/v2/checkout/orders`, {
-    method: "POST",
-    headers: { Authorization: `Bearer ${token}`, "content-type": "application/json", "PayPal-Request-Id": id },
-    body: JSON.stringify({
-      intent: "CAPTURE",
-      purchase_units: [{ reference_id: id, custom_id: userId, amount: { currency_code: "USD", value: PRICE_USD.toFixed(2) } }],
-      payment_source: { paypal: { experience_context: { return_url: `${appUrl()}/api/app/payments/paypal/return?payment=${id}`, cancel_url: `${appUrl()}/api/app/payments/paypal/return?payment=${id}&cancel=1` } } },
-    }),
-  });
-  const data = await response.json() as { id?: string; links?: Array<{ rel: string; href: string }> };
-  if (!response.ok || !data.id) throw new AppApiError(502, "PAYPAL_ERROR", "Invoice PayPal gagal dibuat");
-  return db.payment.create({
-    data: {
-      id, userId, method, amount: 0, baseAmount: PRICE_IDR, amountUsd: PRICE_USD,
-      currency: "USD", reference: id, gateway: "paypal", gatewayRef: data.id,
-      approveUrl: data.links?.find((link) => link.rel === "payer-action" || link.rel === "approve")?.href || null,
-      expiresAt,
-    },
-  });
+  const { id } = reserved.payment;
+  try {
+    if (method === "qris_bca") {
+      const serverKey = required("MIDTRANS_SERVER_KEY");
+      const response = await fetch(`${midtransBase()}/v2/charge`, {
+        method: "POST",
+        headers: {
+          Authorization: `Basic ${Buffer.from(`${serverKey}:`).toString("base64")}`,
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({
+          payment_type: "qris",
+          transaction_details: { order_id: id, gross_amount: PRICE_IDR },
+          qris: { acquirer: "gopay" },
+        }),
+      });
+      const data = await response.json() as { status_code?: string; status_message?: string; actions?: Array<{ name: string; url: string }>; qr_string?: string; transaction_id?: string };
+      if (!response.ok || data.status_code !== "201") throw new AppApiError(502, "MIDTRANS_ERROR", data.status_message || "QRIS gagal dibuat");
+      const qrUrl = data.actions?.find((action) => action.name === "generate-qr-code")?.url || null;
+      return db.payment.update({
+        where: { id },
+        data: {
+          status: "pending", gatewayRef: data.transaction_id || id,
+          qrString: data.qr_string || null, qrUrl,
+        },
+      });
+    }
+
+    const token = await paypalToken();
+    const response = await fetch(`${paypalBase()}/v2/checkout/orders`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}`, "content-type": "application/json", "PayPal-Request-Id": id },
+      body: JSON.stringify({
+        intent: "CAPTURE",
+        purchase_units: [{ reference_id: id, custom_id: userId, amount: { currency_code: "USD", value: PRICE_USD.toFixed(2) } }],
+        payment_source: { paypal: { experience_context: { return_url: `${appUrl()}/api/app/payments/paypal/return?payment=${id}`, cancel_url: `${appUrl()}/api/app/payments/paypal/return?payment=${id}&cancel=1` } } },
+      }),
+    });
+    const data = await response.json() as { id?: string; links?: Array<{ rel: string; href: string }> };
+    if (!response.ok || !data.id) throw new AppApiError(502, "PAYPAL_ERROR", "Invoice PayPal gagal dibuat");
+    return db.payment.update({
+      where: { id },
+      data: {
+        status: "pending", gatewayRef: data.id,
+        approveUrl: data.links?.find((link) => link.rel === "payer-action" || link.rel === "approve")?.href || null,
+      },
+    });
+  } catch (error) {
+    await db.payment.updateMany({
+      where: { id, status: "creating" },
+      data: { status: "failed", note: "gateway creation failed" },
+    });
+    throw error;
+  }
 }
 
 export function serializePayment(payment: {

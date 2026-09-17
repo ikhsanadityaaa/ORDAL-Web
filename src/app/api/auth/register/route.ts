@@ -4,9 +4,8 @@ import { db } from "@/lib/db";
 import {
   generateUserCode,
   hashPassword,
-  createSession,
-  getUserAccessStatus,
 } from "@/lib/auth";
+import { randomVerificationCode, sendVerificationEmail, verificationHash } from "@/lib/app-api";
 import {
   assertEmailAllowed,
   canonicalizeEmail,
@@ -65,9 +64,9 @@ export async function POST(req: NextRequest) {
     ]);
 
     // Validate password length
-    if (password.length < 6) {
+    if (password.length < 8) {
       return NextResponse.json(
-        { error: "Password must be at least 6 characters" },
+        { error: "Password must be at least 8 characters" },
         { status: 400 }
       );
     }
@@ -102,50 +101,39 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    // Create user
-    const user = await db.user.create({
-      data: {
-        email,
-        emailCanonical: canonicalEmail,
-        name: name || email.split("@")[0],
-        password: await hashPassword(password),
-        authProvider: "email",
-        uniqueUserCode,
-      },
-    });
+    if (process.env.NODE_ENV === "production" && (!process.env.RESEND_API_KEY || !process.env.EMAIL_FROM)) {
+      return NextResponse.json({ error: "Email verification is not configured" }, { status: 503 });
+    }
 
-    // Create session
-    const session = await createSession(user.id);
+    const code = randomVerificationCode();
+    const user = await db.$transaction(async (tx) => {
+      const created = await tx.user.create({
+        data: {
+          email,
+          emailCanonical: canonicalEmail,
+          name: name || email.split("@")[0],
+          password: await hashPassword(password),
+          authProvider: "email",
+          uniqueUserCode,
+        },
+      });
+      await tx.appVerificationCode.create({
+        data: {
+          email: canonicalEmail,
+          userId: created.id,
+          codeHash: verificationHash(canonicalEmail, code),
+          expiresAt: new Date(Date.now() + 15 * 60 * 1000),
+        },
+      });
+      return created;
+    });
+    await sendVerificationEmail(email, code);
     await recordAbuseEvent("register_created", signals.deviceHash, user.id);
-
-    // Get access status
-    const access = await getUserAccessStatus(user.id);
-
-    // Create response
-    const response = NextResponse.json({
-      user: {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        uniqueUserCode: user.uniqueUserCode,
-        activationCode: access.activationCode,
-        authProvider: user.authProvider,
-        createdAt: user.createdAt,
-      },
-      trial: access.trial,
-      access: access.access,
+    return NextResponse.json({
+      email,
+      requiresVerification: true,
+      ...(process.env.NODE_ENV !== "production" ? { devCode: code } : {}),
     });
-
-    // Set session cookie
-    response.cookies.set("ordal-session", session.token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
-      maxAge: 7 * 24 * 60 * 60, // 7 days
-      path: "/",
-    });
-
-    return response;
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError && error.code === "P2002") {
       return NextResponse.json(

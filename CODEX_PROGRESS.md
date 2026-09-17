@@ -1,10 +1,9 @@
 # ORDAL Web - Engineering Progress
 
 Last updated: 2026-09-17
-Branch: `codex/secure-architecture-v2`
-Base commit: `fae0135`
-Implementation commits: `97ab8e7`, `873d4ab`, `2f84765`; schema fix: `de980cb`
-Remote branch: `origin/codex/secure-architecture-v2`
+Branch: `codex/remaining-security-work`
+Base commit: `f4a29d4`
+Current work is local and not pushed.
 
 ## Goal
 
@@ -31,6 +30,11 @@ Make Web/Vercel the authority for authentication, device limits, trials, license
 - Ignored local Supabase CLI temporary state from Git.
 - Added required environment variable documentation in `.env.example`.
 - Fixed Windows-incompatible `npm run build` command.
+- Web email signup now requires six-digit email verification before a session is issued.
+- Added web verification/resend routes with expiry, attempt limits, and resend cooldown.
+- Added opt-in Preview integration checks for registration races, trial replay, pending-invoice reuse, and payment-check replay.
+- Changed payment creation to reserve one active invoice under a short PostgreSQL advisory-lock transaction, then call gateways outside the transaction.
+- Added a partial unique index migration preventing multiple `creating`/`pending` invoices per user and payment method.
 - Prisma generation, TypeScript checks, and production build pass.
 
 ## Live Supabase Changes
@@ -69,12 +73,15 @@ Security advisor now reports only `rls_enabled_no_policy` informational notices.
 - `npx prisma generate`: pass.
 - `npx tsc --noEmit`: pass.
 - `npm run build`: pass, including compilation, type checking, and all 40 generated routes/pages.
+- Current branch `npm run build`: pass, including all 42 routes/pages.
+- Targeted ESLint for changed auth routes, auth UI, and Preview integration check: pass.
 - `npm run check:password`: pass.
 - `npm run check:security`: pass.
 - Supabase privilege check: `anon` cannot select `User`; `authenticated` cannot insert `app_payments`.
 - Supabase security advisor: only intentional `rls_enabled_no_policy` INFO notices remain.
 - Supabase performance advisor: only expected unused-index INFO notices on the new/low-traffic database.
 - New unique and retention indexes verified in live Supabase.
+- Active-payment unique index migration is committed locally but not applied to live Supabase yet.
 
 ## Required Before Production
 
@@ -85,16 +92,20 @@ Security advisor now reports only `rls_enabled_no_policy` informational notices.
 5. Set Midtrans notification URL to `/api/app/payments/webhook/midtrans` on production domain.
 6. Add complimentary emails through `COMPLIMENTARY_EMAILS` or owner endpoint.
 7. Buy and connect `applywithordal.com`, then update Vercel URLs and Google callbacks.
-8. Finish Preview end-to-end tests before merging the latest branch commits.
+8. Authenticate Vercel CLI or provide project access, deploy this branch to Preview, then run end-to-end tests before merge.
 
 ## Remaining Engineering Work
 
-- Add live concurrency/payment replay integration tests against an isolated preview database.
+- Run `npm run check:preview` against an isolated Preview database using `ORDAL_TEST_API_BASE_URL`; optionally provide `ORDAL_TEST_RACE_EMAIL` and `ORDAL_TEST_APP_TOKEN` for mutating checks.
 - Verify Prisma queries against live schema from a preview deployment.
 - Review payment API response edge cases using real Midtrans and PayPal sandbox accounts.
-- Review existing web signup UX: web may create an unverified account, but desktop blocks access until verification.
-- Decide whether web signup must also require email verification before web login.
+- Verify web email signup, resend, expiry, wrong-code limit, and login-after-verification on Preview.
 - Deploy preview, run end-to-end flows, then merge only after user approval.
+
+## Current Blockers
+
+- Vercel CLI has no local credentials, so the existing project and its Preview environment variables cannot be deployed from this machine yet.
+- Midtrans, PayPal, Resend, and isolated Preview test credentials are external configuration and are not stored in Git.
 
 ## Rules For Next AI
 
