@@ -3,7 +3,7 @@
 Last updated: 2026-09-17
 Branch: `codex/remaining-security-work`
 Base commit: `f4a29d4`
-Current work is local and not pushed.
+Implementation commit: `b2666af` (pushed to `origin/codex/remaining-security-work`).
 
 ## Goal
 
@@ -75,6 +75,7 @@ Security advisor now reports only `rls_enabled_no_policy` informational notices.
 - `npm run build`: pass, including compilation, type checking, and all 40 generated routes/pages.
 - Current branch `npm run build`: pass, including all 42 routes/pages.
 - Targeted ESLint for changed auth routes, auth UI, and Preview integration check: pass.
+- GitHub-triggered Vercel Preview deployment completed successfully at `https://ordal-djfudw5ss-ikhsan-aditya-s-projects.vercel.app`.
 - `npm run check:password`: pass.
 - `npm run check:security`: pass.
 - Supabase privilege check: `anon` cannot select `User`; `authenticated` cannot insert `app_payments`.
@@ -92,7 +93,7 @@ Security advisor now reports only `rls_enabled_no_policy` informational notices.
 5. Set Midtrans notification URL to `/api/app/payments/webhook/midtrans` on production domain.
 6. Add complimentary emails through `COMPLIMENTARY_EMAILS` or owner endpoint.
 7. Buy and connect `applywithordal.com`, then update Vercel URLs and Google callbacks.
-8. Authenticate Vercel CLI or provide project access, deploy this branch to Preview, then run end-to-end tests before merge.
+8. Authenticate to the protected Vercel Preview, then run end-to-end tests before merge.
 
 ## Remaining Engineering Work
 
@@ -104,7 +105,7 @@ Security advisor now reports only `rls_enabled_no_policy` informational notices.
 
 ## Current Blockers
 
-- Vercel CLI has no local credentials, so the existing project and its Preview environment variables cannot be deployed from this machine yet.
+- Preview deployment is protected by Vercel Authentication; browser E2E reaches the Vercel login page and requires an authorized account session.
 - Midtrans, PayPal, Resend, and isolated Preview test credentials are external configuration and are not stored in Git.
 
 ## Rules For Next AI
