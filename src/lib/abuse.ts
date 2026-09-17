@@ -11,6 +11,28 @@ const DISPOSABLE_DOMAINS = new Set([
   "tempmail.com",
   "yopmail.com",
 ]);
+let nextCleanupAt = 0;
+
+export async function maybeCleanupExpiredAppData() {
+  const now = Date.now();
+  if (now < nextCleanupAt) return;
+  nextCleanupAt = now + 15 * 60 * 1000;
+  try {
+    await db.$transaction([
+      db.appSession.deleteMany({ where: { expiresAt: { lt: new Date(now) } } }),
+      db.appOAuthAttempt.deleteMany({ where: { expiresAt: { lt: new Date(now) } } }),
+      db.appVerificationCode.deleteMany({ where: { expiresAt: { lt: new Date(now) } } }),
+      db.abuseEvent.deleteMany({
+        where: {
+          createdAt: { lt: new Date(now - 30 * 24 * 60 * 60 * 1000) },
+          NOT: { eventType: "trial_email_claim" },
+        },
+      }),
+    ]);
+  } catch (error) {
+    console.error("App data cleanup failed:", error);
+  }
+}
 
 export function canonicalizeEmail(email: string): string {
   const value = email.trim().toLowerCase();
@@ -57,6 +79,7 @@ export function emailSignal(email: string) {
 }
 
 export async function guardRegistration(ipHash: string, deviceHash: string) {
+  await maybeCleanupExpiredAppData();
   const hourAgo = new Date(Date.now() - 60 * 60 * 1000);
   const dayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000);
   const [ipAttempts, deviceAttempts] = await Promise.all([
@@ -73,6 +96,7 @@ export async function guardRegistration(ipHash: string, deviceHash: string) {
 }
 
 export async function guardLogin(ipHash: string, emailHash: string) {
+  await maybeCleanupExpiredAppData();
   const fifteenMinutesAgo = new Date(Date.now() - 15 * 60 * 1000);
   const [ipAttempts, emailAttempts] = await Promise.all([
     db.abuseEvent.count({
