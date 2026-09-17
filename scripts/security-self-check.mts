@@ -9,6 +9,7 @@ const webGoogleCallback = await readFile("src/app/api/auth/google/callback/route
 const migrations = await Promise.all([
   readFile("supabase/migrations/20260917042502_trial_email_claim_unique.sql", "utf8"),
   readFile("supabase/migrations/20260917042721_retention_cleanup_indexes.sql", "utf8"),
+  readFile("supabase/migrations/20260917091834_add_user_email_canonical.sql", "utf8"),
 ]);
 
 assert.match(appApi, /MAX_DEVICES = 2/);
@@ -20,6 +21,7 @@ assert.match(payments, /payment\.amount !== PRICE_IDR/);
 assert.match(payments, /unit\.amount\?\.currency_code === "USD"/);
 assert.match(schema, /@@unique\(\[userId, deviceKey\]\)/);
 assert.match(migrations.join("\n"), /CREATE UNIQUE INDEX[\s\S]*trial_email_claim/);
+assert.match(migrations.join("\n"), /User_emailCanonical_key/);
 assert.match(webGoogleStart, /code_challenge_method", "S256"/);
 assert.match(webGoogleStart, /httpOnly: true/);
 assert.match(webGoogleStart, /req\.nextUrl\.origin !== baseUrl/);

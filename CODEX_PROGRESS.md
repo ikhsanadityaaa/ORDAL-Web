@@ -63,6 +63,7 @@ Security advisor now reports only `rls_enabled_no_policy` informational notices.
 - Google OAuth variables are configured in Vercel Production and Preview; Preview `/api/app/auth/google/config` returns `{"configured":true}`.
 - Preview callback URLs now use Vercel's stable branch URL automatically; Production continues to use `APP_URL`.
 - Web login now supports Google OAuth with PKCE, state-cookie validation, verified Google email linking, and the existing secure web session cookie.
+- Live Supabase migration `add_user_email_canonical` applied after Preview exposed schema drift; the column, canonical backfill, and unique index are verified.
 - `npx prisma generate`: pass.
 - `npx tsc --noEmit`: pass.
 - `npm run build`: pass, including compilation, type checking, and all 40 generated routes/pages.
