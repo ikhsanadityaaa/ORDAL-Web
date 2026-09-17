@@ -5,6 +5,7 @@ Branch: `codex/secure-architecture-v2`
 Base commit: `fae0135`
 Implementation commits: `97ab8e7`, `873d4ab`, `2f84765`; schema fix: `de980cb`
 Remote branch: `origin/codex/secure-architecture-v2`
+Merged to `main`: PR #3 at `f4a29d4`
 
 ## Goal
 
@@ -66,6 +67,7 @@ Security advisor now reports only `rls_enabled_no_policy` informational notices.
 - Web login now supports Google OAuth with PKCE, state-cookie validation, verified Google email linking, and the existing secure web session cookie.
 - Live Supabase migration `add_user_email_canonical` applied after Preview exposed schema drift; the column, canonical backfill, and unique index are verified.
 - Google web login completed successfully end-to-end on the protected Vercel Preview branch.
+- PR #3 merged to `main`; Vercel Production deployment and Google login on `https://ordal-web.vercel.app` still need final verification from the next computer.
 - `npx prisma generate`: pass.
 - `npx tsc --noEmit`: pass.
 - `npm run build`: pass, including compilation, type checking, and all 40 generated routes/pages.
@@ -94,7 +96,29 @@ Security advisor now reports only `rls_enabled_no_policy` informational notices.
 - Review payment API response edge cases using real Midtrans and PayPal sandbox accounts.
 - Review existing web signup UX: web may create an unverified account, but desktop blocks access until verification.
 - Decide whether web signup must also require email verification before web login.
-- Deploy preview, run end-to-end flows, then merge only after user approval.
+- Verify the PR #3 Production deployment, then keep later payment/email work on Preview until each flow passes.
+
+## MacBook Handoff
+
+Session stopped because the user moved work to another computer. Repository is clean before this documentation-only update.
+
+Next steps, in order:
+
+1. Pull `main` and verify commit `f4a29d4` is present.
+2. Confirm Vercel Production is `Ready`, then test Google login at `https://ordal-web.vercel.app`.
+3. Configure Resend test mode, then set `RESEND_API_KEY` as Secret and `EMAIL_FROM` as Config for Production and Preview. Do not paste either value into chat.
+4. Test email registration, verification, login, resend-code throttling, and rejection of disposable email domains.
+5. Configure Midtrans Sandbox and PayPal Sandbox; test signed webhooks, replay resistance, exact amount/currency checks, and permanent license issuance.
+6. Test complimentary access using the owner endpoint or `COMPLIMENTARY_EMAILS`.
+7. Run full desktop/web end-to-end tests: two-device limit, device removal, three-day trial, reinstall resistance, payment, activation, and logout.
+8. Buy `applywithordal.com` near launch, connect it to Vercel, update `APP_URL` and `NEXT_PUBLIC_SITE_URL`, update all Google callback URLs, and verify a sending domain in Resend.
+
+Current external setup:
+
+- Vercel database/security/site variables: configured for Production and Preview.
+- Google OAuth client, Production callbacks, Preview branch callbacks, and test user: configured.
+- Live Supabase project `okaemibpyldhixwfyvnn`: healthy; `emailCanonical` column and unique index verified.
+- Resend, Midtrans, PayPal, download URLs, and final custom domain: not configured.
 
 ## Rules For Next AI
 
