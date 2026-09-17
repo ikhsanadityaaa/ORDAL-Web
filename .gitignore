@@ -36,6 +36,7 @@ yarn-error.log*
 
 # databases — local dev artifacts (SQLite legacy file, embedded Postgres data/logs)
 /db/
+/supabase/.temp/
 
 # vercel
 .vercel

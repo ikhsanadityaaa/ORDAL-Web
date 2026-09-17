@@ -26,6 +26,7 @@ Make Web/Vercel the authority for authentication, device limits, trials, license
 - Added lazy retention cleanup for expired app sessions, OAuth attempts, verification codes, and old abuse events.
 - Added device and canonical-email advisory locks plus a unique trial-email claim index.
 - Added runnable password and security architecture self-checks.
+- Ignored local Supabase CLI temporary state from Git.
 - Added required environment variable documentation in `.env.example`.
 - Fixed Windows-incompatible `npm run build` command.
 - Prisma generation, TypeScript checks, and production build pass.
