@@ -22,6 +22,7 @@ import { AccountModal } from "@/components/ordal/account-modal";
 import { DownloadModal } from "@/components/ordal/download-modal";
 import { ChatWidget } from "@/components/ordal/chat-widget";
 import { SourceDownloadButton } from "@/components/ordal/source-download-button";
+import { toast } from "sonner";
 
 export default function Home() {
   const { refreshUser } = useAuthStore();
@@ -35,15 +36,20 @@ export default function Home() {
   useEffect(() => {
     const params = new URLSearchParams(window.location.search);
     const authParam = params.get("auth");
+    const googleStatus = params.get("google");
+
+    if (googleStatus === "success") toast.success("Berhasil masuk dengan Google!");
+    if (googleStatus === "failed" || googleStatus === "unavailable") {
+      toast.error("Login Google gagal. Silakan coba lagi.");
+    }
 
     if (authParam === "login" || authParam === "register") {
       // Small delay to ensure modals are mounted
       setTimeout(() => {
         useAuthStore.getState().openAuthModal(authParam);
-        // Clean URL
-        window.history.replaceState({}, "", "/");
       }, 300);
     }
+    if (authParam || googleStatus) window.history.replaceState({}, "", "/");
   }, []);
 
   return (
