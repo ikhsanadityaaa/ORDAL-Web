@@ -39,6 +39,11 @@ export function AuthModal() {
 
   const isLogin = authModalMode === "login";
 
+  const handleGoogleLogin = () => {
+    setLoading(true);
+    window.location.assign("/api/auth/google/start");
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -118,6 +123,23 @@ export function AuthModal() {
 
         {/* Form content */}
         <div className="p-6">
+          <Button
+            type="button"
+            variant="outline"
+            disabled={isLoading}
+            onClick={handleGoogleLogin}
+            className="w-full h-12 rounded-xl border-2 border-[#33363F] bg-white text-[#33363F] font-bold shadow-[3px_3px_0_#33363F] hover:bg-white hover:translate-x-[-1px] hover:translate-y-[-1px] hover:shadow-[5px_5px_0_#33363F] transition-all"
+          >
+            <span aria-hidden className="mr-2 text-lg font-black text-[#4285F4]">G</span>
+            {language === "id" ? "Lanjutkan dengan Google" : "Continue with Google"}
+          </Button>
+
+          <div className="my-5 flex items-center gap-3" aria-hidden>
+            <div className="h-px flex-1 bg-[#33363F]/15" />
+            <span className="text-xs font-semibold text-[#33363F]/45">{language === "id" ? "ATAU" : "OR"}</span>
+            <div className="h-px flex-1 bg-[#33363F]/15" />
+          </div>
+
           {/* Email form */}
           <form onSubmit={handleSubmit} className="space-y-4">
             <AnimatePresence mode="wait">
