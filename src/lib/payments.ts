@@ -2,6 +2,7 @@ import { createHash, randomBytes, timingSafeEqual } from "crypto";
 import { Prisma } from "@prisma/client";
 import { db } from "@/lib/db";
 import { AppApiError, ensureLicense } from "@/lib/app-api";
+import { appUrl } from "@/lib/app-url";
 
 export const PRICE_IDR = 159000;
 export const PRICE_USD = new Prisma.Decimal("10.00");
@@ -15,10 +16,6 @@ function required(name: string): string {
 
 function paymentId() {
   return `PAY-${randomBytes(6).toString("hex").toUpperCase()}`;
-}
-
-function appUrl() {
-  return (process.env.APP_URL?.trim() || process.env.NEXT_PUBLIC_SITE_URL?.trim() || "").replace(/\/$/, "");
 }
 
 function midtransBase() {

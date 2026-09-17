@@ -60,6 +60,8 @@ Security advisor now reports only `rls_enabled_no_policy` informational notices.
 
 ## Verification
 
+- Google OAuth variables are configured in Vercel Production and Preview; Preview `/api/app/auth/google/config` returns `{"configured":true}`.
+- Preview callback URLs now use Vercel's stable branch URL automatically; Production continues to use `APP_URL`.
 - `npx prisma generate`: pass.
 - `npx tsc --noEmit`: pass.
 - `npm run build`: pass, including compilation, type checking, and all 38 generated routes/pages.
@@ -74,7 +76,7 @@ Security advisor now reports only `rls_enabled_no_policy` informational notices.
 
 1. Set generated 32+ byte values in Vercel: `DEVICE_HASH_PEPPER`, `EMAIL_CODE_SECRET`, `ADMIN_API_TOKEN`, `ABUSE_HASH_SECRET`.
 2. Set `APP_URL=https://ordal-web.vercel.app` now; change to `https://applywithordal.com` after domain migration.
-3. Configure Google OAuth Web application and set `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET`.
+3. Google OAuth Web client and test user configured. Add the Preview branch callback URI in Google Cloud before end-to-end Preview login testing.
 4. Configure Resend and set `RESEND_API_KEY`, `EMAIL_FROM`.
 5. Configure Midtrans and PayPal sandbox credentials, test, then switch production flags and credentials.
 6. Set Midtrans notification URL to `/api/app/payments/webhook/midtrans` on production domain.

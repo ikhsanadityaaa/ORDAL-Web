@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { canonicalizeEmail } from "@/lib/abuse";
 import { generateUserCode } from "@/lib/auth";
+import { appUrl } from "@/lib/app-url";
 
 function page(ok: boolean, message: string) {
   const title = ok ? "Login berhasil" : "Login gagal";
@@ -24,8 +25,7 @@ export async function GET(req: NextRequest) {
   try {
     const clientId = process.env.GOOGLE_CLIENT_ID?.trim() || "";
     const clientSecret = process.env.GOOGLE_CLIENT_SECRET?.trim() || "";
-    const appUrl = process.env.APP_URL?.trim() || process.env.NEXT_PUBLIC_SITE_URL?.trim() || "";
-    const redirectUri = `${appUrl.replace(/\/$/, "")}/api/app/auth/google/callback`;
+    const redirectUri = `${appUrl()}/api/app/auth/google/callback`;
     const tokenResponse = await fetch("https://oauth2.googleapis.com/token", {
       method: "POST",
       headers: { "content-type": "application/x-www-form-urlencoded" },

@@ -4,6 +4,7 @@ import { db } from "@/lib/db";
 import { maybeCleanupExpiredAppData } from "@/lib/abuse";
 import { appError } from "@/lib/app-route";
 import { AppApiError, deviceFromBody, deviceKey } from "@/lib/app-api";
+import { appUrl } from "@/lib/app-url";
 
 function base64url(value: Buffer) {
   return value.toString("base64url");
@@ -13,8 +14,8 @@ export async function POST(req: Request) {
   try {
     await maybeCleanupExpiredAppData();
     const clientId = process.env.GOOGLE_CLIENT_ID?.trim();
-    const appUrl = process.env.APP_URL?.trim() || process.env.NEXT_PUBLIC_SITE_URL?.trim();
-    if (!clientId || !appUrl) throw new AppApiError(503, "GOOGLE_NOT_CONFIGURED", "Login Google belum dikonfigurasi");
+    const baseUrl = appUrl();
+    if (!clientId || !baseUrl) throw new AppApiError(503, "GOOGLE_NOT_CONFIGURED", "Login Google belum dikonfigurasi");
     const body = await req.json() as Record<string, unknown>;
     const device = deviceFromBody(body);
     const key = deviceKey(device.fingerprint);
@@ -36,7 +37,7 @@ export async function POST(req: Request) {
         expiresAt: new Date(Date.now() + 10 * 60 * 1000),
       },
     });
-    const redirectUri = `${appUrl.replace(/\/$/, "")}/api/app/auth/google/callback`;
+    const redirectUri = `${baseUrl}/api/app/auth/google/callback`;
     const url = new URL("https://accounts.google.com/o/oauth2/v2/auth");
     url.searchParams.set("client_id", clientId);
     url.searchParams.set("redirect_uri", redirectUri);
