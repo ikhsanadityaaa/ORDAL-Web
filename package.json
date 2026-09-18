@@ -17,6 +17,7 @@
     "db:reset": "prisma migrate reset",
     "check:password": "node scripts/password-self-check.mts",
     "check:security": "node scripts/security-self-check.mts",
+    "check:invoice": "node scripts/payment-invoice-self-check.mts",
     "check:preview": "node scripts/preview-integration-check.mts"
   },
   "dependencies": {

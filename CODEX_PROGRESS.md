@@ -35,6 +35,10 @@ Make Web/Vercel the authority for authentication, device limits, trials, license
 - Added opt-in Preview integration checks for registration races, trial replay, pending-invoice reuse, and payment-check replay.
 - Changed payment creation to reserve one active invoice under a short PostgreSQL advisory-lock transaction, then call gateways outside the transaction.
 - Added a partial unique index migration preventing multiple `creating`/`pending` invoices per user and payment method.
+- Updated pricing to discounted Rp210,000 → Rp179,000 for Indonesia and US$12 internationally.
+- Added branded English payment invoice email with payment details and activation code.
+- Added Resend idempotency plus `invoice_sent_at` tracking so payment replays do not duplicate invoices.
+- Changed gateway verification to validate each invoice's stored amount, preserving valid pending invoices across future price changes.
 - Prisma generation, TypeScript checks, and production build pass.
 
 ## Live Supabase Changes
@@ -49,6 +53,8 @@ Applied migrations:
 - `trial_email_claim_unique`
 - `retention_cleanup_indexes`
 - `add_user_email_canonical`
+- `pending_payment_unique`
+- `payment_invoice_email`
 
 Current protection:
 
@@ -82,13 +88,14 @@ Security advisor now reports only `rls_enabled_no_policy` informational notices.
 - Supabase security advisor: only intentional `rls_enabled_no_policy` INFO notices remain.
 - Supabase performance advisor: only expected unused-index INFO notices on the new/low-traffic database.
 - New unique and retention indexes verified in live Supabase.
-- Active-payment unique index migration is committed locally but not applied to live Supabase yet.
+- Active-payment unique index and invoice email tracking column are verified in live Supabase.
+- Payment invoice self-check, targeted ESLint, TypeScript, and production build pass.
 
 ## Required Before Production
 
 1. Security secrets, database URLs, and site URLs are configured in Vercel Production and Preview.
 2. Google OAuth Web client, callbacks, test user, web login, and database account creation are verified on Preview.
-3. Configure Resend and set `RESEND_API_KEY`, `EMAIL_FROM`.
+3. Configure Resend and set `RESEND_API_KEY`, `EMAIL_FROM`; verify the sender domain before production invoice delivery.
 4. Configure Midtrans and PayPal sandbox credentials, test, then switch production flags and credentials.
 5. Set Midtrans notification URL to `/api/app/payments/webhook/midtrans` on production domain.
 6. Add complimentary emails through `COMPLIMENTARY_EMAILS` or owner endpoint.

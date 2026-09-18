@@ -3,9 +3,9 @@ import { Prisma } from "@prisma/client";
 import { db } from "@/lib/db";
 import { AppApiError, ensureLicense } from "@/lib/app-api";
 import { appUrl } from "@/lib/app-url";
+import { deliverPaymentInvoice, PRICE_IDR, PRICE_USD } from "@/lib/payment-invoice";
 
-export const PRICE_IDR = 159000;
-export const PRICE_USD = new Prisma.Decimal("10.00");
+export { PRICE_IDR, PRICE_USD } from "@/lib/payment-invoice";
 const INVOICE_MS = 60 * 60 * 1000;
 
 function required(name: string): string {
@@ -144,7 +144,7 @@ export function serializePayment(payment: {
     id: payment.id,
     method: payment.method,
     amount: payment.amount,
-    amount_display: isPaypal ? `US$ ${payment.amountUsd?.toFixed(2) || "10.00"}` : `Rp ${payment.amount.toLocaleString("id-ID")}`,
+    amount_display: isPaypal ? `US$ ${payment.amountUsd?.toFixed(2) || PRICE_USD.toFixed(2)}` : `Rp ${payment.amount.toLocaleString("id-ID")}`,
     unique_suffix: payment.uniqueSuffix,
     status: payment.status,
     reference: payment.reference,
@@ -154,16 +154,35 @@ export function serializePayment(payment: {
     approve_url: payment.approveUrl,
     expires_at: payment.expiresAt.toISOString(),
     instructions: isPaypal
-      ? { amount_display: `US$ ${payment.amountUsd?.toFixed(2) || "10.00"}`, steps: ["Buka PayPal", "Selesaikan pembayaran", "Kembali ke ORDAL"] }
+      ? { amount_display: `US$ ${payment.amountUsd?.toFixed(2) || PRICE_USD.toFixed(2)}`, steps: ["Buka PayPal", "Selesaikan pembayaran", "Kembali ke ORDAL"] }
       : { steps: ["Pindai QR dengan aplikasi bank atau dompet digital", "Bayar sesuai nominal", "Tunggu verifikasi otomatis"] },
     activation: activation ? { code: activation.code } : null,
   };
 }
 
+async function fulfillPayment(paymentId: string) {
+  const payment = await db.payment.findUnique({ where: { id: paymentId }, include: { user: true } });
+  if (!payment || payment.status !== "verified") throw new AppApiError(409, "PAYMENT_NOT_VERIFIED", "Pembayaran belum terverifikasi");
+  const license = await ensureLicense(payment.userId, "payment", payment.id);
+  if (!payment.invoiceSentAt) {
+    try {
+      await deliverPaymentInvoice({
+        id: payment.id, name: payment.user.name, email: payment.user.email, method: payment.method,
+        currency: payment.currency, amount: payment.amount, amountUsd: payment.amountUsd,
+        paidAt: payment.verifiedAt ?? new Date(), activationCode: license.code,
+      });
+      await db.payment.updateMany({ where: { id: payment.id, invoiceSentAt: null }, data: { invoiceSentAt: new Date() } });
+    } catch (error) {
+      console.error("Payment invoice email error:", error);
+    }
+  }
+  return license;
+}
+
 async function verifyPayment(paymentId: string, providerReference: string) {
   const payment = await db.payment.findUnique({ where: { id: paymentId } });
   if (!payment) throw new AppApiError(404, "PAYMENT_NOT_FOUND", "Pembayaran tidak ditemukan");
-  if (payment.status === "verified") return ensureLicense(payment.userId, "payment", payment.id);
+  if (payment.status === "verified") return fulfillPayment(payment.id);
   return db.$transaction(async (tx) => {
     const current = await tx.payment.findUnique({ where: { id: payment.id } });
     if (!current) throw new AppApiError(404, "PAYMENT_NOT_FOUND", "Pembayaran tidak ditemukan");
@@ -171,13 +190,13 @@ async function verifyPayment(paymentId: string, providerReference: string) {
       await tx.payment.update({ where: { id: current.id }, data: { status: "verified", gatewayRef: providerReference, verifiedAt: new Date() } });
     }
     return null;
-  }).then(async () => ensureLicense(payment.userId, "payment", payment.id));
+  }).then(async () => fulfillPayment(payment.id));
 }
 
 export async function checkPayment(paymentId: string, userId: string) {
   let payment = await db.payment.findFirst({ where: { id: paymentId, userId } });
   if (!payment) throw new AppApiError(404, "PAYMENT_NOT_FOUND", "Pembayaran tidak ditemukan");
-  let license = payment.status === "verified" ? await ensureLicense(userId, "payment", payment.id) : null;
+  let license = payment.status === "verified" ? await fulfillPayment(payment.id) : null;
   if (payment.status === "pending" && payment.expiresAt <= new Date()) {
     payment = await db.payment.update({ where: { id: payment.id }, data: { status: "expired" } });
   } else if (payment.status === "pending" && payment.gateway === "paypal" && payment.gatewayRef) {
@@ -189,7 +208,7 @@ export async function checkPayment(paymentId: string, userId: string) {
       order = await response.json() as typeof order;
     }
     const unit = order.purchase_units?.[0];
-    if (order.status === "COMPLETED" && unit?.custom_id === userId && unit.amount?.currency_code === "USD" && unit.amount.value === PRICE_USD.toFixed(2)) {
+    if (order.status === "COMPLETED" && unit?.custom_id === userId && unit.amount?.currency_code === "USD" && unit.amount.value === payment.amountUsd?.toFixed(2)) {
       license = await verifyPayment(payment.id, payment.gatewayRef);
       payment = await db.payment.findUniqueOrThrow({ where: { id: payment.id } });
     }
@@ -207,7 +226,7 @@ export async function verifyMidtransNotification(body: Record<string, unknown>) 
   const b = Buffer.from(expected);
   if (a.length !== b.length || !timingSafeEqual(a, b)) throw new AppApiError(401, "INVALID_SIGNATURE", "Signature tidak valid");
   const payment = await db.payment.findUnique({ where: { id: orderId } });
-  if (!payment || payment.gateway !== "midtrans" || payment.amount !== PRICE_IDR || grossAmount !== `${PRICE_IDR}.00`) {
+  if (!payment || payment.gateway !== "midtrans" || grossAmount !== `${payment.amount}.00`) {
     throw new AppApiError(400, "PAYMENT_MISMATCH", "Data pembayaran tidak cocok");
   }
   const status = typeof body.transaction_status === "string" ? body.transaction_status : "";
