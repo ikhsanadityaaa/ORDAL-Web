@@ -1,9 +1,9 @@
 # ORDAL Web - Engineering Progress
 
-Last updated: 2026-09-17
+Last updated: 2026-09-20
 Branch: `codex/remaining-security-work`
 Base commit: `f4a29d4`
-Implementation commit: `b2666af` (pushed to `origin/codex/remaining-security-work`).
+Implementation commit: `ec1b661` (pushed to `origin/codex/remaining-security-work`).
 
 ## Goal
 
@@ -39,6 +39,7 @@ Make Web/Vercel the authority for authentication, device limits, trials, license
 - Added branded English payment invoice email with payment details and activation code.
 - Added Resend idempotency plus `invoice_sent_at` tracking so payment replays do not duplicate invoices.
 - Changed gateway verification to validate each invoice's stored amount, preserving valid pending invoices across future price changes.
+- Kept the existing sticker-style UI; the proposed minimalist redesign was canceled before commit.
 - Prisma generation, TypeScript checks, and production build pass.
 
 ## Live Supabase Changes
@@ -76,6 +77,8 @@ Security advisor now reports only `rls_enabled_no_policy` informational notices.
 - Web login now supports Google OAuth with PKCE, state-cookie validation, verified Google email linking, and the existing secure web session cookie.
 - Live Supabase migration `add_user_email_canonical` applied after Preview exposed schema drift; the column, canonical backfill, and unique index are verified.
 - Google web login completed successfully end-to-end on the protected Vercel Preview branch.
+- Google signup completed successfully on the latest protected Preview branch.
+- Resend Preview configuration is present: `RESEND_API_KEY` is secret and `EMAIL_FROM` uses `ORDAL <onboarding@resend.dev>`.
 - `npx prisma generate`: pass.
 - `npx tsc --noEmit`: pass.
 - `npm run build`: pass, including compilation, type checking, and all 40 generated routes/pages.
@@ -95,7 +98,7 @@ Security advisor now reports only `rls_enabled_no_policy` informational notices.
 
 1. Security secrets, database URLs, and site URLs are configured in Vercel Production and Preview.
 2. Google OAuth Web client, callbacks, test user, web login, and database account creation are verified on Preview.
-3. Configure Resend and set `RESEND_API_KEY`, `EMAIL_FROM`; verify the sender domain before production invoice delivery.
+3. Verify a custom sender domain in Resend and replace the temporary `onboarding@resend.dev` sender before production invoice delivery.
 4. Configure Midtrans and PayPal sandbox credentials, test, then switch production flags and credentials.
 5. Set Midtrans notification URL to `/api/app/payments/webhook/midtrans` on production domain.
 6. Add complimentary emails through `COMPLIMENTARY_EMAILS` or owner endpoint.
@@ -109,11 +112,13 @@ Security advisor now reports only `rls_enabled_no_policy` informational notices.
 - Review payment API response edge cases using real Midtrans and PayPal sandbox accounts.
 - Verify web email signup, resend, expiry, wrong-code limit, and login-after-verification on Preview.
 - Deploy preview, run end-to-end flows, then merge only after user approval.
+- Wait for Midtrans registration confirmation, then configure sandbox credentials and test QRIS payment, webhook, invoice email, and activation code delivery.
 
 ## Current Blockers
 
 - Preview deployment is protected by Vercel Authentication; browser E2E reaches the Vercel login page and requires an authorized account session.
-- Midtrans, PayPal, Resend, and isolated Preview test credentials are external configuration and are not stored in Git.
+- Midtrans account registration is awaiting confirmation.
+- PayPal, production Resend sender-domain, and isolated Preview test credentials are external configuration and are not stored in Git.
 
 ## Rules For Next AI
 
