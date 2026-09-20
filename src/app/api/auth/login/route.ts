@@ -80,6 +80,10 @@ export async function POST(req: NextRequest) {
       });
     }
 
+    if (!user.emailVerifiedAt) {
+      return NextResponse.json({ email: user.email, requiresVerification: true });
+    }
+
     // Create session
     const session = await createSession(user.id);
     await recordAbuseEvent("login_success", loginEmailHash, user.id);

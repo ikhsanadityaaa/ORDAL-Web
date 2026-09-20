@@ -112,8 +112,14 @@ export function PricingSection() {
                     <p className="text-[10px] font-extrabold uppercase tracking-[0.12em] text-[#33363F]/55">
                       {t("pricing.priceIDNote")}
                     </p>
+                    <p className="num-display mt-1 text-sm font-bold text-[#33363F]/45 line-through decoration-2 decoration-[#F2661A]">
+                      {t("pricing.priceIDOriginal")}
+                    </p>
                     <p className="num-display mt-1.5 font-black text-[26px] leading-none tracking-tight text-[#33363F] sm:text-4xl md:text-[2.5rem]">
                       {t("pricing.priceID")}
+                    </p>
+                    <p className="mt-2 rounded-full bg-[#F2661A] px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.12em] text-white">
+                      {language === "id" ? "Hemat Rp31.000" : "Save Rp31,000"}
                     </p>
                     <p className="mt-2 text-[10px] font-extrabold uppercase tracking-[0.14em] text-[#F2661A]">
                       {language === "id" ? "sekali bayar" : "one-time"}

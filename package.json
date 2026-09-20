@@ -16,7 +16,9 @@
     "db:migrate-legacy": "bun scripts/migrate-sqlite-to-postgres.ts",
     "db:reset": "prisma migrate reset",
     "check:password": "node scripts/password-self-check.mts",
-    "check:security": "node scripts/security-self-check.mts"
+    "check:security": "node scripts/security-self-check.mts",
+    "check:invoice": "node scripts/payment-invoice-self-check.mts",
+    "check:preview": "node scripts/preview-integration-check.mts"
   },
   "dependencies": {
     "@dnd-kit/core": "^6.3.1",

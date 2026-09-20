@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
-import { Mail, Loader2, Eye, EyeOff, Zap } from "lucide-react";
+import { Mail, Loader2, Eye, EyeOff, Zap, KeyRound, RefreshCw } from "lucide-react";
 
 function getBrowserDeviceId() {
   const key = "ordal-device-id";
@@ -36,6 +36,9 @@ export function AuthModal() {
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [pendingEmail, setPendingEmail] = useState("");
+  const [verificationCode, setVerificationCode] = useState("");
+  const [devCode, setDevCode] = useState("");
 
   const isLogin = authModalMode === "login";
 
@@ -67,7 +70,18 @@ export function AuthModal() {
 
       const data = await response.json();
 
-      if (response.ok) {
+      if (response.ok && data.requiresVerification) {
+        setPendingEmail(data.email || email);
+        setDevCode(data.devCode || "");
+        if (isLogin) {
+          await fetch("/api/auth/resend", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email: data.email || email }),
+          }).catch(() => undefined);
+        }
+        toast.success(language === "id" ? "Cek email untuk kode verifikasi." : "Check your email for the verification code.");
+      } else if (response.ok) {
         setUser(data.user, data.trial, data.access);
         closeAuthModal();
         toast.success(
@@ -88,6 +102,55 @@ export function AuthModal() {
       }
     } catch (error) {
       toast.error("Network error. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleVerify = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const response = await fetch("/api/auth/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: pendingEmail, code: verificationCode }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        toast.error(data.error || "Verification failed");
+        return;
+      }
+      setUser(data.user, data.trial, data.access);
+      setPendingEmail("");
+      setVerificationCode("");
+      setDevCode("");
+      closeAuthModal();
+      toast.success(language === "id" ? "Email terverifikasi. Akun siap digunakan." : "Email verified. Your account is ready.");
+    } catch {
+      toast.error(language === "id" ? "Jaringan bermasalah. Coba lagi." : "Network error. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleResend = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch("/api/auth/resend", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: pendingEmail }),
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        toast.error(data.error || "Could not resend code");
+        return;
+      }
+      setDevCode(data.devCode || "");
+      toast.success(language === "id" ? "Kode baru dikirim." : "A new code was sent.");
+    } catch {
+      toast.error(language === "id" ? "Jaringan bermasalah. Coba lagi." : "Network error. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -123,6 +186,44 @@ export function AuthModal() {
 
         {/* Form content */}
         <div className="p-6">
+          {pendingEmail ? (
+            <form onSubmit={handleVerify} className="space-y-4">
+              <div className="rounded-xl border border-[#F2661A]/25 bg-[#F2661A]/5 p-4 text-sm text-[#33363F]/75">
+                {language === "id" ? "Masukkan kode 6 digit yang dikirim ke" : "Enter the 6-digit code sent to"}{" "}
+                <strong className="text-[#33363F]">{pendingEmail}</strong>.
+                {devCode && <div className="mt-2 font-mono font-bold text-[#C94708]">Dev code: {devCode}</div>}
+              </div>
+              <div className="space-y-2">
+                <Label htmlFor="verification-code">{language === "id" ? "Kode verifikasi" : "Verification code"}</Label>
+                <Input
+                  id="verification-code"
+                  inputMode="numeric"
+                  autoComplete="one-time-code"
+                  pattern="[0-9]{6}"
+                  maxLength={6}
+                  value={verificationCode}
+                  onChange={(event) => setVerificationCode(event.target.value.replace(/\D/g, ""))}
+                  className="h-12 rounded-xl border-[#33363F]/10 bg-white text-center font-mono text-xl tracking-[0.35em] focus:border-[#F2661A]"
+                  required
+                  autoFocus
+                />
+              </div>
+              <Button type="submit" disabled={isLoading || verificationCode.length !== 6} className="w-full h-12 bg-[#C94708] hover:bg-[#B83E06] text-white font-extrabold rounded-xl border-2 border-[#33363F] shadow-[3px_3px_0_#33363F]">
+                {isLoading ? <Loader2 className="w-4 h-4 mr-2 animate-spin" /> : <KeyRound className="w-4 h-4 mr-2" />}
+                {language === "id" ? "Verifikasi email" : "Verify email"}
+              </Button>
+              <div className="flex items-center justify-between gap-3">
+                <button type="button" onClick={() => { setPendingEmail(""); setVerificationCode(""); }} className="text-sm font-semibold text-[#33363F]/65 hover:text-[#33363F]">
+                  {language === "id" ? "Ganti email" : "Change email"}
+                </button>
+                <button type="button" disabled={isLoading} onClick={handleResend} className="inline-flex items-center gap-1.5 text-sm font-semibold text-[#C94708] hover:text-[#B83E06] disabled:opacity-50">
+                  <RefreshCw className="h-3.5 w-3.5" />
+                  {language === "id" ? "Kirim ulang" : "Resend"}
+                </button>
+              </div>
+            </form>
+          ) : (
+          <>
           <Button
             type="button"
             variant="outline"
@@ -195,7 +296,7 @@ export function AuthModal() {
                   placeholder="••••••••"
                   className="h-11 rounded-xl border-[#33363F]/10 bg-white focus:border-[#F2661A] pr-10"
                   required
-                  minLength={6}
+                  minLength={8}
                 />
                 <button
                   type="button"
@@ -251,6 +352,8 @@ export function AuthModal() {
               {isLogin ? t("auth.register") : t("auth.login")}
             </button>
           </div>
+          </>
+          )}
         </div>
       </DialogContent>
     </Dialog>

@@ -142,27 +142,28 @@ model LicenseGrant {
 }
 
 model Payment {
-  id           String        @id
-  userId       String        @map("user_id")
-  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
-  method       String
-  amount       Int
-  baseAmount   Int           @map("base_amount")
-  uniqueSuffix Int           @default(0) @map("unique_suffix")
-  amountUsd    Decimal?      @map("amount_usd") @db.Decimal(10, 2)
-  currency     String        @default("IDR")
-  status       String        @default("pending")
-  reference    String        @default("")
-  gateway      String        @default("manual")
-  gatewayRef   String?       @map("gateway_ref")
-  qrString     String?       @map("qr_string")
-  qrUrl        String?       @map("qr_url")
-  approveUrl   String?       @map("approve_url")
-  note         String?
-  verifiedAt   DateTime?     @map("verified_at")
-  expiresAt    DateTime      @map("expires_at")
-  createdAt    DateTime      @default(now()) @map("created_at")
-  license      LicenseGrant?
+  id            String        @id
+  userId        String        @map("user_id")
+  user          User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  method        String
+  amount        Int
+  baseAmount    Int           @map("base_amount")
+  uniqueSuffix  Int           @default(0) @map("unique_suffix")
+  amountUsd     Decimal?      @map("amount_usd") @db.Decimal(10, 2)
+  currency      String        @default("IDR")
+  status        String        @default("pending")
+  reference     String        @default("")
+  gateway       String        @default("manual")
+  gatewayRef    String?       @map("gateway_ref")
+  qrString      String?       @map("qr_string")
+  qrUrl         String?       @map("qr_url")
+  approveUrl    String?       @map("approve_url")
+  note          String?
+  verifiedAt    DateTime?     @map("verified_at")
+  invoiceSentAt DateTime?     @map("invoice_sent_at")
+  expiresAt     DateTime      @map("expires_at")
+  createdAt     DateTime      @default(now()) @map("created_at")
+  license       LicenseGrant?
 
   @@index([userId, createdAt])
   @@index([gateway, gatewayRef])
