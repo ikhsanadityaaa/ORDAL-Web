@@ -1,11 +1,11 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
+import Image from "next/image";
+import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { useLanguage } from "@/lib/i18n/context";
 import { useAuthStore } from "@/lib/auth-store";
 import { Button } from "@/components/ui/button";
 import {
-  BrandMarquee,
   SpinBadge,
   stickerButtonPrimary,
   stickerButtonSecondary,
@@ -28,9 +28,53 @@ import {
 
 const spring = { type: "spring", stiffness: 90, damping: 18 } as const;
 
+const jobPlatforms = [
+  {
+    name: "JobStreet",
+    logo: "/brands/jobstreet.png",
+    badgePosition: "-top-5 left-[12%]",
+    logoClassName: "h-5 w-auto",
+    badgeLogoClassName: "h-8 w-auto max-w-none",
+    width: 162,
+    height: 32,
+    cropBadge: true,
+  },
+  {
+    name: "LinkedIn",
+    logo: "/brands/linkedin.svg",
+    badgePosition: "left-0 sm:-left-5 bottom-[18%]",
+    logoClassName: "h-6 w-6",
+    badgeLogoClassName: "h-7 w-7",
+    width: 24,
+    height: 24,
+    cropBadge: false,
+  },
+  {
+    name: "Glints",
+    logo: "/brands/glints.png",
+    badgePosition: "right-0 sm:-right-5 top-[17%]",
+    logoClassName: "h-8 w-auto",
+    badgeLogoClassName: "h-9 w-auto",
+    width: 42,
+    height: 32,
+    cropBadge: false,
+  },
+  {
+    name: "Indeed",
+    logo: "/brands/indeed.svg",
+    badgePosition: "-bottom-5 right-[14%]",
+    logoClassName: "h-6 w-6",
+    badgeLogoClassName: "h-8 w-8",
+    width: 24,
+    height: 24,
+    cropBadge: false,
+  },
+] as const;
+
 export function HeroSection() {
   const { t, language } = useLanguage();
   const { isAuthenticated, openAuthModal, openDownloadModal } = useAuthStore();
+  const reduceMotion = useReducedMotion();
 
   const handleDownload = () => {
     if (isAuthenticated) {
@@ -151,6 +195,52 @@ export function HeroSection() {
             style={{ y: mockupY }}
             className="relative lg:col-span-7"
           >
+            <div className="pointer-events-none absolute -inset-x-10 -inset-y-16 hidden sm:block" aria-hidden>
+              <div className="absolute inset-[8%] rounded-[50%] border border-[#173E76]/12" />
+              <div className="absolute inset-[18%] rounded-[50%] border border-[#F2661A]/15" />
+              <div className="absolute inset-x-[4%] inset-y-[27%] rounded-[50%] border border-[#33363F]/8" />
+            </div>
+
+            {jobPlatforms.map((platform, index) => (
+              <motion.div
+                key={platform.name}
+                initial={{ opacity: 0, scale: 0.65 }}
+                animate={{
+                  opacity: 1,
+                  scale: 1,
+                  y: reduceMotion ? 0 : [0, index % 2 === 0 ? -7 : 7, 0],
+                }}
+                transition={{
+                  opacity: { delay: 0.75 + index * 0.1, duration: 0.35 },
+                  scale: { delay: 0.75 + index * 0.1, duration: 0.35 },
+                  y: { delay: index * 0.4, duration: 4 + index * 0.45, repeat: Infinity, ease: "easeInOut" },
+                }}
+                className={`absolute ${platform.badgePosition} z-30 flex h-12 w-12 items-center justify-center rounded-full border-2 border-[#33363F] bg-white shadow-[4px_4px_0_rgba(51,54,63,0.85)] sm:h-14 sm:w-14`}
+                aria-label={platform.name}
+                role="img"
+              >
+                {platform.cropBadge ? (
+                  <span className="flex h-8 w-8 items-center overflow-hidden rounded-full">
+                    <Image
+                      src={platform.logo}
+                      alt=""
+                      width={platform.width}
+                      height={platform.height}
+                      className={platform.badgeLogoClassName}
+                    />
+                  </span>
+                ) : (
+                  <Image
+                    src={platform.logo}
+                    alt=""
+                    width={platform.width}
+                    height={platform.height}
+                    className={`object-contain ${platform.badgeLogoClassName}`}
+                  />
+                )}
+              </motion.div>
+            ))}
+
             {/* Rotated color block behind the window */}
             <div className="absolute -inset-2.5 rounded-[1.75rem] bg-[#F2661A] rotate-[1.2deg]" aria-hidden />
             <div className="absolute -inset-2.5 rounded-[1.75rem] bg-[#173E76] -rotate-[1deg] translate-x-4 translate-y-4" aria-hidden />
@@ -190,7 +280,7 @@ export function HeroSection() {
             </div>
 
             {/* Window */}
-            <div className="relative rounded-2xl overflow-hidden border-2 border-[#33363F] shadow-[12px_12px_0_rgba(51,54,63,0.9)] bg-white">
+            <div className="relative z-10 rounded-2xl overflow-hidden border-2 border-[#33363F] shadow-[12px_12px_0_rgba(51,54,63,0.9)] bg-white">
               <div className="absolute right-3 top-12 z-20 bg-[#33363F] px-2.5 py-1 text-[10px] font-bold text-white">
                 {language === "id" ? "CONTOH TAMPILAN" : "INTERFACE EXAMPLE"}
               </div>
@@ -372,11 +462,34 @@ export function HeroSection() {
             </motion.div>
           </motion.div>
         </div>
-      </div>
 
-      {/* Marquee band — closes the hero with energy */}
-      <div className="relative mt-14 sm:mt-16 lg:mt-24">
-        <BrandMarquee variant="orange" />
+        <motion.div
+          initial={{ opacity: 0, y: 18 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1, duration: 0.5 }}
+          className="mt-14 border-t border-[#33363F]/15 py-7 sm:mt-16"
+        >
+          <p className="mb-5 text-center text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#33363F]/45 sm:text-xs">
+            {language === "id" ? "Ekosistem pencarian kerja" : "Job search ecosystem"}
+          </p>
+          <div className="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap sm:items-center sm:justify-center sm:gap-x-10 sm:gap-y-4 lg:gap-x-14">
+            {jobPlatforms.map((platform) => (
+              <div
+                key={platform.name}
+                className="flex min-h-12 items-center justify-center gap-2.5 rounded-xl border border-[#33363F]/10 bg-white/55 px-4 py-2 sm:min-h-0 sm:border-0 sm:bg-transparent sm:px-0"
+              >
+                <Image
+                  src={platform.logo}
+                  alt=""
+                  width={platform.width}
+                  height={platform.height}
+                  className={`object-contain ${platform.logoClassName}`}
+                />
+                <span className="text-sm font-extrabold text-[#33363F]/70">{platform.name}</span>
+              </div>
+            ))}
+          </div>
+        </motion.div>
       </div>
     </section>
   );

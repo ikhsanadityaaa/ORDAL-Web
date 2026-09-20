@@ -40,6 +40,8 @@ Make Web/Vercel the authority for authentication, device limits, trials, license
 - Added Resend idempotency plus `invoice_sent_at` tracking so payment replays do not duplicate invoices.
 - Changed gateway verification to validate each invoice's stored amount, preserving valid pending invoices across future price changes.
 - Kept the existing sticker-style UI; the proposed minimalist redesign was canceled before commit.
+- Redesigned the hero around the existing dashboard mockup with subtle orbit lines, official JobStreet, LinkedIn, Glints, and Indeed brand assets, floating platform badges, and a static platform row.
+- Removed only the marquee directly below the hero; the Problem and Automation Pipeline marquees remain.
 - Prisma generation, TypeScript checks, and production build pass.
 
 ## Live Supabase Changes
@@ -93,6 +95,7 @@ Security advisor now reports only `rls_enabled_no_policy` informational notices.
 - New unique and retention indexes verified in live Supabase.
 - Active-payment unique index and invoice email tracking column are verified in live Supabase.
 - Payment invoice self-check, targeted ESLint, TypeScript, and production build pass.
+- Hero targeted ESLint, TypeScript, production build, desktop visual check, and 390px overflow check pass.
 
 ## Required Before Production
 
