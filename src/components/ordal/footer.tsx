@@ -2,25 +2,13 @@
 
 import { motion } from "framer-motion";
 import { useLanguage } from "@/lib/i18n/context";
-import { useAuthStore } from "@/lib/auth-store";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, ArrowUp, ArrowUpRight } from "lucide-react";
 import { stickerButtonDark } from "@/components/ordal/creative";
-import { WindowsLogo, AppleLogo } from "@/components/ordal/brand-icons";
 
 export function Footer() {
   const { t, language } = useLanguage();
-  const { isAuthenticated, openAuthModal, openDownloadModal, openAccountModal } =
-    useAuthStore();
-
-  const handleDownload = () => {
-    if (isAuthenticated) {
-      openDownloadModal();
-    } else {
-      openAuthModal("register");
-    }
-  };
-
   const footerLinks = {
     product: [
       { label: language === "id" ? "Fitur" : "Features", href: "#features" },
@@ -91,23 +79,10 @@ export function Footer() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, margin: "-60px" }}
             transition={{ delay: 0.15, duration: 0.55 }}
-            className="mt-9 flex flex-col sm:flex-row items-center justify-center gap-4"
+            className="mt-9 flex justify-center"
           >
-            <Button
-              onClick={handleDownload}
-              size="lg"
-              className={`h-14 px-7 text-base !rounded-2xl ${stickerButtonDark}`}
-            >
-              <WindowsLogo className="w-5 h-5 mr-2.5 shrink-0" />
-              {language === "id" ? "Download untuk Windows" : "Download for Windows"}
-            </Button>
-            <Button
-              onClick={handleDownload}
-              size="lg"
-              className="h-14 px-7 text-base !rounded-2xl bg-[#C94708] hover:bg-[#B83E06] text-white border-2 border-[#F4F2EC] shadow-[5px_5px_0_rgba(244,242,236,0.9)] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0_rgba(244,242,236,0.9)] transition-all font-bold"
-            >
-              <AppleLogo className="w-5 h-5 mr-2.5 shrink-0" />
-              {language === "id" ? "Download untuk macOS" : "Download for macOS"}
+            <Button asChild size="lg" className="h-14 px-8 text-base !rounded-2xl bg-[#F2661A] text-white border-2 border-[#F4F2EC] shadow-[5px_5px_0_rgba(244,242,236,0.9)] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0_rgba(244,242,236,0.9)] transition-all font-bold">
+              <Link href="/download">Download Gratis <ArrowUpRight className="ml-2 h-5 w-5" /></Link>
             </Button>
           </motion.div>
 

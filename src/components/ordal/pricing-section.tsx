@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import {
   SectionHeader,
   Deco,
-  SpinBadge,
   WordReveal,
   stickerButtonPrimary,
 } from "@/components/ordal/creative";
@@ -61,17 +60,6 @@ export function PricingSection() {
 
         {/* Price card + spinning badge */}
         <div className="relative max-w-xl mx-auto">
-          {/* Spin badge — floats left of the card, desktop only */}
-          <motion.div
-            initial={{ opacity: 0, scale: 0.6 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ delay: 0.35, type: "spring", stiffness: 200, damping: 14 }}
-            className="hidden lg:block absolute -left-24 -top-12 text-[#F4F2EC]"
-          >
-            <SpinBadge text={t("hero.spinningText")} />
-          </motion.div>
-
           {/* The one hero price card — sticker on dark */}
           <motion.div
             initial={{ opacity: 0, y: 60, rotate: -4 }}

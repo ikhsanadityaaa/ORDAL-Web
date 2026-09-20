@@ -31,11 +31,11 @@ export const translations = {
       headlineHighlight: "Biar ORDAL cariin buat kamu.",
       description:
         "Tentuin target, pilih CV, atur preferensi kamu. Sisanya biar ORDAL yang kerja: nyari lowongan yang cocok, nyaring yang nggak, dan ngirim lamaran buat kamu.",
-      downloadWindows: "Download untuk Windows",
-      downloadMac: "Download untuk macOS",
+      downloadWindows: "Download (PC Only)",
+      downloadMac: "Download (PC Only)",
       trialInfo: "Gratis trial 3 hari",
       pricingInfo: "Sekali bayar, gratis selamanya!",
-      versionInfo: "v1.0.0 • Windows & macOS",
+      versionInfo: "Windows & macOS",
       statTargets: "Target Aktif",
       statJobs: "Lowongan Ditemukan",
       statApplied: "Lamaran Diproses",
@@ -48,7 +48,7 @@ export const translations = {
     // Problem Section
     problem: {
       badge: "Capek, ya?",
-      title: "Cari kerja seharusnya nggak jadi pekerjaan penuh waktu.",
+      title: "Cari kerja seharusnya nggak jadi kerjaan fulltime.",
       subtitle:
         "Tiap hari rutinitasnya sama. Monoton. Melelahkan. Dan yang paling nyebelin: besok diulang lagi.",
       steps: [
@@ -68,7 +68,7 @@ export const translations = {
       pain2Desc: "Dengan form yang itu-itu mulu",
       pain3: "0 feedback",
       pain3Desc: "Lamaran kamu nyaris bareng ribuan lamaran lain",
-      message: "Cari kerja seharusnya bukan pekerjaan penuh waktu.",
+      message: "Cari kerja seharusnya bukan Fulltime.",
     },
 
     // Meet ORDAL Section
@@ -143,7 +143,7 @@ export const translations = {
         "Lokasi pencarian",
         "Platform sumber lowongan",
         "Range gaji",
-        "Jenis pekerjaan (Full Time, Contract, Internship)",
+        "Jenis pekerjaan (Fulltime, Contract, Internship)",
         "Posisi yang nggak mau dilamar",
         "Perusahaan yang mau dihindari",
       ],

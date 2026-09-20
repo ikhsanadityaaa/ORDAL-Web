@@ -3,7 +3,7 @@
 import { motion } from "framer-motion";
 import { useLanguage } from "@/lib/i18n/context";
 import { Deco, SectionHeader, WordReveal } from "@/components/ordal/creative";
-import { Clock, Eye, RefreshCw, Repeat2 } from "lucide-react";
+import { Clock, Eye, Repeat2 } from "lucide-react";
 
 const viewport = { once: true, margin: "-80px" } as const;
 const spring = { type: "spring", stiffness: 210, damping: 18 } as const;
@@ -12,8 +12,6 @@ export function ProblemSection() {
   const { t, tArray, language } = useLanguage();
 
   const steps = tArray("problem.steps");
-  const loopLabel = t("problem.loopLabel");
-
   const pains = [
     { value: t("problem.pain1"), desc: t("problem.pain1Desc"), icon: Clock },
     { value: t("problem.pain2"), desc: t("problem.pain2Desc"), icon: Repeat2 },
@@ -21,7 +19,7 @@ export function ProblemSection() {
   ];
 
   // Highlight the key phrase of the title with the dark-section highlighter
-  const keyPhrase = language === "id" ? "pekerjaan penuh waktu" : "full-time job";
+  const keyPhrase = language === "id" ? "fulltime" : "full-time job";
   const [titleBefore, titleAfter] = t("problem.title").split(keyPhrase);
   const title =
     titleAfter !== undefined ? (
@@ -57,7 +55,7 @@ export function ProblemSection() {
           title={title}
           subtitle={t("problem.subtitle")}
           dark
-          className="mb-14 md:mb-16"
+          className="mb-20 md:mb-28"
         />
 
         {/* The soul-crushing 8-step loop — sticker chip grid */}
@@ -100,40 +98,9 @@ export function ProblemSection() {
                   </div>
                 </div>
 
-                {/* Spinning loop badge on the punchline card — CSS
-                    compositor animation (was a JS rotate loop) */}
-                {isLast && (
-                  <span
-                    aria-hidden
-                    className="animate-spin-fast absolute -top-3.5 -right-3.5 z-10 flex items-center justify-center w-9 h-9 rounded-full bg-[#F2661A] border-2 border-[#33363F] shadow-[3px_3px_0_rgba(242,102,26,0.5)]"
-                  >
-                    <RefreshCw className="w-4 h-4 text-white" />
-                  </span>
-                )}
               </motion.div>
             );
           })}
-        </div>
-      </div>
-
-      {/* Tilted loop-label strip — full bleed, repeats like a broken record */}
-      <div
-        aria-hidden
-        className="relative z-10 my-12 md:my-16 -rotate-[1.2deg] scale-[1.02] select-none"
-      >
-        <div className="marquee bg-[#F2661A] text-[#33363F] border-y-2 border-[#33363F] py-3">
-          <div className="marquee-track">
-            {Array.from({ length: 8 }).map((_, i) => (
-              <span
-                key={i}
-                className="flex items-center text-xl md:text-2xl font-extrabold uppercase tracking-tight whitespace-nowrap"
-                style={{ gap: "1.75rem", paddingRight: "1.75rem" }}
-              >
-                {loopLabel}
-                <span className="text-[#F4F2EC]">✦</span>
-              </span>
-            ))}
-          </div>
         </div>
       </div>
 

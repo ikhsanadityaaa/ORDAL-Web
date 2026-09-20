@@ -3,14 +3,12 @@
 import Image from "next/image";
 import { motion, useReducedMotion, useScroll, useTransform } from "framer-motion";
 import { useLanguage } from "@/lib/i18n/context";
-import { useAuthStore } from "@/lib/auth-store";
+import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import {
-  SpinBadge,
   stickerButtonPrimary,
   stickerButtonSecondary,
 } from "@/components/ordal/creative";
-import { WindowsLogo, AppleLogo } from "@/components/ordal/brand-icons";
 import {
   CheckCircle2,
   Sparkles,
@@ -73,16 +71,7 @@ const jobPlatforms = [
 
 export function HeroSection() {
   const { t, language } = useLanguage();
-  const { isAuthenticated, openAuthModal, openDownloadModal } = useAuthStore();
   const reduceMotion = useReducedMotion();
-
-  const handleDownload = () => {
-    if (isAuthenticated) {
-      openDownloadModal();
-    } else {
-      openAuthModal("register");
-    }
-  };
 
   const { scrollY } = useScroll();
   const mockupY = useTransform(scrollY, [0, 600], [0, 50]);
@@ -145,23 +134,13 @@ export function HeroSection() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.5, duration: 0.6 }}
-              className="mt-5 flex flex-col sm:flex-row lg:flex-col gap-3 sm:gap-4"
+              className="mt-5 flex flex-col sm:flex-row gap-3 sm:gap-4"
             >
-              <Button
-                onClick={handleDownload}
-                size="lg"
-                className={`h-12 px-6 text-[15px] !rounded-2xl ${stickerButtonPrimary}`}
-              >
-                <WindowsLogo className="w-[18px] h-[18px] mr-2.5 shrink-0" />
-                {t("hero.downloadWindows")}
+              <Button asChild size="lg" className="h-12 px-6 text-[15px] !rounded-2xl bg-[#F2661A] text-white border-2 border-[#33363F] rounded-2xl shadow-[5px_5px_0_#33363F] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0_#33363F] transition-all font-bold">
+                <Link href="/#download">{t("hero.downloadWindows")}</Link>
               </Button>
-              <Button
-                onClick={handleDownload}
-                size="lg"
-                className={`h-12 px-6 text-[15px] !rounded-2xl ${stickerButtonSecondary}`}
-              >
-                <AppleLogo className="w-[18px] h-[18px] mr-2.5 shrink-0" />
-                {t("hero.downloadMac")}
+              <Button asChild size="lg" className={`h-12 px-6 text-[15px] !rounded-2xl ${stickerButtonSecondary}`}>
+                <Link href="/download">{t("nav.getStarted")}</Link>
               </Button>
             </motion.div>
 
@@ -201,45 +180,6 @@ export function HeroSection() {
               <div className="absolute inset-x-[4%] inset-y-[27%] rounded-[50%] border border-[#33363F]/8" />
             </div>
 
-            {jobPlatforms.map((platform, index) => (
-              <motion.div
-                key={platform.name}
-                initial={{ opacity: 0, scale: 0.65 }}
-                animate={{
-                  opacity: 1,
-                  scale: 1,
-                  y: reduceMotion ? 0 : [0, index % 2 === 0 ? -7 : 7, 0],
-                }}
-                transition={{
-                  opacity: { delay: 0.75 + index * 0.1, duration: 0.35 },
-                  scale: { delay: 0.75 + index * 0.1, duration: 0.35 },
-                  y: { delay: index * 0.4, duration: 4 + index * 0.45, repeat: Infinity, ease: "easeInOut" },
-                }}
-                className={`absolute ${platform.badgePosition} z-30 flex h-12 w-12 items-center justify-center rounded-full border-2 border-[#33363F] bg-white shadow-[4px_4px_0_rgba(51,54,63,0.85)] sm:h-14 sm:w-14`}
-                aria-label={platform.name}
-                role="img"
-              >
-                {platform.cropBadge ? (
-                  <span className="flex h-8 w-8 items-center overflow-hidden rounded-full">
-                    <Image
-                      src={platform.logo}
-                      alt=""
-                      width={platform.width}
-                      height={platform.height}
-                      className={platform.badgeLogoClassName}
-                    />
-                  </span>
-                ) : (
-                  <Image
-                    src={platform.logo}
-                    alt=""
-                    width={platform.width}
-                    height={platform.height}
-                    className={`object-contain ${platform.badgeLogoClassName}`}
-                  />
-                )}
-              </motion.div>
-            ))}
 
             {/* Rotated color block behind the window */}
             <div className="absolute -inset-2.5 rounded-[1.75rem] bg-[#F2661A] rotate-[1.2deg]" aria-hidden />
@@ -394,7 +334,7 @@ export function HeroSection() {
                         language === "id" ? "Semua Platform" : "All Platforms",
                         "Jakarta",
                         "Tangerang",
-                        "Full Time",
+                        "Fulltime",
                       ].map((tag) => (
                         <span
                           key={tag}
@@ -446,20 +386,6 @@ export function HeroSection() {
               </div>
             </div>
 
-            {/* Spinning badge — pinned on the window's top-right corner */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.6 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.9, duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-              className="hidden lg:flex absolute -top-14 right-0 z-30 text-[#33363F]"
-            >
-              <a href="#problem" aria-hidden className="block">
-                <SpinBadge
-                  text={t("hero.spinningText")}
-                  className="w-28 h-28 md:w-28 md:h-28"
-                />
-              </a>
-            </motion.div>
           </motion.div>
         </div>
 
@@ -469,9 +395,6 @@ export function HeroSection() {
           transition={{ delay: 1, duration: 0.5 }}
           className="mt-14 border-t border-[#33363F]/15 py-7 sm:mt-16"
         >
-          <p className="mb-5 text-center text-[10px] font-extrabold uppercase tracking-[0.2em] text-[#33363F]/45 sm:text-xs">
-            {language === "id" ? "Ekosistem pencarian kerja" : "Job search ecosystem"}
-          </p>
           <div className="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap sm:items-center sm:justify-center sm:gap-x-10 sm:gap-y-4 lg:gap-x-14">
             {jobPlatforms.map((platform) => (
               <div

@@ -16,12 +16,12 @@ import { AnswersSection } from "@/components/ordal/answers-section";
 import { ShowcaseSection } from "@/components/ordal/showcase-section";
 import { PricingSection } from "@/components/ordal/pricing-section";
 import { FAQSection } from "@/components/ordal/faq-section";
+import { DownloadSection } from "@/components/ordal/download-section";
 import { Footer } from "@/components/ordal/footer";
 import { AuthModal } from "@/components/ordal/auth-modal";
 import { AccountModal } from "@/components/ordal/account-modal";
 import { DownloadModal } from "@/components/ordal/download-modal";
 import { ChatWidget } from "@/components/ordal/chat-widget";
-import { SourceDownloadButton } from "@/components/ordal/source-download-button";
 import { toast } from "sonner";
 
 export default function Home() {
@@ -73,6 +73,7 @@ export default function Home() {
         <AnswersSection />
         <ShowcaseSection />
         <PricingSection />
+        <DownloadSection />
         <FAQSection />
       </main>
 
@@ -89,8 +90,6 @@ export default function Home() {
         {/* Live chat bot */}
         <ChatWidget />
 
-        {/* Dev-preview only: one-click source zip download */}
-        <SourceDownloadButton />
       </div>
     </MotionConfig>
   );

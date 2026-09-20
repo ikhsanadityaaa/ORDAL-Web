@@ -7,6 +7,7 @@ import { useAuthStore } from "@/lib/auth-store";
 import { Button } from "@/components/ui/button";
 import { Menu, X, User, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+import Link from "next/link";
 
 export function Navigation() {
   const { language, setLanguage, t } = useLanguage();
@@ -26,7 +27,8 @@ export function Navigation() {
     { label: t("nav.features"), href: "#features" },
     { label: t("nav.howItWorks"), href: "#how-it-works" },
     { label: t("nav.pricing"), href: "#pricing" },
-    { label: t("nav.faq"), href: "#faq" },
+        { label: t("nav.faq"), href: "#faq" },
+    { label: t("nav.download"), href: "/download" },
   ];
 
   const handleAuthClick = () => {
@@ -133,17 +135,13 @@ export function Navigation() {
 
             {/* CTA */}
             <Button
-              onClick={() => {
-                if (isAuthenticated) {
-                  openAccountModal();
-                } else {
-                  openAuthModal("register");
-                }
-              }}
+              asChild
               className="hidden sm:inline-flex items-center gap-1.5 bg-[#C94708] hover:bg-[#B83E06] text-white border-2 border-[#33363F] font-bold px-4 py-2 rounded-xl text-sm shadow-[3px_3px_0_#33363F] hover:shadow-[5px_5px_0_#33363F] hover:translate-x-[-1px] hover:translate-y-[-1px] transition-all"
             >
-              {t("nav.getStarted")}
-              <ArrowUpRight className="w-3.5 h-3.5" />
+              <Link href="/#download">
+                {t("nav.getStarted")}
+                <ArrowUpRight className="w-3.5 h-3.5" />
+              </Link>
             </Button>
 
             {/* Mobile menu button */}
@@ -198,18 +196,8 @@ export function Navigation() {
                     : t("nav.login")}
                 </button>
                 <div className="px-3 pt-2">
-                  <Button
-                    onClick={() => {
-                      setIsMobileOpen(false);
-                      if (isAuthenticated) {
-                        openAccountModal();
-                      } else {
-                        openAuthModal("register");
-                      }
-                    }}
-                    className="w-full bg-[#C94708] hover:bg-[#B83E06] text-white border-2 border-[#33363F] font-bold py-2.5 rounded-xl shadow-[3px_3px_0_#33363F] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all"
-                  >
-                    {t("nav.getStarted")}
+                  <Button asChild className="w-full bg-[#C94708] hover:bg-[#B83E06] text-white border-2 border-[#33363F] font-bold py-2.5 rounded-xl shadow-[3px_3px_0_#33363F] active:translate-x-[1px] active:translate-y-[1px] active:shadow-none transition-all">
+                    <Link href="/#download" onClick={() => setIsMobileOpen(false)}>{t("nav.getStarted")}</Link>
                   </Button>
                 </div>
               </div>
