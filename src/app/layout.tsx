@@ -36,6 +36,9 @@ export const metadata: Metadata = {
     "lamar kerja",
     "aplikasi cari kerja",
     "aplikasi cari kerja otomatis",
+    "alat pencari kerja otomatis",
+    "software pencari kerja",
+    "aplikasi bantu cari kerja",
     "aplikasi lamar kerja",
     "aplikasi auto apply lowongan kerja",
     "aplikasi melamar kerja otomatis",
@@ -139,7 +142,7 @@ const jsonLd = {
       featureList: translations.id.pricing.features,
       offers: {
         "@type": "Offer",
-        price: "149000",
+        price: "179000",
         priceCurrency: "IDR",
         availability: "https://schema.org/InStock",
         url: `${siteUrl}/#pricing`,

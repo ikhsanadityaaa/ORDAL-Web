@@ -91,7 +91,7 @@ export function HeroSection() {
     );
 
   return (
-    <section className="relative pt-24 sm:pt-28 pb-0 overflow-hidden dot-pattern">
+    <section aria-label="AI job search agent untuk pencari kerja" className="relative pt-24 sm:pt-28 pb-0 overflow-hidden dot-pattern">
       {/* Soft color washes */}
       <div className="absolute top-10 -left-24 w-80 h-80 bg-[#F2661A]/10 rounded-full blur-3xl" />
       <div className="absolute top-40 -right-24 w-96 h-96 bg-[#173E76]/10 rounded-full blur-3xl" />

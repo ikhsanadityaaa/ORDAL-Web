@@ -13,4 +13,4 @@ Allow: /
 User-agent: *
 Allow: /
 
-Sitemap: https://ordal.app/sitemap.xml
+Sitemap: https://ordal-web.vercel.app/sitemap.xml
