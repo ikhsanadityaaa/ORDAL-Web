@@ -117,8 +117,7 @@ export function HeroSection() {
               transition={{ delay: 0.25, duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
               className="h-display text-[clamp(2.05rem,4.2vw,3.25rem)] leading-[1.04] text-[#33363F]"
             >
-              {t("hero.headline")}
-              <span className="block mt-1">{headlineSecond}</span>
+              {t("hero.headline")} {headlineSecond}
             </motion.h1>
 
             <motion.p
