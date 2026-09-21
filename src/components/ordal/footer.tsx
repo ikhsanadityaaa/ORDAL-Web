@@ -82,7 +82,7 @@ export function Footer() {
             className="mt-9 flex justify-center"
           >
             <Button asChild size="lg" className="h-14 px-8 text-base !rounded-2xl bg-[#F2661A] text-white border-2 border-[#F4F2EC] shadow-[5px_5px_0_rgba(244,242,236,0.9)] hover:translate-x-[-2px] hover:translate-y-[-2px] hover:shadow-[8px_8px_0_rgba(244,242,236,0.9)] transition-all font-bold">
-              <Link href="/download">{language === "id" ? "Download Gratis" : "Download for Free"} <ArrowUpRight className="ml-2 h-5 w-5" /></Link>
+              <Link href="/#download">{language === "id" ? "Download Gratis" : "Download for Free"} <ArrowUpRight className="ml-2 h-5 w-5" /></Link>
             </Button>
           </motion.div>
 

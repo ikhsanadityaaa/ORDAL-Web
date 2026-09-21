@@ -139,7 +139,7 @@ export function HeroSection() {
                 <Link href="/#download">{t("hero.downloadWindows")}</Link>
               </Button>
               <Button asChild size="lg" className={`h-12 px-6 text-[15px] !rounded-2xl ${stickerButtonSecondary}`}>
-                <Link href="/download">{t("nav.getStarted")}</Link>
+                <Link href="/#download">{t("nav.getStarted")}</Link>
               </Button>
             </motion.div>
 

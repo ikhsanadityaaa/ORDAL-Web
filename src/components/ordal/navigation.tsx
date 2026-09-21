@@ -28,7 +28,7 @@ export function Navigation() {
     { label: t("nav.howItWorks"), href: "#how-it-works" },
     { label: t("nav.pricing"), href: "#pricing" },
         { label: t("nav.faq"), href: "#faq" },
-    { label: t("nav.download"), href: "/download" },
+    { label: t("nav.download"), href: "/#download" },
   ];
 
   const handleAuthClick = () => {
