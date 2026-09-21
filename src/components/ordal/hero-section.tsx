@@ -31,7 +31,7 @@ const jobPlatforms = [
     name: "JobStreet",
     logo: "/brands/jobstreet.png",
     badgePosition: "-top-5 left-[12%]",
-    logoClassName: "h-5 w-auto",
+    logoClassName: "h-8 w-auto",
     badgeLogoClassName: "h-8 w-auto max-w-none",
     width: 162,
     height: 32,
@@ -41,7 +41,7 @@ const jobPlatforms = [
     name: "LinkedIn",
     logo: "/brands/linkedin.svg",
     badgePosition: "left-0 sm:-left-5 bottom-[18%]",
-    logoClassName: "h-6 w-6",
+    logoClassName: "h-8 w-8",
     badgeLogoClassName: "h-7 w-7",
     width: 24,
     height: 24,
@@ -61,7 +61,7 @@ const jobPlatforms = [
     name: "Indeed",
     logo: "/brands/indeed.svg",
     badgePosition: "-bottom-5 right-[14%]",
-    logoClassName: "h-6 w-6",
+    logoClassName: "h-8 w-8",
     badgeLogoClassName: "h-8 w-8",
     width: 24,
     height: 24,
@@ -408,7 +408,6 @@ export function HeroSection() {
                   height={platform.height}
                   className={`object-contain ${platform.logoClassName}`}
                 />
-                <span className="text-sm font-extrabold text-[#33363F]/70">{platform.name}</span>
               </div>
             ))}
           </div>
