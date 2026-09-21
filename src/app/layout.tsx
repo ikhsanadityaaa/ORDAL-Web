@@ -18,8 +18,7 @@ const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://ordal.app";
 /* ============================================================
    SEO — tuned for job seekers (Indonesia-first, EN secondary)
    ============================================================ */
-const seoTitle =
-  "ORDAL: Aplikasi Cari Kerja Otomatis dengan AI | AI Job Search Agent";
+const seoTitle = "ORDAL";
 const seoDescription =
   "Aplikasi AI buat pencari kerja: nyari lowongan, cek kecocokan, dan apply lamaran otomatis sesuai CV & target kamu. Trial gratis 3 hari, bayar sekali. Windows & macOS.";
 
