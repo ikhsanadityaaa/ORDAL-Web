@@ -31,8 +31,8 @@ export const translations = {
       headlineHighlight: "Biar ORDAL cariin buat kamu.",
       description:
         "Tentuin target, pilih CV, atur preferensi kamu. Sisanya biar ORDAL yang kerja: nyari lowongan yang cocok, nyaring yang nggak, dan ngirim lamaran buat kamu.",
-      downloadWindows: "Download (PC Only)",
-      downloadMac: "Download (PC Only)",
+      downloadWindows: "Download for PC (Windows/macOS)",
+      downloadMac: "Download for PC (Windows/macOS)",
       trialInfo: "Gratis trial 3 hari",
       pricingInfo: "Sekali bayar, gratis selamanya!",
       versionInfo: "Windows & macOS",
@@ -451,8 +451,8 @@ export const translations = {
       headlineHighlight: "Let ORDAL hunt for you.",
       description:
         "Set your targets, pick your resume, tune your preferences. Then let ORDAL take over: finding relevant openings, filtering out the noise, and sending applications for you.",
-      downloadWindows: "Download for Windows",
-      downloadMac: "Download for macOS",
+      downloadWindows: "Download for PC (Windows/macOS)",
+      downloadMac: "Download for PC (Windows/macOS)",
       trialInfo: "3-day free trial",
       pricingInfo: "Pay once, use forever!",
       versionInfo: "v1.0.0 • Windows & macOS",
