@@ -1,20 +1,31 @@
 
-## UI and performance update — 2026-09-21
+## UI, download, and performance update — 2026-09-21
 
-- Home CTA sekarang satu jalur: `Download (PC Only)` dan `Coba Gratis` menuju `/download`.
-- Tombol download Windows/macOS terpisah di home dihapus.
-- Tulisan muter/spinning badge di pricing dihapus.
-- Floating source ZIP dev-only di home dihapus agar tidak menambah elemen dan client logic.
-- Page `/download` menampilkan installer Windows/macOS dan minimum spec praktis.
-- Minimum spec awal: Windows 10 64-bit+, macOS 12 Monterey+, 4 GB RAM, 1 GB storage, koneksi internet stabil. Angka ini perlu divalidasi lewat benchmark installer production.
-- `taste-skill` cocok sebagai panduan audit visual agent; tidak diperlukan sebagai dependency runtime. Prinsip yang dipakai: kurangi noise, CTA jelas, motion lebih sedikit, dan state download jujur saat URL installer belum dikonfigurasi.
+- Source of truth: `main`; latest synced commit is `60fd63f`.
+- Home CTA `Download (PC Only)` and `Coba Gratis` use `/download`; navigation also exposes `Download`.
+- `/download` uses ORDAL visual language and contains Windows/macOS buttons plus minimum practical spec.
+- Download buttons use same `Button` and `stickerButtonPrimary` treatment as pricing: orange fill, hard shadow, hover lift, and icon motion.
+- Windows/macOS buttons remain visually consistent when installer environment URLs are not configured.
+- Minimum practical spec: Windows 10 64-bit+, macOS 12 Monterey+, Intel Core i3 or AMD Ryzen 3 equivalent, 4 GB RAM minimum, 8 GB recommended, 1 GB free storage, stable internet.
+- Removed home spinning badge, repeated marquee noise, floating source ZIP preview, and excess hero motion.
+- Tightened download spacing for 13-inch laptop at 100% zoom; full landing page still requires vertical scrolling because it contains multiple sections.
+- `taste-skill` was used as visual review guidance, not runtime dependency.
+- Production verification on `ordal-web.vercel.app` must happen after Vercel deploys latest `main`; cached old HTML can show previous CTA links until deployment completes.
+
+## Repository sync
+
+- Branch: `main`
+- Remote: `origin/main`
+- Latest commit: `60fd63f fix: tighten download section layout`
+- Local and remote commit IDs match; no merge conflict or unpushed commit.
+
 
 # ORDAL Web - Engineering Progress
 
-Last updated: 2026-09-20
-Branch: `codex/remaining-security-work`
-Base commit: `f4a29d4`
-Implementation commit: `ec1b661` (pushed to `origin/codex/remaining-security-work`).
+Last updated: 2026-09-21
+Branch: `main`
+Base commit: `f480a0a`
+Implementation commits: `2f34539`, `60fd63f` (pushed to `origin/main`).
 
 ## Goal
 
