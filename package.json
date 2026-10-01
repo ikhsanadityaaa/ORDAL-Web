@@ -19,6 +19,7 @@
     "check:security": "node scripts/security-self-check.mts",
     "check:invoice": "node scripts/payment-invoice-self-check.mts",
     "check:geo": "node scripts/geo-self-check.mts",
+    "submit:indexnow": "node scripts/submit-indexnow.mts",
     "check:preview": "node scripts/preview-integration-check.mts"
   },
   "dependencies": {

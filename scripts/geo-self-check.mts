@@ -12,6 +12,8 @@ const llmsFull = read("public/llms-full.txt");
 const sitemap = read("src/app/sitemap.ts");
 const nextConfig = read("next.config.ts");
 const translations = read("src/lib/i18n/translations.ts");
+const indexNowKey = read("public/96c5bbde87aafe6f0ed6b80d7f5faff3.txt").trim();
+const indexNowScript = read("scripts/submit-indexnow.mts");
 const checked = [site, robots, llms, llmsFull, sitemap, nextConfig, translations].join("\n");
 
 assert.match(site, /https:\/\/www\.applywithordal\.com/);
@@ -41,5 +43,7 @@ assert.match(sitemap, /cv-ats-friendly/);
 assert.match(sitemap, /auto-apply-lowongan/);
 assert.match(nextConfig, /source: "\/api\/:path\*"/);
 assert.match(nextConfig, /noindex, nofollow, noarchive/);
+assert.equal(indexNowKey, "96c5bbde87aafe6f0ed6b80d7f5faff3");
+assert.match(indexNowScript, /api\.indexnow\.org\/indexnow/);
 
 console.log("GEO self-check passed");
