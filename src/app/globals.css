@@ -110,6 +110,17 @@
   }
 }
 
+/* Keep each landing section framed as one desktop viewport at 100% zoom. */
+@media (min-width: 1024px) and (min-height: 720px) {
+  .home-sections > section {
+    min-height: 100svh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    scroll-margin-top: 5rem;
+  }
+}
+
 /* Custom scrollbar for ORDAL */
 ::-webkit-scrollbar {
   width: 10px;
@@ -515,4 +526,3 @@ section[id] {
     animation: none !important;
   }
 }
-

@@ -61,7 +61,7 @@ export default function Home() {
       <Navigation />
 
       {/* Main content */}
-      <main className="flex-1">
+      <main className="home-sections flex-1">
         <HeroSection />
         <ProblemSection />
         <MeetSection />
