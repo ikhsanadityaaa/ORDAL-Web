@@ -1,8 +1,8 @@
 import { Prisma } from "@prisma/client";
 
-export const ORIGINAL_PRICE_IDR = 210000;
+export const ORIGINAL_PRICE_IDR = 250000;
 export const PRICE_IDR = 179000;
-export const PRICE_USD = new Prisma.Decimal("12.00");
+export const PRICE_USD = new Prisma.Decimal("15.00");
 
 type Invoice = {
   id: string;

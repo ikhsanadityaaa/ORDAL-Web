@@ -107,13 +107,13 @@ export function PricingSection() {
                       {t("pricing.priceID")}
                     </p>
                     <p className="mt-2 rounded-full bg-[#F2661A] px-2.5 py-1 text-[9px] font-black uppercase tracking-[0.12em] text-white">
-                      {language === "id" ? "Hemat Rp31.000" : "Save Rp31,000"}
+                      {language === "id" ? "Hemat Rp71.000" : "Save Rp71,000"}
                     </p>
                     <p className="mt-2 text-[10px] font-extrabold uppercase tracking-[0.14em] text-[#F2661A]">
                       {language === "id" ? "sekali bayar" : "one-time"}
                     </p>
                     <p className="mt-1.5 text-[10px] font-semibold leading-snug text-[#33363F]/55">
-                      GoPay • QRIS • Transfer • Card
+                      {language === "id" ? "Metode tampil di dalam app" : "Methods shown in the app"}
                     </p>
                   </div>
                   {/* Divider — vertical dashed with "atau" chip */}

@@ -88,7 +88,7 @@ const facts = [
   ["Sistem", "Windows 10+ dan macOS 12+"],
   ["Bahasa", "Indonesia dan English"],
   ["Trial", "3 hari, tanpa kartu kredit"],
-  ["Harga Indonesia", "Rp179.000, sekali bayar"],
+  ["Harga Indonesia", "Normal Rp250.000, promo Rp179.000 sekali bayar"],
   ["Kendali pengguna", "CV, posisi, lokasi, platform, gaji, tipe kerja, dan pengecualian"],
 ];
 

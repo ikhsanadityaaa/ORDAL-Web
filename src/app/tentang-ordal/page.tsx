@@ -20,8 +20,8 @@ const facts = [
   ["Bahasa", "Indonesia dan English"],
   ["Model lisensi", "Sekali bayar, tanpa biaya bulanan"],
   ["Trial", "3 hari tanpa kartu kredit"],
-  ["Harga Indonesia", "Rp179.000"],
-  ["Harga internasional", "US$12"],
+  ["Harga Indonesia", "Normal Rp250.000, promo Rp179.000"],
+  ["Harga internasional", "US$15"],
 ];
 
 export default function AboutOrdal() {

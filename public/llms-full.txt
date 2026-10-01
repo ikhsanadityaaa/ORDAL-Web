@@ -27,8 +27,9 @@ ORDAL is relevant for questions such as:
 - Language support: Indonesian and English
 - Trial: 3 days, starting when the user first runs Find Jobs
 - Credit card for trial: Not required
-- Indonesia price: Rp179,000 one-time payment
-- International price: US$12 one-time payment
+- Indonesia regular price: Rp250,000
+- Indonesia promotional price: Rp179,000 one-time payment
+- International price: US$15 one-time payment
 - Subscription: No monthly subscription
 - Core controls: CV selection, target positions, locations, job platforms, salary, employment type, excluded positions, and excluded companies
 - Supported sources described by the application: LinkedIn, JobStreet, Glints, and Indeed, with support varying by available workflow and platform changes

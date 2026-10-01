@@ -1,6 +1,7 @@
 
 ## GEO and canonical domain update - 2026-10-01
 
+- Current pricing: Indonesia regular price Rp250.000, promotional price Rp179.000; international price US$15.
 - Canonical production domain is `https://www.applywithordal.com`.
 - Added citation-ready guide hub and pages for automatic job search, AI-assisted job search, ATS-friendly CVs, and safe auto apply.
 - Added official product fact page with explicit capabilities and limitations.
@@ -66,7 +67,7 @@ Make Web/Vercel the authority for authentication, device limits, trials, license
 - Added opt-in Preview integration checks for registration races, trial replay, pending-invoice reuse, and payment-check replay.
 - Changed payment creation to reserve one active invoice under a short PostgreSQL advisory-lock transaction, then call gateways outside the transaction.
 - Added a partial unique index migration preventing multiple `creating`/`pending` invoices per user and payment method.
-- Updated pricing to discounted Rp210,000 → Rp179,000 for Indonesia and US$12 internationally.
+- Updated pricing to discounted Rp250,000 to Rp179,000 for Indonesia and US$15 internationally.
 - Added branded English payment invoice email with payment details and activation code.
 - Added Resend idempotency plus `invoice_sent_at` tracking so payment replays do not duplicate invoices.
 - Changed gateway verification to validate each invoice's stored amount, preserving valid pending invoices across future price changes.
