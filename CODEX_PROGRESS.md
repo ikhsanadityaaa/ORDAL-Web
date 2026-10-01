@@ -1,4 +1,13 @@
 
+## GEO and canonical domain update - 2026-10-01
+
+- Canonical production domain is `https://www.applywithordal.com`.
+- Added citation-ready guide hub and pages for automatic job search, AI-assisted job search, ATS-friendly CVs, and safe auto apply.
+- Added official product fact page with explicit capabilities and limitations.
+- Added `llms.txt`, `llms-full.txt`, AI crawler rules, expanded sitemap, JSON-LD Article/FAQ/Breadcrumb/AboutPage data, and internal guide links.
+- Added global indexing headers and disabled Next.js agent-rule file generation.
+- Verified production build, changed-file lint, structured metadata, crawler assets, and desktop/mobile layouts with no horizontal overflow.
+
 ## UI, download, and performance update — 2026-09-21
 
 - Source of truth: `main`; latest synced commit is `60fd63f`.

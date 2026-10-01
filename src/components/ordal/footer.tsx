@@ -17,9 +17,9 @@ export function Footer() {
       { label: "FAQ", href: "#faq" },
     ],
     support: [
+      { label: language === "id" ? "Panduan Cari Kerja" : "Job Search Guides", href: "/panduan" },
+      { label: language === "id" ? "Tentang ORDAL" : "About ORDAL", href: "/tentang-ordal" },
       { label: language === "id" ? "Bantuan" : "Help", href: "#faq" },
-      { label: language === "id" ? "Syarat" : "Terms", href: "#" },
-      { label: language === "id" ? "Privasi" : "Privacy", href: "#" },
     ],
   };
 

@@ -4,6 +4,7 @@ import "./globals.css";
 import { LanguageProvider } from "@/lib/i18n/context";
 import { Toaster } from "@/components/ui/sonner";
 import { translations } from "@/lib/i18n/translations";
+import { SITE_URL } from "@/lib/site";
 
 // Apple-style typography: Inter is the closest free sibling of SF Pro.
 // Variable font = all weights 100–900 for expressive display type.
@@ -13,7 +14,7 @@ const inter = Inter({
   display: "swap",
 });
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://ordal.app";
+const siteUrl = SITE_URL;
 
 /* ============================================================
    SEO — tuned for job seekers (Indonesia-first, EN secondary)
@@ -128,6 +129,14 @@ const jsonLd = {
       logo: `${siteUrl}/logo.svg`,
       description:
         "ORDAL membuat AI Job Search Agent, aplikasi desktop yang membantu pencari kerja mencari dan melamar pekerjaan secara otomatis.",
+      knowsAbout: [
+        "cari kerja",
+        "lowongan kerja",
+        "CV ATS",
+        "aplikasi cari kerja otomatis",
+        "AI job search agent",
+        "auto apply lamaran kerja",
+      ],
     },
     {
       "@type": "SoftwareApplication",
@@ -148,6 +157,7 @@ const jsonLd = {
         url: `${siteUrl}/#pricing`,
       },
       publisher: { "@id": `${siteUrl}/#organization` },
+      subjectOf: `${siteUrl}/panduan/cari-kerja-otomatis`,
     },
     {
       "@type": "FAQPage",

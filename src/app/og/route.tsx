@@ -1,9 +1,10 @@
 import { ImageResponse } from "next/og";
+import { SITE_URL } from "@/lib/site";
 
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? "https://ordal.app";
+const siteUrl = SITE_URL;
 
 /*
  * Dynamic Open Graph card — exact brand colors, rendered on the fly

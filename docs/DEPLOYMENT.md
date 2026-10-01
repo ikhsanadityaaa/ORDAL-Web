@@ -70,7 +70,8 @@ Buka **Project → Settings → Environment Variables**, tambahkan:
 | `POSTGRES_URL_NON_POOLING` | dibuat otomatis oleh integrasi Supabase | Production, Preview |
 | `GROQ_API_KEY` | key dari console.groq.com | Production, Preview — **WAJIB** |
 | `GROQ_MODEL` | *(opsional, default `openai/gpt-oss-120b`)* — harus model yang bisa diakses tier Groq Anda, lihat [daftar model](https://console.groq.com/docs/models) | Production |
-| `NEXT_PUBLIC_SITE_URL` | URL publik deployment Anda, mis. `https://ordal-web.vercel.app` | Production, Preview |
+| `NEXT_PUBLIC_SITE_URL` | URL publik deployment Anda: `https://www.applywithordal.com` | Production, Preview |
+| `APP_URL` | Origin production untuk OAuth dan callback: `https://www.applywithordal.com` | Production |
 | `ABUSE_HASH_SECRET` | nilai acak minimal 32 byte untuk hash IP, device, dan email canonical | Production, Preview |
 | `BLOCKED_EMAIL_DOMAINS` | tambahan domain email sementara, dipisahkan koma | Production, Preview |
 | `NEXT_PUBLIC_ORDAL_WINDOWS_URL` | URL HTTPS installer Windows | Production |
