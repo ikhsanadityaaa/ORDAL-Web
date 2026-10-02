@@ -4,6 +4,13 @@ const nextConfig: NextConfig = {
   output: "standalone",
   reactStrictMode: false,
   agentRules: false,
+  async redirects() {
+    return [
+      { source: "/panduan", destination: "/", permanent: true },
+      { source: "/panduan/:path*", destination: "/", permanent: true },
+      { source: "/tentang-ordal", destination: "/", permanent: true },
+    ];
+  },
   async headers() {
     return [
       {

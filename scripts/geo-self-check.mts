@@ -27,20 +27,12 @@ for (const crawler of ["OAI-SearchBot", "ChatGPT-User", "GPTBot", "ClaudeBot", "
   assert.match(robots, new RegExp(`User-agent: ${crawler}`));
 }
 
-for (const path of [
-  "/panduan",
-  "/panduan/cari-kerja-otomatis",
-  "/panduan/ai-untuk-cari-kerja",
-  "/panduan/cv-ats-friendly",
-  "/panduan/auto-apply-lowongan",
-  "/tentang-ordal",
-]) {
-  assert.ok(llms.includes(path) || llmsFull.includes(path), `Missing AI reference: ${path}`);
-}
-
-assert.match(sitemap, /ai-untuk-cari-kerja/);
-assert.match(sitemap, /cv-ats-friendly/);
-assert.match(sitemap, /auto-apply-lowongan/);
+assert.doesNotMatch(sitemap, /\/panduan|tentang-ordal/);
+assert.doesNotMatch(llms, /\/panduan|tentang-ordal/);
+assert.doesNotMatch(llmsFull, /\/panduan|tentang-ordal/);
+assert.match(nextConfig, /source: "\/panduan\/:path\*"/);
+assert.match(nextConfig, /source: "\/tentang-ordal"/);
+assert.doesNotMatch(indexNowScript, /\/panduan|tentang-ordal/);
 assert.match(nextConfig, /source: "\/api\/:path\*"/);
 assert.match(nextConfig, /noindex, nofollow, noarchive/);
 assert.equal(indexNowKey, "96c5bbde87aafe6f0ed6b80d7f5faff3");

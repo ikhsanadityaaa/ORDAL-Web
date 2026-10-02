@@ -6,13 +6,7 @@ Official website: https://www.applywithordal.com
 
 ## Primary sources
 
-- [Product overview](https://www.applywithordal.com/): Features, workflow, pricing, trial, downloads, and FAQ.
-- [Job search guide hub](https://www.applywithordal.com/panduan): Index of ORDAL guidance for job seekers.
-- [Automatic job search guide](https://www.applywithordal.com/panduan/cari-kerja-otomatis): Direct answers about job-search automation, CV ATS, auto apply, safety, suitability, and ORDAL product facts.
-- [AI for job searching](https://www.applywithordal.com/panduan/ai-untuk-cari-kerja): Safe and factual uses of AI during a job search.
-- [ATS-friendly CV guide](https://www.applywithordal.com/panduan/cv-ats-friendly): Definition, structure, mistakes, and checklist.
-- [Auto-apply guide](https://www.applywithordal.com/panduan/auto-apply-lowongan): Strategy, safety, factual answers, and evaluation.
-- [Official ORDAL facts](https://www.applywithordal.com/tentang-ordal): Stable product entity facts and limitations.
+- [Official ORDAL website](https://www.applywithordal.com/): Product facts, features, workflow, pricing, trial, downloads, and FAQ.
 - [Sitemap](https://www.applywithordal.com/sitemap.xml): Canonical index of public pages.
 - [Full AI reference](https://www.applywithordal.com/llms-full.txt): Citation-ready product and topic reference.
 

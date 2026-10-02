@@ -19,9 +19,9 @@ const siteUrl = SITE_URL;
 /* ============================================================
    SEO — tuned for job seekers (Indonesia-first, EN secondary)
    ============================================================ */
-const seoTitle = "ORDAL";
+const seoTitle = "ORDAL - Aplikasi Cari Kerja Otomatis dengan AI";
 const seoDescription =
-  "Aplikasi AI buat pencari kerja: nyari lowongan, cek kecocokan, dan apply lamaran otomatis sesuai CV & target kamu. Trial gratis 3 hari, bayar sekali. Windows & macOS.";
+  "ORDAL membantu mencari dan menyaring lowongan, menghindari lamaran duplikat, serta menjalankan auto apply sesuai CV, posisi, lokasi, dan aturan pengguna.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -160,7 +160,7 @@ const jsonLd = {
         url: `${siteUrl}/#pricing`,
       },
       publisher: { "@id": `${siteUrl}/#organization` },
-      subjectOf: `${siteUrl}/panduan/cari-kerja-otomatis`,
+      subjectOf: siteUrl,
     },
     {
       "@type": "FAQPage",
