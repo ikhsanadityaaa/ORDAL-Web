@@ -6,7 +6,7 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-inter), -apple-system, BlinkMacSystemFont, "SF Pro Display", "SF Pro Text", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --font-sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", "SF Pro Display", "Helvetica Neue", "Segoe UI", sans-serif;
   --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
   --color-sidebar-ring: var(--sidebar-ring);
   --color-sidebar-border: var(--sidebar-border);
@@ -99,6 +99,7 @@
   }
   body {
     @apply bg-background text-foreground;
+    font-family: var(--font-sans);
     font-feature-settings: "ss01", "cv01", "cv11", "calt";
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -114,6 +115,7 @@
 @media (min-width: 1024px) and (min-height: 720px) {
   .home-sections > section {
     min-height: 100svh;
+    padding-block: clamp(4.75rem, 8vh, 6.5rem) !important;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -200,65 +202,43 @@
    CREATIVE AGENCY KIT — stickers, marks, marquee, deco
    ============================================================ */
 
-/* Highlighter marker for key words inside headlines */
-mark.hl {
-  background-image: linear-gradient(
-    100deg,
-    rgba(242, 102, 26, 0) 1%,
-    rgba(242, 102, 26, 0.3) 4.5%,
-    rgba(255, 138, 76, 0.32) 95%,
-    rgba(255, 138, 76, 0) 99%
-  );
-  color: inherit;
-  padding: 0 0.12em;
-  border-radius: 0.15em;
-  -webkit-box-decoration-break: clone;
-  box-decoration-break: clone;
-}
+/* Keep marked headline words semantic without marker-style highlighting. */
+mark.hl,
 mark.hl-dark {
-  background-image: linear-gradient(
-    100deg,
-    rgba(242, 102, 26, 0) 1%,
-    rgba(242, 102, 26, 0.55) 4.5%,
-    rgba(255, 138, 76, 0.5) 95%,
-    rgba(255, 138, 76, 0) 99%
-  );
+  background: none;
   color: inherit;
-  padding: 0 0.12em;
-  border-radius: 0.15em;
-  -webkit-box-decoration-break: clone;
-  box-decoration-break: clone;
+  padding: 0;
+  border-radius: 0;
 }
 
-/* Neo-sticker card: thick border + hard offset shadow, lifts on hover */
+/* Branded cards use calm depth instead of permanent offset shadows. */
 .sticker {
   border: 2px solid #33363F;
   border-radius: 1.25rem;
-  box-shadow: 5px 5px 0 #33363F;
+  box-shadow: 0 12px 32px rgba(51, 54, 63, 0.1);
   background: #FFFFFF;
   transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
 }
 .sticker:hover {
-  transform: translate(-3px, -3px) rotate(-0.5deg);
-  box-shadow: 9px 9px 0 #33363F;
+  transform: translateY(-2px);
+  box-shadow: 0 18px 40px rgba(51, 54, 63, 0.14);
 }
 .sticker-flat {
   border: 2px solid #33363F;
   border-radius: 1.25rem;
-  box-shadow: 5px 5px 0 #33363F;
+  box-shadow: 0 10px 28px rgba(51, 54, 63, 0.08);
   background: #FFFFFF;
 }
-/* On dark backgrounds: orange hard shadow */
 .sticker-dark {
   border: 2px solid #F4F2EC;
   border-radius: 1.25rem;
-  box-shadow: 5px 5px 0 rgba(242, 102, 26, 0.9);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.18);
   background: #3B3E47;
   transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.25s ease;
 }
 .sticker-dark:hover {
-  transform: translate(-3px, -3px) rotate(-0.5deg);
-  box-shadow: 9px 9px 0 rgba(242, 102, 26, 0.9);
+  transform: translateY(-2px);
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.24);
 }
 
 /* Small rotated chip — like a handwritten sticker note */
@@ -271,7 +251,7 @@ mark.hl-dark {
   background: #FFFFFF;
   color: #33363F;
   padding: 0.3rem 0.9rem;
-  box-shadow: 3px 3px 0 #33363F;
+  box-shadow: 0 6px 18px rgba(51, 54, 63, 0.08);
   font-weight: 700;
 }
 .chip-sticker-dark {
@@ -283,7 +263,7 @@ mark.hl-dark {
   background: #33363F;
   color: #F4F2EC;
   padding: 0.3rem 0.9rem;
-  box-shadow: 3px 3px 0 rgba(242, 102, 26, 0.9);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
   font-weight: 700;
 }
 
@@ -512,6 +492,37 @@ section[id] {
 .link-sweep:hover::after {
   transform: scaleX(1);
   transform-origin: left;
+}
+
+/* Flatten legacy hard-shadow utilities while preserving restrained depth. */
+[class*="shadow-["] {
+  box-shadow: 0 12px 30px rgba(51, 54, 63, 0.1) !important;
+}
+
+button,
+[data-slot="button"],
+a[class*="rounded-"][class*="border-"][class*="bg-"] {
+  box-shadow: none !important;
+}
+
+button:hover:not(:disabled),
+[data-slot="button"]:hover:not([aria-disabled="true"]),
+a[class*="rounded-"][class*="border-"][class*="bg-"]:hover {
+  box-shadow: 0 10px 24px rgba(51, 54, 63, 0.16) !important;
+}
+
+button:active:not(:disabled),
+[data-slot="button"]:active:not([aria-disabled="true"]),
+a[class*="rounded-"][class*="border-"][class*="bg-"]:active {
+  box-shadow: none !important;
+}
+
+@media (max-width: 767px), (hover: none) {
+  button:hover:not(:disabled),
+  [data-slot="button"]:hover:not([aria-disabled="true"]),
+  a[class*="rounded-"][class*="border-"][class*="bg-"]:hover {
+    box-shadow: none !important;
+  }
 }
 
 /* Respect reduced motion */

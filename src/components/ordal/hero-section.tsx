@@ -405,6 +405,7 @@ export function HeroSection() {
                   alt=""
                   width={platform.width}
                   height={platform.height}
+                  style={{ width: "auto" }}
                   className={`object-contain ${platform.logoClassName}`}
                 />
               </div>

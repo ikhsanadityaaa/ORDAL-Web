@@ -33,6 +33,24 @@ model User {
   payments          Payment[]
   oauthAttempts     AppOAuthAttempt[]
   verificationCodes AppVerificationCode[]
+  feedback           Feedback[]
+}
+
+model Feedback {
+  id          String   @id @default(cuid())
+  reference   String   @unique
+  userId      String   @map("user_id")
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  category    String
+  message     String
+  diagnostics Json?
+  status      String   @default("new")
+  createdAt   DateTime @default(now()) @map("created_at")
+  deleteAfter DateTime @map("delete_after")
+
+  @@index([userId, createdAt])
+  @@index([deleteAfter])
+  @@map("app_feedback")
 }
 
 model AbuseEvent {

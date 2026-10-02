@@ -1,18 +1,9 @@
 import type { Metadata, Viewport } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
 import { LanguageProvider } from "@/lib/i18n/context";
 import { Toaster } from "@/components/ui/sonner";
 import { translations } from "@/lib/i18n/translations";
 import { SITE_URL } from "@/lib/site";
-
-// Apple-style typography: Inter is the closest free sibling of SF Pro.
-// Variable font = all weights 100–900 for expressive display type.
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
 
 const siteUrl = SITE_URL;
 
@@ -184,9 +175,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="id" suppressHydrationWarning>
-      <body
-        className={`${inter.variable} antialiased bg-[#F4F2EC] text-[#33363F] min-h-screen`}
-      >
+      <body className="antialiased bg-[#F4F2EC] text-[#33363F] min-h-screen">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

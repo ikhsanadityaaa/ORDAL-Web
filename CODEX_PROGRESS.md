@@ -1,3 +1,16 @@
+## Visual System and Search Validation - 2026-10-02
+
+- Replaced permanent hard button shadows with soft hover-only feedback across web CTAs and controls.
+- Reduced legacy hard card shadows, removed headline marker highlights, and switched typography to Apple/system font stacks.
+- Preserved viewport-focused landing spacing and verified desktop/mobile rendering without horizontal overflow.
+- Revalidated canonical metadata, structured data, robots directives, homepage sitemap strategy, and LLM reference files.
+
+## Desktop Product Services - 2026-10-02
+
+- Added authenticated desktop feedback intake with strict categories, rate limit, diagnostic allowlist, receipt IDs, and 30-day deletion.
+- Added admin JSON/CSV feedback export and expired-feedback cleanup.
+- Added Supabase/Prisma feedback migrations with RLS enabled and no `anon` or `authenticated` grants.
+- Added authenticated release manifest endpoint for optional and mandatory desktop updates.
 
 ## GEO and canonical domain update - 2026-10-01
 
