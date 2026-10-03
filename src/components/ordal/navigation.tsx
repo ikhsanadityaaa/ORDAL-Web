@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { Menu, X, User, ArrowUpRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
+import { BrandMark } from "@/components/ordal/brand-mark";
 
 export function Navigation() {
   const { language, setLanguage, t } = useLanguage();
@@ -60,9 +61,9 @@ export function Navigation() {
             <motion.div
               whileHover={{ rotate: -8, scale: 1.08 }}
               transition={{ type: "spring", stiffness: 400, damping: 15 }}
-              className="w-8 h-8 rounded-lg bg-[#F2661A] border-2 border-[#33363F] flex items-center justify-center shadow-[2.5px_2.5px_0_#33363F]"
+              className="w-8 h-8"
             >
-              <span className="text-white font-extrabold text-sm leading-none">O</span>
+              <BrandMark size={32} />
             </motion.div>
             <span className="text-lg font-extrabold tracking-tight text-[#33363F]">
               ORDAL

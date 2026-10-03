@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { SITE_URL } from "@/lib/site";
+import { BrandMark } from "@/components/ordal/brand-mark";
 
 const siteUrl = SITE_URL;
 const pageUrl = `${siteUrl}/tentang-ordal`;
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
 
 const facts = [
   ["Nama produk", "ORDAL"],
-  ["Kategori", "AI Job Search Agent dan job application automation"],
+  ["Kategori", "Aplikasi pencarian dan lamaran kerja otomatis dengan fitur AI opsional"],
   ["Domain resmi", "https://www.applywithordal.com"],
   ["Sistem operasi", "Windows 10+ dan macOS 12+"],
   ["Bahasa", "Indonesia dan English"],
@@ -41,7 +42,7 @@ export default function AboutOrdal() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <header className="border-b-2 border-[#33363F]">
         <div className="mx-auto flex max-w-4xl items-center justify-between px-5 py-4">
-          <Link href="/" className="flex items-center gap-2.5 font-extrabold"><span className="flex h-9 w-9 items-center justify-center rounded-xl border-2 border-[#33363F] bg-[#F2661A] text-white shadow-[3px_3px_0_#33363F]">O</span>ORDAL</Link>
+          <Link href="/" className="flex items-center gap-2.5 font-extrabold"><BrandMark size={36} />ORDAL</Link>
           <Link href="/panduan" className="rounded-xl border-2 border-[#33363F] bg-white px-4 py-2 text-sm font-bold shadow-[3px_3px_0_#33363F]">Baca panduan</Link>
         </div>
       </header>

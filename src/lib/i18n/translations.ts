@@ -17,7 +17,7 @@ export const translations = {
         "SEKALI BAYAR",
         "GRATIS SELAMANYA",
         "AUTO APPLY",
-        "AI JOB SEARCH AGENT",
+        "JOB SEARCH AUTOMATION",
         "MULTI CV",
         "JAWABAN TERSIMPAN",
         "TRIAL 3 HARI",
@@ -26,7 +26,7 @@ export const translations = {
 
     // Hero Section
     hero: {
-      badge: "AI Job Search Agent",
+      badge: "Aplikasi Cari Kerja Otomatis",
       headline: "Berhenti cari kerja terus-terusan.",
       headlineHighlight: "Biar ORDAL cariin buat kamu.",
       description:
@@ -75,7 +75,7 @@ export const translations = {
     meet: {
       badge: "Kenalan, yuk",
       title: "Meet ORDAL",
-      subtitle: "AI Job Search Agent yang kerja sesuai strategi kamu.",
+      subtitle: "Otomasi pencarian kerja yang mengikuti strategi kamu.",
       description:
         "ORDAL bantu kamu nyusun strategi cari kerja, lalu jalan ngikutin strategi itu. Bukan nebar lamaran sebanyak-banyaknya, asal kirim.",
       features: [
@@ -340,7 +340,7 @@ export const translations = {
 
     // Footer
     footer: {
-      tagline: "Your AI Job Search Agent.",
+      tagline: "Cari kerja otomatis, tetap dalam kendalimu.",
       description:
         "Tentukan targetmu, pilih CV-mu, sisanya biar ORDAL yang jalan.",
       product: "Produk",
@@ -437,7 +437,7 @@ export const translations = {
         "PAY ONCE",
         "USE FOREVER",
         "AUTO APPLY",
-        "AI JOB SEARCH AGENT",
+        "JOB SEARCH AUTOMATION",
         "MULTIPLE RESUMES",
         "SAVED ANSWERS",
         "1-DAY FREE TRIAL",
@@ -446,7 +446,7 @@ export const translations = {
 
     // Hero Section
     hero: {
-      badge: "AI Job Search Agent",
+      badge: "Job Search Automation",
       headline: "Stop the endless job hunt.",
       headlineHighlight: "Let ORDAL hunt for you.",
       description:
@@ -495,7 +495,7 @@ export const translations = {
     meet: {
       badge: "Say hello",
       title: "Meet ORDAL",
-      subtitle: "An AI Job Search Agent that runs *your* strategy.",
+      subtitle: "Job search automation that follows *your* strategy.",
       description:
         "ORDAL helps you build a job search strategy, then keeps working it. Not spray-and-pray. Not volume for the sake of volume.",
       features: [
@@ -679,7 +679,7 @@ export const translations = {
       items: [
         {
           q: "What is ORDAL?",
-          a: "ORDAL is an AI-powered desktop app for job searching and auto-applying. Its job: hunt for openings automatically, based on the resumes, targets, and preferences you define yourself.",
+          a: "ORDAL is a desktop app for job-search automation and supported auto-apply flows. It follows the resumes, targets, preferences, and rules you define. AI is optional.",
         },
         {
           q: "How does it work?",
@@ -761,7 +761,7 @@ export const translations = {
 
     // Footer
     footer: {
-      tagline: "Your AI Job Search Agent.",
+      tagline: "Automated job search, under your control.",
       description:
         "Set your targets, pick your resume, let ORDAL handle the rest.",
       product: "Product",

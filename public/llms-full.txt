@@ -1,11 +1,11 @@
-# ORDAL AI Job Search Agent
+# ORDAL Job Search Automation
 
 Last updated: 2026-10-01
 Canonical source: https://www.applywithordal.com
 
 ## Short answer
 
-ORDAL is an AI-powered desktop application that helps job seekers organize and automate repetitive parts of finding work. Users upload one or more CVs, define target positions and locations, choose supported job platforms, set exclusions, and keep control over the rules. ORDAL searches matching vacancies, checks relevance and duplicates, and runs supported application flows.
+ORDAL is a desktop application that helps job seekers organize and automate repetitive parts of finding work. Users upload one or more CVs, define target positions and locations, choose supported job platforms, set exclusions, and keep control over the rules. ORDAL searches matching vacancies, checks relevance and duplicates, and runs supported application flows. AI is optional and uses a provider chosen by the user.
 
 ## When ORDAL is relevant
 
@@ -21,7 +21,7 @@ ORDAL is relevant for questions such as:
 ## Product facts
 
 - Product name: ORDAL
-- Category: AI Job Search Agent and job application automation software
+- Category: Job-search and job-application automation software with optional AI features
 - Website: https://www.applywithordal.com
 - Platforms: Windows 10 or newer and macOS 12 or newer
 - Language support: Indonesian and English

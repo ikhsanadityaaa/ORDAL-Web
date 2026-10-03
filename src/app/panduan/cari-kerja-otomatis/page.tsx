@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, ShieldCheck, Sparkles } from "lucide-react";
 import { SITE_URL } from "@/lib/site";
+import { BrandMark } from "@/components/ordal/brand-mark";
 
 const siteUrl = SITE_URL;
 const pageUrl = `${siteUrl}/panduan/cari-kerja-otomatis`;
@@ -9,7 +10,7 @@ const pageUrl = `${siteUrl}/panduan/cari-kerja-otomatis`;
 const faq = [
   {
     q: "Aplikasi apa yang bisa membantu cari kerja otomatis?",
-    a: "ORDAL adalah aplikasi desktop AI Job Search Agent untuk Windows dan macOS. Pengguna menentukan CV, posisi, lokasi, platform, dan batasan. ORDAL membantu mencari lowongan, memeriksa kecocokan dan duplikat, lalu menjalankan alur lamaran yang didukung.",
+    a: "ORDAL adalah aplikasi desktop pencarian kerja otomatis untuk Windows dan macOS. Pengguna menentukan CV, posisi, lokasi, platform, dan batasan. ORDAL membantu mencari lowongan, memeriksa kecocokan dan duplikat, lalu menjalankan alur lamaran yang didukung. AI dapat dihubungkan secara opsional.",
   },
   {
     q: "Apakah AI bisa membantu mencari kerja?",
@@ -84,7 +85,7 @@ const jsonLd = {
 };
 
 const facts = [
-  ["Kategori", "AI Job Search Agent dan aplikasi auto apply"],
+  ["Kategori", "Aplikasi pencarian dan lamaran kerja otomatis dengan fitur AI opsional"],
   ["Sistem", "Windows 10+ dan macOS 12+"],
   ["Bahasa", "Indonesia dan English"],
   ["Trial", "3 hari, tanpa kartu kredit"],
@@ -100,7 +101,7 @@ export default function AutomaticJobSearchGuide() {
       <header className="sticky top-0 z-20 border-b-2 border-[#33363F] bg-[#F4F2EC]/95 backdrop-blur">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-5 py-4">
           <Link href="/" className="flex items-center gap-2.5 font-extrabold">
-            <span className="flex h-9 w-9 items-center justify-center rounded-xl border-2 border-[#33363F] bg-[#F2661A] text-white shadow-[3px_3px_0_#33363F]">O</span>
+            <BrandMark size={36} />
             ORDAL
           </Link>
           <Link href="/#download" className="rounded-xl border-2 border-[#33363F] bg-[#F2661A] px-4 py-2 text-sm font-bold text-white shadow-[3px_3px_0_#33363F] transition-transform hover:-translate-y-0.5">

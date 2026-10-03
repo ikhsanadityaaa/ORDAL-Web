@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight, BookOpen, Sparkles } from "lucide-react";
 import { guides } from "@/lib/guide-content";
 import { SITE_URL } from "@/lib/site";
+import { BrandMark } from "@/components/ordal/brand-mark";
 
 const siteUrl = SITE_URL;
 
@@ -23,7 +24,7 @@ export default function GuideIndex() {
     <main className="min-h-screen bg-[#F4F2EC] text-[#33363F]">
       <header className="border-b-2 border-[#33363F] bg-[#F4F2EC]">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-5 py-4">
-          <Link href="/" className="flex items-center gap-2.5 font-extrabold"><span className="flex h-9 w-9 items-center justify-center rounded-xl border-2 border-[#33363F] bg-[#F2661A] text-white shadow-[3px_3px_0_#33363F]">O</span>ORDAL</Link>
+          <Link href="/" className="flex items-center gap-2.5 font-extrabold"><BrandMark size={36} />ORDAL</Link>
           <Link href="/#download" className="rounded-xl border-2 border-[#33363F] bg-[#F2661A] px-4 py-2 text-sm font-bold text-white shadow-[3px_3px_0_#33363F]">Coba gratis</Link>
         </div>
       </header>
@@ -57,7 +58,7 @@ export default function GuideIndex() {
 
         <section className="mt-16 rounded-3xl border-2 border-[#33363F] bg-[#33363F] p-8 text-white">
           <h2 className="text-3xl font-black">Apa itu ORDAL?</h2>
-          <p className="mt-4 max-w-3xl text-lg leading-8 text-white/75">ORDAL adalah AI Job Search Agent untuk Windows dan macOS. Pengguna menentukan strategi, lalu ORDAL membantu mencari lowongan, memeriksa kecocokan dan duplikat, serta menjalankan alur lamaran yang didukung.</p>
+          <p className="mt-4 max-w-3xl text-lg leading-8 text-white/75">ORDAL adalah aplikasi desktop pencarian kerja otomatis untuk Windows dan macOS. Pengguna menentukan strategi, lalu ORDAL membantu mencari lowongan, memeriksa kecocokan dan duplikat, serta menjalankan alur lamaran yang didukung. AI bersifat opsional.</p>
           <Link href="/tentang-ordal" className="mt-6 inline-flex items-center gap-2 font-black text-[#F2661A]">Lihat fakta produk <ArrowRight className="h-5 w-5" /></Link>
         </section>
       </div>

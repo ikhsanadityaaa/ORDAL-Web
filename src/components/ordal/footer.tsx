@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { useLanguage } from "@/lib/i18n/context";
+import { BrandMark } from "@/components/ordal/brand-mark";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { CheckCircle2, ArrowUp, ArrowUpRight } from "lucide-react";
@@ -110,9 +111,7 @@ export function Footer() {
         <div className="grid sm:grid-cols-2 md:grid-cols-4 gap-8 mb-10">
           <div className="sm:col-span-2">
             <div className="flex items-center gap-2.5 mb-4">
-              <div className="w-8 h-8 rounded-lg bg-[#F2661A] border-2 border-[#F4F2EC] flex items-center justify-center">
-                <span className="text-white font-extrabold text-sm leading-none">O</span>
-              </div>
+              <BrandMark size={32} />
               <span className="text-lg font-extrabold tracking-tight text-[#F4F2EC]">
                 ORDAL
               </span>

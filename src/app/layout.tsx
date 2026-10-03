@@ -10,9 +10,9 @@ const siteUrl = SITE_URL;
 /* ============================================================
    SEO — tuned for job seekers (Indonesia-first, EN secondary)
    ============================================================ */
-const seoTitle = "ORDAL - Aplikasi Cari Kerja Otomatis dengan AI";
+const seoTitle = "ORDAL - Aplikasi Cari Kerja Otomatis";
 const seoDescription =
-  "ORDAL membantu mencari dan menyaring lowongan, menghindari lamaran duplikat, serta menjalankan auto apply sesuai CV, posisi, lokasi, dan aturan pengguna.";
+  "ORDAL adalah aplikasi desktop pencarian kerja otomatis yang mengikuti CV, target, platform, dan aturan pengguna. AI tersedia sebagai fitur opsional.";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -55,24 +55,24 @@ export const metadata: Metadata = {
     type: "website",
     url: siteUrl,
     siteName: "ORDAL",
-    title: "ORDAL — AI Job Search Agent. Biar ORDAL cariin buat kamu.",
+    title: "ORDAL — Aplikasi Cari Kerja Otomatis",
     description:
-      "Aplikasi AI yang nyari lowongan, cek kecocokan, dan apply lamaran otomatis sesuai CV & target kamu. Sekali bayar, gratis selamanya. Windows & macOS.",
+      "Cari lowongan, cek kecocokan dan duplikat, lalu jalankan alur lamaran sesuai CV dan targetmu. AI bersifat opsional. Windows dan macOS.",
     locale: "id_ID",
     images: [
       {
         url: "/og",
         width: 1200,
         height: 630,
-        alt: "ORDAL — AI Job Search Agent untuk cari kerja otomatis",
+        alt: "ORDAL — aplikasi cari kerja otomatis",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "ORDAL — AI Job Search Agent",
+    title: "ORDAL — Aplikasi Cari Kerja Otomatis",
     description:
-      "Aplikasi AI yang nyari lowongan & apply lamaran otomatis sesuai CV kamu. Sekali bayar, gratis selamanya.",
+      "Aplikasi desktop untuk mencari lowongan dan menjalankan alur lamaran sesuai CV dan aturanmu. AI bersifat opsional.",
     images: ["/og"],
   },
   robots: {
@@ -122,7 +122,7 @@ const jsonLd = {
       url: siteUrl,
       logo: `${siteUrl}/logo.svg`,
       description:
-        "ORDAL membuat AI Job Search Agent, aplikasi desktop yang membantu pencari kerja mencari dan melamar pekerjaan secara otomatis.",
+        "ORDAL membuat aplikasi desktop pencarian kerja otomatis dengan fitur AI opsional.",
       knowsAbout: [
         "cari kerja",
         "lowongan kerja",

@@ -2,10 +2,10 @@ import type { MetadataRoute } from "next";
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: "ORDAL — AI Job Search Agent",
+    name: "ORDAL — Aplikasi Cari Kerja Otomatis",
     short_name: "ORDAL",
     description:
-      "Aplikasi AI buat pencari kerja: nyari lowongan, cek kecocokan, dan apply lamaran otomatis sesuai CV & target kamu.",
+      "Aplikasi desktop pencarian kerja otomatis yang mengikuti CV, target, platform, dan aturan pengguna. AI bersifat opsional.",
     start_url: "/",
     display: "standalone",
     background_color: "#F4F2EC",
