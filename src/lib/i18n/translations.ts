@@ -68,7 +68,7 @@ export const translations = {
       pain2Desc: "Dengan form yang itu-itu mulu",
       pain3: "0 feedback",
       pain3Desc: "Lamaran kamu nyaris bareng ribuan lamaran lain",
-      message: "Cari kerja seharusnya bukan Fulltime.",
+      message: "Cari kerja seharusnya gak nyita waktu kamu seharian.",
     },
 
     // Meet ORDAL Section
@@ -488,7 +488,7 @@ export const translations = {
       pain2Desc: "With the same forms over and over",
       pain3: "0 feedback",
       pain3Desc: "Your application drowns among thousands",
-      message: "Job hunting shouldn't feel like a full-time job.",
+      message: "Job hunting shouldn't take up your whole day.",
     },
 
     // Meet ORDAL Section
